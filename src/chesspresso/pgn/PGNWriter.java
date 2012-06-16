@@ -21,7 +21,6 @@ import chesspresso.move.Move;
 import chesspresso.position.*;
 
 import java.io.*;
-import java.util.*;
 
 
 /**
@@ -107,10 +106,15 @@ public class PGNWriter extends PGN
         
         game.traverse(new GameListener() {
             private boolean needsMoveNumber = true;
+            
             public void notifyMove(Move move, short[] nags, String preMoveComment, String postMoveComment, 
             		int plyNumber, int level)
             {
-                if (needsMoveNumber) {
+				if (preMoveComment != null) {
+					print(TOK_COMMENT_BEGIN + preMoveComment + TOK_COMMENT_END, true);
+				}
+				
+				if (needsMoveNumber) {
                     if (move.isWhiteMove()) {
                         print(Chess.plyToMoveNumber(plyNumber) + ".", true);
                     } else {
@@ -118,7 +122,7 @@ public class PGNWriter extends PGN
                     }
                 }
                 print(move.toString(), true);
-                
+
                 if (nags != null) {
                     for (int i=0; i < nags.length; i++) {
                         print(String.valueOf(TOK_NAG_BEGIN) + String.valueOf(nags[i]), true);
@@ -127,11 +131,13 @@ public class PGNWriter extends PGN
                 if (postMoveComment != null) print(TOK_COMMENT_BEGIN + postMoveComment + TOK_COMMENT_END, true);
                 needsMoveNumber = !move.isWhiteMove() || (postMoveComment != null);
             }
+            
             public void notifyLineStart(int level)
             {
                 print(String.valueOf(TOK_LINE_BEGIN), false);
                 needsMoveNumber = true;
             }
+            
             public void notifyLineEnd(int level)
             {
                 print(String.valueOf(TOK_LINE_END), true);
