@@ -741,12 +741,9 @@ public class GameMoveModel
         
         short[] newMoves = new short[newSize + 1];
         int j = 0;
-        boolean inComment = false;
         for (int i=0; i<m_size; i++) {
             short move = m_moves[i];
-            if      (move == COMMENT_START || move == PRE_COMMENT_START) inComment = true;
-            else if (move == COMMENT_END || move == PRE_COMMENT_END)     inComment = false;
-            if (inComment || (move != NO_MOVE)) {
+            if (move != NO_MOVE) {
                 newMoves[j++] = move;
             }
             if (i == index) index = j - 1;
