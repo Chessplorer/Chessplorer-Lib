@@ -154,7 +154,8 @@ public class GameMoveModel
         
         if (EXTRA_CHECKS)
             if (!isMoveValue(m_moves[index]))
-                throw new RuntimeException("No move at index " + index + " val=" + valueToString(m_moves[index]));
+            	// ignore if there's no move: just don't add the NAG
+            	return;
         
         makeSpace(index + 1, 1, false);  // most recent nag first
         m_moves[index + 1] = getValueForNag(nag);
