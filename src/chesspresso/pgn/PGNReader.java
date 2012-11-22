@@ -542,11 +542,13 @@ public final class PGNReader extends PGN {
 				next += 2;
 
 				int promo = Chess.NO_PIECE;
-				if (next <= last && m_buf[next] == '=') {
-					if (next < last) {
-						promo = Chess.charToPiece(m_buf[next + 1]);
+				if (next <= last) {
+					if (m_buf[next] == '=' && next < last) {
+						if (next < last) {
+							promo = Chess.charToPiece(m_buf[next + 1]);
+						}
 					} else {
-						syntaxError("Illegal promotion move, misssing piece");
+						promo = Chess.charToPiece(m_buf[next]);
 					}
 				}
 				move = m_curGame.getPosition().getPawnMove(col, toSqi, promo);
