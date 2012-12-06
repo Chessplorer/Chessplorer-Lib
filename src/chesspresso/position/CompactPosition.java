@@ -47,6 +47,11 @@ public class CompactPosition extends AbstractPosition
         // TODO
     }
     
+    public CompactPosition(int[] stones, int flags) {
+    	m_stones = stones;
+    	m_flags = flags;
+    }
+    
     public CompactPosition(ImmutablePosition position)
     {
         m_stones = new int[Chess.NUM_OF_SQUARES / 8];
@@ -79,4 +84,10 @@ public class CompactPosition extends AbstractPosition
     public int getPlyNumber()      {return ((m_flags >> PLY_NUMBER_SHIFT) & PLY_NUMBER_MASK);}
     public int getHalfMoveClock()  {return ((m_flags >> HALF_MOVE_CLOCK_SHIFT) & HALF_MOVE_CLOCK_MASK);}
     
+    public int[] getStones() {
+    	return m_stones;
+    }
+    public int getFlags() {
+    	return m_flags;
+    }
 }
