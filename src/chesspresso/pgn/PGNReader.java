@@ -251,8 +251,8 @@ public final class PGNReader extends PGN {
 			return m_lastChar;
 		}
 		int ch = get();
-		while (ch == '\n' || ch == '\r' || (ch == TOK_PGN_ESCAPE && m_lastToken != TOK_COMMENT_BEGIN)
-				|| (ch == TOK_LINE_COMMENT && m_lastToken != TOK_COMMENT_BEGIN)) {
+		while (ch == '\n' || ch == '\r' || (ch == TOK_PGN_ESCAPE && m_lastToken != TOK_COMMENT_BEGIN && m_lastToken != TOK_IDENT)
+				|| (ch == TOK_LINE_COMMENT && m_lastToken != TOK_COMMENT_BEGIN && m_lastToken != TOK_IDENT)) {
 			while ((ch == '\n' || ch == '\r') && ch >= 0) {
 				ch = get();
 			}
