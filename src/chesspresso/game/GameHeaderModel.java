@@ -165,13 +165,13 @@ public class GameHeaderModel
     /*================================================================================*/
     // convenience methods for tags
     
-    public String getEvent()        {return m_standardTags[INDEX_EVENT];}
-    public String getSite()         {return m_standardTags[INDEX_SITE];}
-    public String getDate()         {return m_standardTags[INDEX_DATE];}
-    public String getRound()        {return m_standardTags[INDEX_ROUND];}
-    public String getWhite()        {return m_standardTags[INDEX_WHITE];}
-    public String getBlack()        {return m_standardTags[INDEX_BLACK];}
-    public String getResultStr()    {return m_standardTags[INDEX_RESULT];}
+    public String getEvent()        {return m_standardTags[INDEX_EVENT] == null ? "?" : m_standardTags[INDEX_EVENT];}
+    public String getSite()         {return m_standardTags[INDEX_SITE] == null ? "?" : m_standardTags[INDEX_SITE];}
+    public String getDate()         {return m_standardTags[INDEX_DATE] == null ? "????.??.??" : m_standardTags[INDEX_DATE];}
+    public String getRound()        {return m_standardTags[INDEX_ROUND] == null ? "?" : m_standardTags[INDEX_ROUND];}
+    public String getWhite()        {return m_standardTags[INDEX_WHITE] == null ? "?" : m_standardTags[INDEX_WHITE];}
+    public String getBlack()        {return m_standardTags[INDEX_BLACK] == null ? "?" : m_standardTags[INDEX_BLACK];}
+    public String getResultStr()    {return m_standardTags[INDEX_RESULT] == null ? "*" : m_standardTags[INDEX_RESULT];}
     public String getWhiteEloStr()  {return m_standardTags[INDEX_WHITE_ELO];}
     public String getBlackEloStr()  {return m_standardTags[INDEX_BLACK_ELO];}
     public String getEventDate()    {return m_standardTags[INDEX_EVENT_DATE];}

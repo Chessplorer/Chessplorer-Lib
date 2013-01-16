@@ -407,7 +407,7 @@ public final class PGNReader extends PGN {
 			}
 
 			try {
-				m_curGame.setTag(tagName, tagValue);
+				m_curGame.setTag(tagName, tagValue.trim());
 			} catch (Exception ex) {
 				syntaxError(ex.getMessage());
 			}
