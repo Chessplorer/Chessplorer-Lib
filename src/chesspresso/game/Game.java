@@ -14,13 +14,19 @@
 
 package chesspresso.game;
 
-import chesspresso.*;
-import chesspresso.pgn.*;
-import chesspresso.position.*;
-import java.io.*;
-import java.util.*;
-import chesspresso.move.Move;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import chesspresso.Chess;
 import chesspresso.move.IllegalMoveException;
+import chesspresso.move.Move;
+import chesspresso.pgn.PGN;
+import chesspresso.position.ImmutablePosition;
+import chesspresso.position.Position;
+import chesspresso.position.PositionChangeListener;
 
 /**
  * Abstraction of a chess game.
@@ -737,5 +743,10 @@ public class Game implements PositionChangeListener
 
 	public void addPostMoveComment(String comment) {
 		if (m_moves.addComment(m_cur, comment)) fireMoveModelChanged();
+	}
+	
+	public void addNullMove() throws IllegalMoveException {
+			getPosition().doMove(Move.NULL_MOVE);
+			getPosition().undoMove();
 	}
 }
