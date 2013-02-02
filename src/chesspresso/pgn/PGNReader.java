@@ -531,7 +531,11 @@ public final class PGNReader extends PGN {
 				int col = Chess.NO_COL;
 				if (1 > last)
 					syntaxError("Illegal pawn move");
-				if (last >= 4 && (m_buf[2] == '-' || m_buf[2] == 'x') && m_buf[3] >= 'a' && m_buf[3] <= 'h') {
+				if (last >= 3 && (m_buf[1] >= '1' && m_buf[1] <= '8') && 
+						         (m_buf[2] >= 'a' && m_buf[2] <= 'h')) {
+					// long algebraic pawn move like b2b4
+					next = 2;
+				} else if (last >= 4 && (m_buf[2] == '-' || m_buf[2] == 'x') && m_buf[3] >= 'a' && m_buf[3] <= 'h') {
 					/* long algebraic pawn move like b2-b4 or e5xd4 */
 					if (m_buf[2] == 'x') {
 						col = Chess.charToCol(ch);
