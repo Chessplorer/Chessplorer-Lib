@@ -117,6 +117,8 @@ public final class PGNReader extends PGN {
 
 	private PGNErrorHandler m_errorHandler;
 
+	private boolean parsingMoveText;
+
 	// ======================================================================
 
 	public PGNReader(InputStream in, String name) {
@@ -251,8 +253,9 @@ public final class PGNReader extends PGN {
 			return m_lastChar;
 		}
 		int ch = get();
-		while (ch == '\n' || ch == '\r' || (ch == TOK_PGN_ESCAPE && m_lastToken != TOK_COMMENT_BEGIN && m_lastToken != TOK_IDENT)
-				|| (ch == TOK_LINE_COMMENT && m_lastToken != TOK_COMMENT_BEGIN && m_lastToken != TOK_IDENT)) {
+		while (ch == '\n' || ch == '\r' 
+				|| (ch == TOK_PGN_ESCAPE && m_lastToken != TOK_COMMENT_BEGIN && (parsingMoveText || m_lastToken != TOK_IDENT))
+				|| (ch == TOK_LINE_COMMENT && m_lastToken != TOK_COMMENT_BEGIN && (parsingMoveText || m_lastToken != TOK_IDENT))) {
 			while ((ch == '\n' || ch == '\r') && ch >= 0) {
 				ch = get();
 			}
@@ -373,6 +376,7 @@ public final class PGNReader extends PGN {
 	// routines for parsing header sections
 
 	private void initForHeader() {
+		this.parsingMoveText = false;
 	}
 
 	private boolean findNextGameStart() throws PGNSyntaxError, IOException {
@@ -431,6 +435,7 @@ public final class PGNReader extends PGN {
 	// routines for parsing movetext sections
 
 	private void initForMovetext() {
+		this.parsingMoveText = true;
 	}
 
 	private boolean isLastTokenResult() throws PGNSyntaxError {
