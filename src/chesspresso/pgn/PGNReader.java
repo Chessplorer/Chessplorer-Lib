@@ -542,7 +542,8 @@ public final class PGNReader extends PGN {
 					next = 2;
 				} else if (last >= 4 && (m_buf[2] == '-' || m_buf[2] == 'x') && m_buf[3] >= 'a' && m_buf[3] <= 'h') {
 					/* long algebraic pawn move like b2-b4 or e5xd4 */
-					if (m_buf[2] == 'x') {
+					if (m_buf[0] != m_buf[3]) {
+						// not the same column --> capture
 						col = Chess.charToCol(ch);
 					}
 					next = 3;
