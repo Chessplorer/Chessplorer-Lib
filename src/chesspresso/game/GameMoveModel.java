@@ -342,7 +342,11 @@ public class GameMoveModel
         }
         boolean isChanged = false;
         if (m_moves[index + 1] == COMMENT_START || m_moves[index + 1] == PRE_COMMENT_START) {
-            for (int i = skipComment(index + 1); i > index; i--) {
+        	int i = skipComment(index + 1);
+        	if (m_moves[i + 1] == COMMENT_START || m_moves[i + 1] == PRE_COMMENT_START) {
+        		i = skipComment(i + 1);
+        	}
+            for (; i > index; i--) {
                 m_moves[i] = NO_MOVE;
             }
             isChanged = true;
