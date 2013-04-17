@@ -39,7 +39,7 @@ public abstract class NAG
        "speculative move",  // 5
        "questionable move",  // 6
        "forced move (all others lose quickly)",  // 7
-       "singular move (no reasonable alternatives)",  // 8
+       "only move (no reasonable alternatives)",  // 8
        "worst move",  // 9
        "drawish position",  // 10
        "equal chances, quiet position",  // 11
@@ -182,7 +182,7 @@ public abstract class NAG
        "!?",  // 5
        "?!",  // 6
        null, // "forced move (all others lose quickly)",  // 7
-       null, // "singular move (no reasonable alternatives)",  // 8
+       null, // "only move (no reasonable alternatives)",  // 8
        null, // "worst move",  // 9
        null, // "drawish position",  // 10
        null, // "equal chances, quiet position",  // 11
