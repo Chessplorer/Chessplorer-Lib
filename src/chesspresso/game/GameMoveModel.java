@@ -862,26 +862,31 @@ public class GameMoveModel
 			}
 		}
 		int endOfVariation = index;
-		short[] variation = new short[endOfVariation - startOfVariation + 1];
-		System.arraycopy(m_moves, startOfVariation, variation, 0,
-				variation.length);
-		for (int i = startOfVariation; i <= endOfVariation; i++) {
-			m_moves[i] = NO_MOVE;
-		}
 		int beforeMainMove = startOfVariation;
-		while (beforeMainMove > 0 && m_moves[beforeMainMove] != LINE_START
-				&& m_moves[beforeMainMove] != NULL_MOVE
-				&& !isMoveValue(m_moves[beforeMainMove])) {
-			beforeMainMove--;
-		}
-		beforeMainMove = goBack(beforeMainMove, true);
-		int mainMove = goForward(beforeMainMove);
+		if (beforeMainMove > 0) {
+			short[] variation = new short[endOfVariation - startOfVariation + 1];
+			System.arraycopy(m_moves, startOfVariation, variation, 0,
+					variation.length);
+			for (int i = startOfVariation; i <= endOfVariation; i++) {
+				m_moves[i] = NO_MOVE;
+			}
+			while (beforeMainMove > 0 && m_moves[beforeMainMove] != LINE_START
+					&& m_moves[beforeMainMove] != NULL_MOVE
+					&& !isMoveValue(m_moves[beforeMainMove])) {
+				beforeMainMove--;
+			}
+			beforeMainMove = goBack(beforeMainMove, true);
+			int mainMove = goForward(beforeMainMove);
 
-		int varFirstMoveLength = varFirstMoveEnd - varFirstMoveStart;
-		insertMove(mainMove, variation, varFirstMoveStart, varFirstMoveLength);
-		m_moves[mainMove + varFirstMoveLength] = LINE_START;
-		addMovesToEndOfVariation(mainMove, variation, varFirstMoveEnd);
-		return pack(mainMove);
+			int varFirstMoveLength = varFirstMoveEnd - varFirstMoveStart;
+			insertMove(mainMove, variation, varFirstMoveStart,
+					varFirstMoveLength);
+			m_moves[mainMove + varFirstMoveLength] = LINE_START;
+			addMovesToEndOfVariation(mainMove, variation, varFirstMoveEnd);
+			return pack(mainMove);
+		} else {
+			return -1;
+		}
 	}
 
 	/**
