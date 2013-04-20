@@ -8,8 +8,6 @@
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- *
- * $Id: GameMoveModel.java,v 1.2 2003/01/04 16:20:44 BerniMan Exp $
  */
 
 package chesspresso.game;
@@ -26,7 +24,6 @@ import chesspresso.position.NAG;
  * Representation of moves of a chess game.
  *
  * @author Bernhard Seybold
- * @version $Revision: 1.2 $
  */
 public class GameMoveModel
 {
@@ -94,8 +91,6 @@ public class GameMoveModel
     //======================================================================
     
     private static boolean isMoveValue(short value)    {return !Move.isSpecial(value);}
-    private static boolean isSpecialValue(short value) {return Move.isSpecial(value);}
-    
     private static boolean isNagValue(short value)   {return value >= NAG_BASE && value < NAG_BASE + NAG.NUM_OF_NAGS;}
     private static short getNagForValue(short value) {return (short)(value - NAG_BASE);}
     private static short getValueForNag(short nag)   {return (short)(nag + NAG_BASE);}
@@ -405,30 +400,6 @@ public class GameMoveModel
         }
     }
     
-//    public int goBackToMainLine(int index)
-//    {
-//        if (DEBUG) {
-//            System.out.println("goBackToMainLine " + index);
-//            write(System.out);
-//        }
-//        
-//        index--;
-//        int level = 1;
-//        while (index > 0) {
-//            short move = m_moves[index];
-//            if      (move == LINE_START)    level--;
-//            else if (move == LINE_END)      level++;
-//            else if (isNagValue(move))      ;
-//            else if (move == COMMENT_START) ;  // error
-//            else if (move == COMMENT_END)   index = skipComment(index);
-//            else if (move == NO_MOVE)       ;
-//            else if (level == 0)            break;
-//            index--;
-//        }
-//        if (DEBUG) System.out.println("  --> " + index);
-//        return index;
-//    }
-
     /**
      *@return -1 if at the beginning of a line
      */
@@ -466,13 +437,6 @@ public class GameMoveModel
             else if (move == COMMENT_END || move == PRE_COMMENT_END)   index = skipComment(index);
             else if (move == NO_MOVE)       ;
             else if (level == 0)            break; // =====>
-//            else if (level < 0) {
-//                if (gotoMainLine) {
-//                    return goBack(index, false);  // =====>
-//                } else {
-//                    index = -1; break;
-//                }
-//            }
             index--;
         }
         if (DEBUG) System.out.println("  --> " + index);
@@ -496,9 +460,6 @@ public class GameMoveModel
         
         if (EXTRA_CHECKS)
             checkLegalCursor(index);
-        
-//        if (index >= 0 && m_moves[index] == LINE_END) return index;  // =====>
-//        if (index >= m_size - 1) return index;  // =====>
         
         index++;
         int level = 0;
@@ -775,7 +736,6 @@ public class GameMoveModel
         for (int i = 1; i < m_size - 1; i++) {
             // copied from RandomAccesFile.readShort
             m_moves[i] = (short)((data[2*i - 2] << 8) | (data[2*i - 1] & 0xFF));
-//            m_moves[i] = in.readShort();
         }
         m_moves[0]          = LINE_START;
         m_moves[m_size - 1] = LINE_END;
@@ -793,7 +753,6 @@ public class GameMoveModel
             // copied from RandomAccesFile.writeShort
             data[2*i - 2] = (byte)((m >>> 8) & 0xFF);
             data[2*i - 1] = (byte)((m >>> 0) & 0xFF);
-//            out.writeShort(m_moves[i]);
         }
         out.write(data);
     }
@@ -829,19 +788,6 @@ public class GameMoveModel
         out.println();
     }
     
-    //======================================================================
-    
-//    private static long[] s_rand = new long[65536];
-//    static {
-//        long randomNumber = 100;
-//        for (int i=0; i<65536; i++) {
-//            randomNumber = (randomNumber * 0x5DEECE66DL + 0xBL);
-//            s_rand[i] = randomNumber;
-//        }
-//    }
-    
-//    private static int s_equals = 0, s_fullCompare = 0, s_true = 0, s_false = 0;
-    
     public long getHashCode()
     {
         if (m_hashCode == 0) {
@@ -849,10 +795,6 @@ public class GameMoveModel
             for (int index = 0; ; index = goForward(index)) {
                 if (m_moves[index] == LINE_END) break;
                 short move = getMove(index);
-//                m_hashCode ^= move;
-//                m_hashCode += move;
-//                m_hashCode += s_rand[(int)move - Short.MIN_VALUE];
-//                m_hashCode ^= s_rand[(int)move - Short.MIN_VALUE];
                 m_hashCode ^= (long)move << shift;
                 if (shift == 12) shift = 0; else shift++;
             }
@@ -867,13 +809,11 @@ public class GameMoveModel
     
     public boolean equals(Object obj)
     {
-//        s_equals++;
         if (obj == this) return true;  // =====>
         if (!(obj instanceof GameMoveModel)) return false;  // =====>
         GameMoveModel gameMoveModel = (GameMoveModel)obj;
         
         if (gameMoveModel.getHashCode() != getHashCode()) return false;  // =====>
-//        s_fullCompare++; 
         
         int index1 = 0, index2 = 0;
         for (;;) {
@@ -881,11 +821,97 @@ public class GameMoveModel
             short move2 = gameMoveModel.m_moves[index2];
             if (move1 == LINE_END && move2 == LINE_END) return true;  // =====>
             if (move1 != move2) return false;  // =====>
-//            if (move1 == LINE_END && move2 == LINE_END) {s_true++; System.out.println(s_fullCompare + " / " + s_equals + " " + s_true + " " + s_false);return true;}  // =====>
-//            if (move1 != move2) {s_false++; System.out.println(s_fullCompare + " / " + s_equals + " " + s_true + " " + s_false);return false;}  // =====>
             index1 = goForward(index1);
             index2 = gameMoveModel.goForward(index2);
         }
     }
-    
+
+	public void deleteCurrentVariation(int index) {
+		index = gotoVariationStart(index);
+		int startOfVariation = index;
+		while (m_moves[index] != LINE_END) {
+			index = goForward(index);
+		}
+		int endOfVariation = index;
+		short[] variation = new short[endOfVariation - startOfVariation + 1];
+		int j = 0;
+		for (int i = startOfVariation; i <= endOfVariation; i++) {
+			variation[j] = m_moves[i];
+			m_moves[i] = NO_MOVE;
+			j++;
+		}
+		changed();
+		pack(index);
+	}
+
+	public void promoteVariation(int curMove) {
+		int index = gotoVariationStart(curMove);
+		int startOfVariation = index;
+		int varFirstMoveStart = -1;
+		int varFirstMoveEnd = -1;
+		while (m_moves[index] != LINE_END) {
+			index = goForward(index);
+			if (varFirstMoveStart == -1) {
+				// get start and end index of the first move in the variation
+				// (to be copied to the parent line later)
+				varFirstMoveStart = index;
+				// exclusive end of first variation move
+				varFirstMoveEnd = goForward(varFirstMoveStart);
+				varFirstMoveStart = varFirstMoveStart - startOfVariation;
+				varFirstMoveEnd = varFirstMoveEnd - startOfVariation;
+			}
+		}
+		int endOfVariation = index;
+		short[] variation = new short[endOfVariation - startOfVariation + 1];
+		System.arraycopy(m_moves, startOfVariation, variation, 0,
+				variation.length);
+		for (int i = startOfVariation; i <= endOfVariation; i++) {
+			m_moves[i] = NO_MOVE;
+		}
+		int beforeMainMove = startOfVariation;
+		while (beforeMainMove > 0 && m_moves[beforeMainMove] != LINE_START
+				&& m_moves[beforeMainMove] != NULL_MOVE
+				&& !isMoveValue(m_moves[beforeMainMove])) {
+			beforeMainMove--;
+		}
+		beforeMainMove = goBack(beforeMainMove, true);
+		int mainMove = goForward(beforeMainMove);
+
+		int varFirstMoveLength = varFirstMoveEnd - varFirstMoveStart;
+		insertMove(mainMove, variation, varFirstMoveStart, varFirstMoveLength);
+		m_moves[mainMove + varFirstMoveLength] = LINE_START;
+		addMovesToEndOfVariation(mainMove, variation, varFirstMoveEnd);
+		this.pack(0);
+	}
+
+	/**
+	 * @return the index of the start of the variation
+	 */
+	private int gotoVariationStart(int index) {
+		while (m_moves[index] != LINE_START) {
+			index--;
+		}
+		return index;
+	}
+
+	/**
+	 * Insert a move from another array
+	 */
+	private void insertMove(int destIndex, short[] source, int srcPos,
+			int length) {
+		makeSpace(destIndex, length + 1, false);
+		System.arraycopy(source, srcPos, m_moves, destIndex, length);
+	}
+
+	private void addMovesToEndOfVariation(int curMove, short[] moves, int sourceStart) {
+		int index = curMove;
+		index = goForward(index);
+		if (m_moves[index] == LINE_END) {
+			index++;
+		}
+		int spaceNeeded = moves.length - sourceStart;
+		enlarge(index, spaceNeeded);
+		System.arraycopy(moves, sourceStart, m_moves, index, moves.length
+				- sourceStart);
+	}
 }
