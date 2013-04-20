@@ -844,7 +844,7 @@ public class GameMoveModel
 		pack(index);
 	}
 
-	public void promoteVariation(int curMove) {
+	public int promoteVariation(int curMove) {
 		int index = gotoVariationStart(curMove);
 		int startOfVariation = index;
 		int varFirstMoveStart = -1;
@@ -881,7 +881,7 @@ public class GameMoveModel
 		insertMove(mainMove, variation, varFirstMoveStart, varFirstMoveLength);
 		m_moves[mainMove + varFirstMoveLength] = LINE_START;
 		addMovesToEndOfVariation(mainMove, variation, varFirstMoveEnd);
-		this.pack(0);
+		return pack(mainMove);
 	}
 
 	/**

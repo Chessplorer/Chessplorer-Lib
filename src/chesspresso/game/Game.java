@@ -703,7 +703,7 @@ public class Game implements PositionChangeListener
 	public void promoteVariation() {
 		// go to start of current variation
 		while (goBackInLine(true));
-		m_moves.promoteVariation(m_cur);
+		m_cur = m_moves.promoteVariation(m_cur);
         fireMoveModelChanged();
 	}
 	
