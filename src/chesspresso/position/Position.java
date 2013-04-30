@@ -1314,6 +1314,9 @@ public final class Position extends AbstractMoveablePosition
             return Move.getEPMove(from, to);
         } else if (colFrom == Chess.NO_COL) {
             int delta = ((getToPlay() == Chess.WHITE) ? Chess.NUM_OF_COLS : -Chess.NUM_OF_COLS);
+            if (to - delta < 0 || to - delta >= 64) {
+            	return Move.ILLEGAL_MOVE;
+            }
             int from = !isSquareEmpty(to - delta) ? to-delta : to-2*delta;
             return Move.getPawnMove(from, to, false, promoPiece);
         } else {
