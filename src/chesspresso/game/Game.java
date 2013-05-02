@@ -715,7 +715,6 @@ public class Game implements PositionChangeListener
         int index = m_cur;
         while (goBackInLine(true));
         if (goBack(true)) {
-        	goForward();
             m_moves.deleteCurrentVariation(index);
             fireMoveModelChanged();
         }
