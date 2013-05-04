@@ -689,9 +689,9 @@ public final class PGNReader extends PGN {
 			} else if (getLastToken() == TOK_COMMENT_BEGIN) {
 				comment = getLastTokenAsString();
 				if (!newLine) {
-					comment = comment
-						+ (m_curGame.getPostMoveComment()!=null ? " - "
-								+ m_curGame.getPostMoveComment(): "") ;
+					comment = (m_curGame.getPostMoveComment() != null ? m_curGame
+							.getPostMoveComment() + " " : "")
+							+ comment;
 					m_curGame.addPostMoveComment(comment.trim().replaceAll(" +", " "));
 					comment = "";
 				}
