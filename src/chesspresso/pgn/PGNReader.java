@@ -618,7 +618,10 @@ public final class PGNReader extends PGN {
 		if (getLastToken() == TOK_NAG_BEGIN) {
 			getNextToken();
 			if (isLastTokenInt()) {
-				m_curGame.addNag((short) getLastTokenAsInt());
+				short nag = (short) getLastTokenAsInt();
+				if (nag > 0) {
+					m_curGame.addNag(nag);
+				}
 			} else {
 				syntaxError("Illegal NAG: number expected");
 			}
