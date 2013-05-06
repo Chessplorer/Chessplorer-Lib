@@ -16,6 +16,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Vector;
 
 import chesspresso.move.Move;
 import chesspresso.position.NAG;
@@ -833,10 +834,8 @@ public class GameMoveModel
 			index = goForward(index);
 		}
 		int endOfVariation = index;
-		int j = 0;
 		for (int i = startOfVariation; i <= endOfVariation; i++) {
 			m_moves[i] = NO_MOVE;
-			j++;
 		}
 		changed();
 	}
@@ -859,36 +858,88 @@ public class GameMoveModel
 			}
 		}
 		int endOfVariation = index;
-		int beforeMainMove = startOfVariation;
-		if (beforeMainMove > 0) {
-			short[] variation = new short[endOfVariation - startOfVariation + 1];
-			System.arraycopy(m_moves, startOfVariation, variation, 0,
-					variation.length);
-			for (int i = startOfVariation; i <= endOfVariation; i++) {
-				m_moves[i] = NO_MOVE;
-			}
-			int mainMove = getMainMoveIndex(beforeMainMove);
+		int parentMove = goBack(startOfVariation, true);
+		if (startOfVariation > 0) {
+			short[] variation = extractLine(startOfVariation, endOfVariation);
+			Vector<short[]> otherVariations = extractOtherVariations(goBack(
+					parentMove, false));
+
+			short[] parentLine = extractParentLine(parentMove);
 
 			int varFirstMoveLength = varFirstMoveEnd - varFirstMoveStart;
-			insertMove(mainMove, variation, varFirstMoveStart,
-					varFirstMoveLength);
-			m_moves[mainMove + varFirstMoveLength] = LINE_START;
-			addMovesToEndOfVariation(mainMove, variation, varFirstMoveEnd);
+			int nextMoveIndex = insertMove(parentMove, variation,
+					varFirstMoveStart, varFirstMoveLength);
+			m_moves[nextMoveIndex] = LINE_START;
+			nextMoveIndex++;
+			nextMoveIndex = insertVariation(nextMoveIndex, parentLine);
+			for (short[] otherVariation : otherVariations) {
+				nextMoveIndex = insertVariation(nextMoveIndex, otherVariation);
+			}
+			addMovesToEndOfVariation(nextMoveIndex, variation, varFirstMoveEnd);
 			changed();
-			return pack(mainMove);
+			return pack(parentMove);
 		} else {
 			return -1;
 		}
 	}
 
-	private int getMainMoveIndex(int index) {
-		while (index > 0 && m_moves[index] != LINE_START
-				&& m_moves[index] != NULL_MOVE
-				&& !isMoveValue(m_moves[index])) {
-			index--;
+	private int insertVariation(int nextMoveIndex, short[] variation) {
+		int spaceNeeded = variation.length;
+		enlarge(nextMoveIndex, spaceNeeded);
+		System.arraycopy(variation, 0, m_moves, nextMoveIndex, variation.length);
+		return nextMoveIndex + variation.length;
+	}
+
+	private short[] extractParentLine(int startParentLine) {
+		int endParentLine = startParentLine;
+		while (m_moves[endParentLine] != LINE_END) {
+			endParentLine = goForward(endParentLine);
 		}
-		index = goBack(index, true);
-		return goForward(index);
+		return extractLine(startParentLine, endParentLine);
+	}
+
+	private short[] extractLine(int start, int end) {
+		short[] result = new short[end - start + 1];
+		System.arraycopy(m_moves, start, result, 0, result.length);
+		for (int i = start; i <= end; i++) {
+			m_moves[i] = NO_MOVE;
+		}
+		return result;
+	}
+
+	/**
+	 * Move other variations of the same move to the end of the game
+	 * 
+	 * @param parentMove
+	 */
+	private Vector<short[]> extractOtherVariations(int parentMove) {
+		int index = -1;
+		int line = 1;
+		Vector<short[]> result = new Vector<short[]>();
+		do {
+			index = goForward(parentMove, line);
+			if (index != -1) {
+				// move variation to the end
+				short[] variation = moveVariationToEnd(index);
+				result.add(variation);
+			}
+		} while (index != -1);
+		return result;
+	}
+
+	/**
+	 * move the variation at index to the end of the parent line
+	 * 
+	 * @param index
+	 */
+	private short[] moveVariationToEnd(int index) {
+		int startOfVariation = gotoVariationStart(index);
+		while (m_moves[index] != LINE_END) {
+			index = goForward(index);
+		}
+		int endOfVariation = index;
+		short[] variation = extractLine(startOfVariation, endOfVariation);
+		return variation;
 	}
 
 	/**
@@ -904,18 +955,14 @@ public class GameMoveModel
 	/**
 	 * Insert a move from another array
 	 */
-	private void insertMove(int destIndex, short[] source, int srcPos,
-			int length) {
+	private int insertMove(int destIndex, short[] source, int srcPos, int length) {
 		makeSpace(destIndex, length + 1, false);
 		System.arraycopy(source, srcPos, m_moves, destIndex, length);
+		return destIndex + length + 1;
 	}
 
-	private void addMovesToEndOfVariation(int curMove, short[] moves, int sourceStart) {
-		int index = curMove;
-		index = goForward(index);
-		if (m_moves[index] == LINE_END) {
-			index++;
-		}
+	private void addMovesToEndOfVariation(int index, short[] moves,
+			int sourceStart) {
 		int spaceNeeded = moves.length - sourceStart;
 		enlarge(index, spaceNeeded);
 		System.arraycopy(moves, sourceStart, m_moves, index, moves.length
