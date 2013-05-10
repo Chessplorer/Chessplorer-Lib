@@ -918,12 +918,12 @@ public class GameMoveModel
 		Vector<short[]> result = new Vector<short[]>();
 		do {
 			index = goForward(parentMove, line);
-			if (index != -1) {
+			if (index != -1 && m_moves[index] != LINE_END) {
 				// move variation to the end
 				short[] variation = moveVariationToEnd(index);
 				result.add(variation);
 			}
-		} while (index != -1);
+		} while (index != -1 && m_moves[index] != LINE_END);
 		return result;
 	}
 
