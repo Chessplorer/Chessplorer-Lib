@@ -169,13 +169,21 @@ public class Game implements PositionChangeListener
     
     public String[] getTags() {return m_header.getTags();}
     
-    public void setTag(String tagName, String tagValue)
-    {
-        m_header.setTag(tagName, tagValue);
-        if (PGN.TAG_FEN.equals(tagName)) {
-            setPosition(new Position (tagValue, false));
-        }
-    }
+	public void setTag(String tagName, String tagValue) {
+		String fen = tagValue;
+		if (PGN.TAG_FEN.equals(tagName)) {
+			try {
+				setPosition(new Position(fen, false));
+			} catch (IllegalArgumentException ex) {
+				if (fen.trim().split(" ").length == 4) {
+					// support broken FENs by Shredder
+					fen = fen.trim() + " 0 1";
+					setPosition(new Position(fen, false));
+				}
+			}
+		}
+		m_header.setTag(tagName, fen);
+	}
     
     public String getEvent()       {return m_header.getEvent();}
     public String getSite()        {return m_header.getSite();}
