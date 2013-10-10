@@ -672,8 +672,7 @@ public final class PGNReader extends PGN {
 			if (getLastToken() == TOK_LINE_BEGIN) {
 				newLine = true;
 				// remember current node to go back to later
-				int curNode = m_curGame.getCurNode();
-				lines.put(level, curNode);
+				lines.put(level, m_curGame.getCurNode());
 				m_curGame.getPosition().undoMove();
 				level++;
 				needsMoveNumber = true;
@@ -683,7 +682,10 @@ public final class PGNReader extends PGN {
 				level--;
 				if (level >= 0) {
 					// go back to last node before starting the variation
-					m_curGame.gotoNode(lines.get(level));
+					m_curGame.goBackToMainLine();
+					if (m_curGame.getCurNode() != lines.get(level)) {
+						m_curGame.gotoNode(lines.get(level));
+					}
 					needsMoveNumber = true;
 				} else {
 					syntaxError("Unexpected variation end");
