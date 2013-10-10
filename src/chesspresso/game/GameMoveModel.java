@@ -29,7 +29,8 @@ import chesspresso.position.NAG;
 public class GameMoveModel
 {
     
-    private final static boolean DEBUG = false;
+    private static final int MIN_ALLOC_SIZE = 262144;
+	private final static boolean DEBUG = false;
     private final static boolean EXTRA_CHECKS = true;
     
     //======================================================================
@@ -65,7 +66,7 @@ public class GameMoveModel
     
     public GameMoveModel()
     {
-        m_moves = new short[32];
+        m_moves = new short[MIN_ALLOC_SIZE];
         m_moves[0] = LINE_START;
         m_moves[1] = LINE_END;
         m_size = 2;
@@ -526,8 +527,9 @@ public class GameMoveModel
         index++;
         int numOfMoves = 1;
         int level = 0;
+        short move;
         while (index < m_size && level >= 0) {
-            short move = m_moves[index];
+            move = m_moves[index];
             if      (move == LINE_START)    level++;
             else if (move == LINE_END)     {level--; if (level == 0) numOfMoves++;}
             else if (isNagValue(move))      ;
