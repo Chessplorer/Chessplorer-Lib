@@ -65,6 +65,8 @@ public class Game implements PositionChangeListener
     private boolean m_ignoreNotifications;
     private boolean m_alwaysAddLine;        // during pgn parsing, always add new lines
     private List<GameModelChangeListener> m_changeListeners;
+
+	private boolean error=false;
     
     public Game()
     {
@@ -727,4 +729,12 @@ public class Game implements PositionChangeListener
             fireMoveModelChanged();
         }
     }
+
+	public void setError(boolean b) {
+		this.error = true;
+	}
+	
+	public boolean hasError() {
+		return this.error;
+	}
 }

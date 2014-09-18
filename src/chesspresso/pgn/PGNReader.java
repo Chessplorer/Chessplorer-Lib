@@ -751,6 +751,7 @@ public final class PGNReader extends PGN {
             System.out.println(ex); // sent to a listener in syntaxError
             // TODO: do something with this error
             if (ex.getSeverity()==PGNSyntaxError.ERROR && !ex.getLastToken().equals("EOF")) {
+            	m_curGame.setError(true);
                 m_curGame.addPostMoveComment("-error");
                 m_curGame.pack();
                 return m_curGame;
