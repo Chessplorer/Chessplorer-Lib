@@ -63,12 +63,12 @@ public class FEN
             ch = fen.charAt(index);
             if (ch == '/') {
                 if (col != 8)
-                    throw new IllegalArgumentException("Malformatted fen string: unexpected '/' found at index " + index);
+                    throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: unexpected '/' found at index " + index);
                 row--; col = 0;
             } else if (ch >= '1' && ch <= '8') {
                 int num = (int)(ch - '0');
                 if (col + num > 8)
-                    throw new IllegalArgumentException("Malformatted fen string: too many pieces in rank at index " + index + ": " + ch);
+                    throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: too many pieces in rank at index " + index + ": " + ch);
                 for (int j=0; j<num; j++) {
                     pos.setStone(Chess.coorToSqi(col, row), Chess.NO_STONE);
                     col++;
@@ -76,14 +76,14 @@ public class FEN
             } else {
                 int stone = FEN.fenCharToStone(ch);
                 if (stone == Chess.NO_STONE)
-                    throw new IllegalArgumentException("Malformatted fen string: illegal piece char: " + ch);
+                    throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: illegal piece char: " + ch);
                 pos.setStone(Chess.coorToSqi(col, row), stone);
                 col++;
             }
             index++;
         }
         if (row != 0 || col != 8)
-            throw new IllegalArgumentException("Malformatted fen string: missing pieces at index: " + index);
+            throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: missing pieces at index: " + index);
         
         /*========== 2nd field : to play ==========*/
         if (index + 1 < fen.length() && fen.charAt(index) == ' ') {
@@ -91,7 +91,7 @@ public class FEN
             if      (ch == 'w') pos.setToPlay(Chess.WHITE);
             else if (ch == 'b') pos.setToPlay(Chess.BLACK);
             else
-                throw new IllegalArgumentException("Malformatted fen string: expected 'to play' as second field but found " + ch);
+                throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: expected 'to play' as second field but found " + ch);
             index += 2;
         }
         
@@ -110,13 +110,13 @@ public class FEN
                     else if (ch == 'k' && (!strict || last < 2)) {castles |= ImmutablePosition.BLACK_SHORT_CASTLE; last = 2;}
                     else if (ch == 'q' && (!strict || last < 3)) {castles |= ImmutablePosition.BLACK_LONG_CASTLE;  last = 3;}
                     else
-                        throw new IllegalArgumentException("Malformatted fen string: illegal castles identifier or sequence " + ch);
+                        throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: illegal castles identifier or sequence " + ch);
                     index++;
                 }
             }
             pos.setCastles(castles);
         } else {
-            throw new IllegalArgumentException("Malformatted fen string: expected castles at index " + index);
+            throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: expected castles at index " + index);
         }
         
         /*========== 4th field : ep square ==========*/
@@ -133,7 +133,7 @@ public class FEN
             }
             pos.setSqiEP(sqiEP);
         } else {
-            throw new IllegalArgumentException("Malformatted fen string: expected ep square at index " + index);
+            throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: expected ep square at index " + index);
         }
         
         /*========== 5th field : half move clock ==========*/
@@ -142,7 +142,7 @@ public class FEN
             int start = index; while(index < fen.length() && fen.charAt(index) != ' ') index++;
             pos.setHalfMoveClock(Integer.parseInt(fen.substring(start, index)));
         } else {
-            throw new IllegalArgumentException("Malformatted fen string: expected half move clock at index " + index);
+            throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: expected half move clock at index " + index);
         }
         
         /*========== 6th field : full move number ==========*/
@@ -153,7 +153,7 @@ public class FEN
                 pos.setPlyNumber(2 * (Integer.parseInt(fen.substring(index + 1)) - 1) + 1);
             }
         } else {
-            throw new IllegalArgumentException("Malformatted fen string: expected ply number at index " + index);
+            throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: expected ply number at index " + index);
         }
         
         /*========== now check the produced position ==========*/
@@ -161,7 +161,7 @@ public class FEN
             pos.validate();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new IllegalArgumentException("Malformatted fen string: " + e.getMessage());
+            throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: " + e.getMessage());
         }
         
     }

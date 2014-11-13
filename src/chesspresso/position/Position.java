@@ -15,11 +15,11 @@
 package chesspresso.position;
 
 
-import chesspresso.*;
-import chesspresso.move.*;
+import java.text.DecimalFormat;
 
-import java.util.*;
-import java.text.*;
+import chesspresso.Chess;
+import chesspresso.move.IllegalMoveException;
+import chesspresso.move.Move;
 
 
 public final class Position extends AbstractMoveablePosition
@@ -409,7 +409,7 @@ public final class Position extends AbstractMoveablePosition
     public Position(String fen, boolean strict) throws IllegalArgumentException
     {
         this();
-        FEN.initFromFEN(this, fen, true);
+        FEN.initFromFEN(this, fen, strict);
     }
     
     /*================================================================================*/
