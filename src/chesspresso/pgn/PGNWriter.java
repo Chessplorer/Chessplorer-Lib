@@ -15,12 +15,16 @@
 package chesspresso.pgn;
 
 
-import chesspresso.*;
-import chesspresso.game.*;
-import chesspresso.move.Move;
-import chesspresso.position.*;
+import java.io.PrintWriter;
+import java.io.Writer;
 
-import java.io.*;
+import chesspresso.Chess;
+import chesspresso.game.Game;
+import chesspresso.game.GameListener;
+import chesspresso.game.GameModel;
+import chesspresso.game.GameModelIterator;
+import chesspresso.move.Move;
+import chesspresso.position.FEN;
 
 
 /**
@@ -35,9 +39,9 @@ public class PGNWriter extends PGN
     private PrintWriter m_out;
     private int m_charactersPerLine;
     private int m_curCol;
-    
+
     /*================================================================================*/
-    
+
     public PGNWriter(Writer out)
     {
         this(new PrintWriter(out));
@@ -50,7 +54,7 @@ public class PGNWriter extends PGN
     }
 
     /*================================================================================*/
-    
+
     public void setCharactersPerLine(int chars) {m_charactersPerLine = chars;}
 
     public void write(GameModelIterator iterator)
@@ -60,7 +64,7 @@ public class PGNWriter extends PGN
             m_out.println();
         }
     }
-    
+
     public void write(GameModel gameModel)
     {
         Game game = new Game(gameModel);
@@ -70,9 +74,9 @@ public class PGNWriter extends PGN
         writeMoves(game);
         if (m_curCol > 0) m_out.println();
     }
-    
+
     /*================================================================================*/
-    
+
     private void writeHeader(Game game)
     {
         m_out.println(TOK_TAG_BEGIN + TAG_EVENT  + " " + TOK_QUOTE + game.getEvent()     + TOK_QUOTE + TOK_TAG_END);
@@ -82,38 +86,39 @@ public class PGNWriter extends PGN
         m_out.println(TOK_TAG_BEGIN + TAG_WHITE  + " " + TOK_QUOTE + game.getWhite()     + TOK_QUOTE + TOK_TAG_END);
         m_out.println(TOK_TAG_BEGIN + TAG_BLACK  + " " + TOK_QUOTE + game.getBlack()     + TOK_QUOTE + TOK_TAG_END);
         m_out.println(TOK_TAG_BEGIN + TAG_RESULT + " " + TOK_QUOTE + game.getResultStr() + TOK_QUOTE + TOK_TAG_END);
-        
-        if (game.getWhiteEloStr() != null) 
+
+        if (game.getWhiteEloStr() != null)
             m_out.println(TOK_TAG_BEGIN + TAG_WHITE_ELO  + " " + TOK_QUOTE + game.getWhiteElo()  + TOK_QUOTE + TOK_TAG_END);
-        if (game.getBlackEloStr() != null) 
+        if (game.getBlackEloStr() != null)
             m_out.println(TOK_TAG_BEGIN + TAG_BLACK_ELO  + " " + TOK_QUOTE + game.getBlackElo()  + TOK_QUOTE + TOK_TAG_END);
-        if (game.getEventDate() != null) 
+        if (game.getEventDate() != null)
             m_out.println(TOK_TAG_BEGIN + TAG_EVENT_DATE + " " + TOK_QUOTE + game.getEventDate() + TOK_QUOTE + TOK_TAG_END);
-        if (game.getECO() != null) 
+        if (game.getECO() != null)
             m_out.println(TOK_TAG_BEGIN + TAG_ECO        + " " + TOK_QUOTE + game.getECO()       + TOK_QUOTE + TOK_TAG_END);
-        
+
         if (!game.getPosition().isStartPosition())
             m_out.println(TOK_TAG_BEGIN + TAG_FEN        + " " + TOK_QUOTE + FEN.getFEN(game.getPosition()) + TOK_QUOTE + TOK_TAG_END);
     }
 
-    private void writeMoves(Game game)
+    public void writeMoves(Game game)
     {
         // print leading comments before move 1
         String comment = game.getComment();
         if (comment != null) {
             print(TOK_COMMENT_BEGIN + comment + TOK_COMMENT_END, true);
         }
-        
+
         game.traverse(new GameListener() {
             private boolean needsMoveNumber = true;
-            
-            public void notifyMove(Move move, short[] nags, String preMoveComment, String postMoveComment, 
+
+            @Override
+			public void notifyMove(Move move, short[] nags, String preMoveComment, String postMoveComment,
             		int plyNumber, int level)
             {
 				if (preMoveComment != null) {
 					print(TOK_COMMENT_BEGIN + preMoveComment + TOK_COMMENT_END, true);
 				}
-				
+
 				if (needsMoveNumber) {
                     if (move.isWhiteMove()) {
                         print(Chess.plyToMoveNumber(plyNumber) + ".", true);
@@ -131,20 +136,22 @@ public class PGNWriter extends PGN
                 if (postMoveComment != null) print(TOK_COMMENT_BEGIN + postMoveComment + TOK_COMMENT_END, true);
                 needsMoveNumber = !move.isWhiteMove() || (postMoveComment != null);
             }
-            
-            public void notifyLineStart(int level)
+
+            @Override
+			public void notifyLineStart(int level)
             {
                 print(String.valueOf(TOK_LINE_BEGIN), false);
                 needsMoveNumber = true;
             }
-            
-            public void notifyLineEnd(int level)
+
+            @Override
+			public void notifyLineEnd(int level)
             {
                 print(String.valueOf(TOK_LINE_END), true);
                 needsMoveNumber = true;
             }
         }, true);
-        
+
         print(game.getResultStr(), false);
     }
 
