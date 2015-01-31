@@ -37,7 +37,7 @@ import chesspresso.position.NAG;
 
 /**
  * Reader for PGN files.
- * 
+ *
  * @author Bernhard Seybold
  * @version $Revision: 1.2 $
  */
@@ -59,7 +59,8 @@ public final class PGNReader extends PGN {
 
     public static FileFilter getFileFilter() {
         return new FileFilter() {
-            public boolean accept(File file) {
+            @Override
+			public boolean accept(File file) {
                 return file.isDirectory()
                         || PGNReader.isPGNFileOrZipped(file.getName());
             }
@@ -129,7 +130,8 @@ public final class PGNReader extends PGN {
     /**
      * @deprecated
      */
-    public PGNReader(String filename) throws IOException {
+    @Deprecated
+	public PGNReader(String filename) throws IOException {
         init();
         if (filename.toLowerCase().endsWith(".gz")) {
             setInput(new InputStreamReader(new GZIPInputStream(
@@ -142,7 +144,8 @@ public final class PGNReader extends PGN {
     /**
      * @deprecated
      */
-    public PGNReader(URL url) throws MalformedURLException, IOException {
+    @Deprecated
+	public PGNReader(URL url) throws MalformedURLException, IOException {
         init();
         if (url.getFile().toLowerCase().endsWith(".gz"))
             setInput(new InputStreamReader(
@@ -154,7 +157,8 @@ public final class PGNReader extends PGN {
     /**
      * @deprecated
      */
-    public PGNReader(Reader reader, String name) {
+    @Deprecated
+	public PGNReader(Reader reader, String name) {
         init();
         setInput(reader, name);
     }
@@ -197,7 +201,7 @@ public final class PGNReader extends PGN {
     /**
      * Returns the current line number. The first line is line 1, not line 0 as
      * LineNumberReader.
-     * 
+     *
      * @return the current line number
      */
     private int getLineNumber() {
@@ -253,7 +257,7 @@ public final class PGNReader extends PGN {
             return m_lastChar;
         }
         int ch = get();
-        while (ch == '\n' || ch == '\r' 
+        while (ch == '\n' || ch == '\r'
                 || (ch == TOK_PGN_ESCAPE && m_lastToken != TOK_COMMENT_BEGIN && (parsingMoveText || m_lastToken != TOK_IDENT))
                 || (ch == TOK_LINE_COMMENT && m_lastToken != TOK_COMMENT_BEGIN && (parsingMoveText || m_lastToken != TOK_IDENT))) {
             while ((ch == '\n' || ch == '\r') && ch >= 0) {
@@ -516,7 +520,7 @@ public final class PGNReader extends PGN {
                    (m_buf[0] == 'Z' && m_buf[1] == '0')) {
             // null move
             move = m_curGame.getPosition().getNullMove();
-        } else if (m_lastTokenLength==1 && (m_buf[0]=='N' || m_buf[0]=='D' 
+        } else if (m_lastTokenLength==1 && (m_buf[0]=='N' || m_buf[0]=='D'
                                             || m_buf[0]=='~' || m_buf[0]=='=')) {
             if (m_buf[0] == 'N') {
                 // novelty
@@ -536,7 +540,7 @@ public final class PGNReader extends PGN {
                 int col = Chess.NO_COL;
                 if (1 > last)
                     syntaxError("Illegal pawn move");
-                if (last >= 3 && (m_buf[1] >= '1' && m_buf[1] <= '8') && 
+                if (last >= 3 && (m_buf[1] >= '1' && m_buf[1] <= '8') &&
                                  (m_buf[2] >= 'a' && m_buf[2] <= 'h')) {
                     // long algebraic pawn move like b2b4
                     next = 2;
@@ -665,9 +669,12 @@ public final class PGNReader extends PGN {
     private void parseMovetextSection() throws PGNSyntaxError, IOException {
         String comment = "";
         int level = 0;
+        boolean goneBack = false;
+        boolean newLine = false;
         Map<Integer, Integer> lines = new HashMap<Integer, Integer>();
         while (!isLastTokenResult()) {
             if (getLastToken() == TOK_LINE_BEGIN) {
+            	newLine = true;
                 addPostMoveComment(comment);
                 comment = "";
                 // remember current node to go back to later
@@ -676,6 +683,7 @@ public final class PGNReader extends PGN {
                 level++;
                 getNextToken();
             } else if (getLastToken() == TOK_LINE_END) {
+            	newLine = false;
                 addPostMoveComment(comment);
                 comment = "";
                 level--;
@@ -685,6 +693,7 @@ public final class PGNReader extends PGN {
                     if (m_curGame.getCurNode() != lines.get(level)) {
                         m_curGame.gotoNode(lines.get(level));
                     }
+                	goneBack = true;
                 } else {
                     syntaxError("Unexpected variation end");
                 }
@@ -694,6 +703,11 @@ public final class PGNReader extends PGN {
             		comment = comment + " " + getLastTokenAsString();
             	} else {
             		comment = getLastTokenAsString();
+            	}
+            	if (!newLine && !goneBack) {
+	            	addPostMoveComment(comment);
+	            	comment = "";
+	            	goneBack = false;
             	}
                 getNextToken();
             } else if (isNAGStart(getLastToken())) {
@@ -727,7 +741,7 @@ public final class PGNReader extends PGN {
 
     /**
      * Returns the next game in the current pgn file.
-     * 
+     *
      * @return the next game
      */
     public Game parseGame() throws PGNSyntaxError, IOException {
