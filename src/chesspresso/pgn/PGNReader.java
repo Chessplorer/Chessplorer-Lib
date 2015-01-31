@@ -707,12 +707,13 @@ public final class PGNReader extends PGN {
             	if (!newLine && !goneBack) {
 	            	addPostMoveComment(comment);
 	            	comment = "";
-	            	goneBack = false;
             	}
+            	goneBack = false;
                 getNextToken();
             } else if (isNAGStart(getLastToken())) {
                 parseNAG();
             } else {
+            	newLine = false;
                 parseHalfMove();
                 addPreMoveComment(comment);
                 comment = "";
