@@ -102,6 +102,7 @@ public class PGNWriter extends PGN
 
     public void writeMoves(Game game)
     {
+        game.gotoStart();
         // print leading comments before move 1
         String comment = game.getComment();
         if (comment != null) {
