@@ -230,7 +230,7 @@ public final class Position extends AbstractMoveablePosition
     
     private static final boolean areDirectionsParallel(int dir1, int dir2)
     {
-        return (dir1 & 3) == (dir2 & 3);
+        return (dir1 & 3) == (dir2 & 3) && dir2 != -1;
     }
     
     private static final int getDir(int from, int to)
@@ -709,7 +709,7 @@ public final class Position extends AbstractMoveablePosition
         
         /*---------- moves the pieces ----------*/
         if (Move.isNullMove(move)) {
-        	// ignore
+            // ignore
         } else if (Move.isCastle(move)) {
             if (getToPlay() == Chess.WHITE) {
                 if (Move.isShortCastle(move)) {
@@ -968,7 +968,7 @@ public final class Position extends AbstractMoveablePosition
         
         /*---------- move pieces ----------*/
         setMove(move);
-	                
+                    
         /*---------- compare state and push changes ----------*/
         // only push data that have actually changed
         // on average, we need about 3.75 longs per position (instead of 7 if we back up all)
@@ -1315,7 +1315,7 @@ public final class Position extends AbstractMoveablePosition
         } else if (colFrom == Chess.NO_COL) {
             int delta = ((getToPlay() == Chess.WHITE) ? Chess.NUM_OF_COLS : -Chess.NUM_OF_COLS);
             if (to - delta < 0 || to - delta >= 64) {
-            	return Move.ILLEGAL_MOVE;
+                return Move.ILLEGAL_MOVE;
             }
             int from = !isSquareEmpty(to - delta) ? to-delta : to-2*delta;
             return Move.getPawnMove(from, to, false, promoPiece);
@@ -1326,16 +1326,16 @@ public final class Position extends AbstractMoveablePosition
     }
     
     public short getNullMove() {
-    	return Move.NULL_MOVE;
+        return Move.NULL_MOVE;
     }
     
     public short getPieceMove(int piece, int colFrom, int rowFrom, int to)
     {
-    	if (to<0) {
-    		return Move.ILLEGAL_MOVE;
-    	} else {
-    		return Move.getRegularMove(getFromSqi(piece, colFrom, rowFrom, to), to, !isSquareEmpty(to));
-    	}
+        if (to<0) {
+            return Move.ILLEGAL_MOVE;
+        } else {
+            return Move.getRegularMove(getFromSqi(piece, colFrom, rowFrom, to), to, !isSquareEmpty(to));
+        }
     }
     
     private Move getPieceMoveAndDo(short move) throws IllegalMoveException
