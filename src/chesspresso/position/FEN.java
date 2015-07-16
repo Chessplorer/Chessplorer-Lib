@@ -26,7 +26,7 @@ public class FEN
 
     private static final char fenChars[] =
         {'K', 'P', 'Q', 'R', 'B', 'N', '-', 'n', 'b', 'r', 'q', 'p', 'k'};
-    
+
     public static final int fenCharToStone(char ch)
     {
         for (int stone = Chess.MIN_STONE; stone <= Chess.MAX_STONE; stone++) {
@@ -34,7 +34,7 @@ public class FEN
         }
         return Chess.NO_STONE;
     }
-    
+
     public static final char stoneToFenChar(int stone)
     {
         if (stone >= Chess.MIN_STONE && stone <= Chess.MAX_STONE) {
@@ -43,19 +43,19 @@ public class FEN
             return '?';
         }
     }
-    
+
     public static final String START_POSITION =
         "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-    
+
     //======================================================================
-    
+
     public static void initFromFEN(MutablePosition pos, String fen, boolean strict) throws IllegalArgumentException
     {
         pos.clear();
-        
+
         int index = 0;
         char ch;
-        
+
         /*========== 1st field : pieces ==========*/
         int row = 7;
         int col = 0;
@@ -66,7 +66,7 @@ public class FEN
                     throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: unexpected '/' found at index " + index);
                 row--; col = 0;
             } else if (ch >= '1' && ch <= '8') {
-                int num = (int)(ch - '0');
+                int num = ch - '0';
                 if (col + num > 8)
                     throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: too many pieces in rank at index " + index + ": " + ch);
                 for (int j=0; j<num; j++) {
@@ -84,7 +84,7 @@ public class FEN
         }
         if (row != 0 || col != 8)
             throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: missing pieces at index: " + index);
-        
+
         /*========== 2nd field : to play ==========*/
         if (index + 1 < fen.length() && fen.charAt(index) == ' ') {
             ch = fen.charAt(index + 1);
@@ -94,7 +94,7 @@ public class FEN
                 throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: expected 'to play' as second field but found " + ch);
             index += 2;
         }
-        
+
         /*========== 3rd field : castles ==========*/
         if (index + 1 < fen.length() && fen.charAt(index) == ' ') {
             index++;
@@ -109,8 +109,21 @@ public class FEN
                     else if (ch == 'Q' && (!strict || last < 1)) {castles |= ImmutablePosition.WHITE_LONG_CASTLE;  last = 1;}
                     else if (ch == 'k' && (!strict || last < 2)) {castles |= ImmutablePosition.BLACK_SHORT_CASTLE; last = 2;}
                     else if (ch == 'q' && (!strict || last < 3)) {castles |= ImmutablePosition.BLACK_LONG_CASTLE;  last = 3;}
-                    else
-                        throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: illegal castles identifier or sequence " + ch);
+                    else if (Character.isUpperCase(ch)) {
+                        if (last < 0) {
+                            castles |= ImmutablePosition.WHITE_SHORT_CASTLE;
+                        } else {
+                            castles |= ImmutablePosition.WHITE_LONG_CASTLE;
+                        }
+                        last++;
+                    } else {
+                        if (last < 2) {
+                            castles |= ImmutablePosition.BLACK_SHORT_CASTLE;
+                        } else {
+                            castles |= ImmutablePosition.BLACK_LONG_CASTLE;
+                        }
+                        last++;
+                    }
                     index++;
                 }
             }
@@ -118,7 +131,7 @@ public class FEN
         } else {
             throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: expected castles at index " + index);
         }
-        
+
         /*========== 4th field : ep square ==========*/
         if (index + 1 < fen.length() && fen.charAt(index) == ' ') {
             index++;
@@ -135,7 +148,7 @@ public class FEN
         } else {
             throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: expected ep square at index " + index);
         }
-        
+
         /*========== 5th field : half move clock ==========*/
         if (index + 1 < fen.length() && fen.charAt(index) == ' ') {
             index++;
@@ -144,7 +157,7 @@ public class FEN
         } else {
             throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: expected half move clock at index " + index);
         }
-        
+
         /*========== 6th field : full move number ==========*/
         if (index + 1 < fen.length() && fen.charAt(index) == ' ') {
             if (pos.getToPlay() == Chess.WHITE) {
@@ -155,7 +168,7 @@ public class FEN
         } else {
             throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: expected ply number at index " + index);
         }
-        
+
         /*========== now check the produced position ==========*/
         try {
             pos.validate();
@@ -163,13 +176,13 @@ public class FEN
             e.printStackTrace();
             throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: " + e.getMessage());
         }
-        
+
     }
-    
+
     public static String getFEN(ImmutablePosition pos)
     {
         StringBuffer sb = new StringBuffer();
-        
+
         /*========== 1st field : pieces ==========*/
         int row = 7, col = 0;
         int blanks = 0;
@@ -192,10 +205,10 @@ public class FEN
                 if (row >= 0) sb.append('/');
             }
         }
-        
+
         /*========== 2nd field : to play ==========*/
         sb.append(' ').append(pos.getToPlay() == Chess.WHITE ? 'w' : 'b');
-        
+
         /*========== 3rd field : castles ==========*/
         sb.append(' ');
         int castles = pos.getCastles();
@@ -207,20 +220,20 @@ public class FEN
         } else {
             sb.append('-');
         }
-        
+
         /*========== 4th field : ep square ==========*/
         sb.append(' ');
         if (pos.getSqiEP() == Chess.NO_SQUARE)
             sb.append('-');
         else
             sb.append(Chess.sqiToStr(pos.getSqiEP()));
-        
+
         /*========== 5th field : half move clock ==========*/
         sb.append(' ').append(pos.getHalfMoveClock());
-        
+
         /*========== 6th field : full move number ==========*/
         sb.append(' ').append(pos.getPlyNumber() / 2 + 1);
-        
-        return sb.toString();        
+
+        return sb.toString();
     }
 }
