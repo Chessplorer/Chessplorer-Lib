@@ -19,17 +19,19 @@ import chesspresso.move.IllegalMoveException;
 import chesspresso.move.Move;
 
 /**
- * 
+ *
  * @author Bernhard Seybold
  * @version $Revision: 1.1 $
  */
 public abstract class AbstractMoveablePosition extends AbstractMutablePosition
 		implements MoveablePosition {
 
+	@Override
 	public void doMove(Move move) throws IllegalMoveException {
 		doMove(move.getShortMoveDesc());
 	}
 
+	@Override
 	public short getMove(int from, int to, int promoPiece) {
 		if (getColor(from) != getToPlay())
 			return Move.ILLEGAL_MOVE; // =====>
@@ -42,13 +44,22 @@ public abstract class AbstractMoveablePosition extends AbstractMutablePosition
 				return Move.getPawnMove(from, to,
 						Chess.sqiToCol(from) != Chess.sqiToCol(to), promoPiece);
 			}
-		} else if (piece == Chess.KING && (to - from) == 2) {
+		} else if (piece == Chess.KING && ((to - from) == 2 || isChess960ShortCastle(from, to))) {
 			return Move.getShortCastle(getToPlay());
-		} else if (piece == Chess.KING && (to - from) == -2) {
+		} else if (piece == Chess.KING && ((to - from) == -2 || isChess960LongCastle(from, to))) {
 			return Move.getLongCastle(getToPlay());
 		} else {
 			return Move.getRegularMove(from, to, !isSquareEmpty(to));
 		}
 	}
 
+	private boolean isChess960ShortCastle(int from, int to) {
+		return getPiece(to) == Chess.ROOK && getColor(to) == getToPlay()
+				&& (to - from) > 0;
+	}
+
+	private boolean isChess960LongCastle(int from, int to) {
+		return getPiece(to) == Chess.ROOK && getColor(to) == getToPlay()
+				&& (to - from) < 0;
+	}
 }
