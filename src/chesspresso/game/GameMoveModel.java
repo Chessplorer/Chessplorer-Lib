@@ -28,42 +28,42 @@ import chesspresso.position.NAG;
  */
 public class GameMoveModel
 {
-    
+
     private static final int MIN_ALLOC_SIZE = 262144;
 	private final static boolean DEBUG = false;
     private final static boolean EXTRA_CHECKS = true;
-    
+
     //======================================================================
-    
+
     public final static int
         MODE_EVERYTHING = 0;
-    
+
     final static short
-        NO_MOVE            = (short)Move.NO_MOVE,
-        LINE_START         = (short)Move.OTHER_SPECIALS,
-        LINE_END           = (short)Move.OTHER_SPECIALS +  1,
-        COMMENT_START      = (short)Move.OTHER_SPECIALS +  2,
-        COMMENT_END        = (short)Move.OTHER_SPECIALS +  3,
-        PRE_COMMENT_START  = (short)Move.OTHER_SPECIALS +  5,
-        PRE_COMMENT_END    = (short)Move.OTHER_SPECIALS +  6,
-        NULL_MOVE          = (short)Move.NULL_MOVE,
-        NAG_BASE           = (short)Move.OTHER_SPECIALS + 16,
+        NO_MOVE            = Move.NO_MOVE,
+        LINE_START         = Move.OTHER_SPECIALS,
+        LINE_END           = Move.OTHER_SPECIALS +  1,
+        COMMENT_START      = Move.OTHER_SPECIALS +  2,
+        COMMENT_END        = Move.OTHER_SPECIALS +  3,
+        PRE_COMMENT_START  = Move.OTHER_SPECIALS +  5,
+        PRE_COMMENT_END    = Move.OTHER_SPECIALS +  6,
+        NULL_MOVE          = Move.NULL_MOVE,
+        NAG_BASE           = Move.OTHER_SPECIALS + 16,
         LAST_SPECIAL       = (short)(NAG_BASE + NAG.NUM_OF_NAGS);
-    
+
     static {
         if (LAST_SPECIAL > Move.SPECIAL_MOVE + Move.NUM_OF_SPECIAL_MOVES) {
             throw new RuntimeException("Not enough space to define special moves for game move model");
         }
     }
-    
+
     //======================================================================
-    
+
     private short[] m_moves;
     private int m_size;
     private int m_hashCode;
 
     //======================================================================
-    
+
     public GameMoveModel()
     {
         m_moves = new short[MIN_ALLOC_SIZE];
@@ -78,10 +78,10 @@ public class GameMoveModel
         load(in, mode);
         m_hashCode = 0;  // TODO: store in file?
     }
-    
+
     //======================================================================
     // invariant checking
-    
+
     private void checkLegalCursor(int index)
     {
         if (index < 0) throw new RuntimeException("Illegal index " + index);
@@ -89,30 +89,30 @@ public class GameMoveModel
         if (m_moves[index] != LINE_START && m_moves[index] != NULL_MOVE && !isMoveValue(m_moves[index]))
             throw new RuntimeException("No move at index " + index + " move=" + valueToString(m_moves[index]));
     }
-    
+
     //======================================================================
-    
+
     private static boolean isMoveValue(short value)    {return !Move.isSpecial(value);}
     private static boolean isNagValue(short value)   {return value >= NAG_BASE && value < NAG_BASE + NAG.NUM_OF_NAGS;}
     private static short getNagForValue(short value) {return (short)(value - NAG_BASE);}
     private static short getValueForNag(short nag)   {return (short)(nag + NAG_BASE);}
-    
+
     //======================================================================
-    
+
     private void changed()
     {
         m_hashCode = 0;
     }
-    
+
     //======================================================================
-    
+
     public boolean hasNag(int index, short nag)
     {
         if (DEBUG) {
             System.out.println("hasNag " + index + " nag " + nag);
             write(System.out);
         }
-        
+
         short nagValue = getValueForNag(nag);
         short value;
         do {
@@ -120,16 +120,16 @@ public class GameMoveModel
             value = m_moves[index];
             if (value == nagValue) return true;
         } while (isNagValue(value));
-        
+
         return false;
     }
-    
+
     public short[] getNags(int index)
     {
         if (EXTRA_CHECKS)
             if (!isMoveValue(m_moves[index]))
                 throw new RuntimeException("No move at index " + index + " move=" + valueToString(m_moves[index]));
-        
+
         int num = 0;
         while (isNagValue(m_moves[index + 1])) {index++; num++;}
         if (num == 0) {
@@ -141,37 +141,37 @@ public class GameMoveModel
             return nags;
         }
     }
-    
+
     public void addNag(int index, short nag)
     {
         if (DEBUG) {
             System.out.println("addNag " + index + " nag " + nag);
             write(System.out);
         }
-        
+
         if (EXTRA_CHECKS)
             if (!isMoveValue(m_moves[index]))
             	// ignore if there's no move: just don't add the NAG
             	return;
-        
+
         makeSpace(index + 1, 1, false);  // most recent nag first
         m_moves[index + 1] = getValueForNag(nag);
         changed();
-        
+
         if (DEBUG) write(System.out);
     }
-    
+
     public boolean removeNag(int index, short nag)
     {
         if (DEBUG) {
             System.out.println("removeNag " + index + " nag " + nag);
             write(System.out);
         }
-        
+
         if (EXTRA_CHECKS)
             if (!isMoveValue(m_moves[index]))
                 throw new RuntimeException("No move at index " + index + " val=" + valueToString(m_moves[index]));
-        
+
         short nagValue = getValueForNag(nag);
         short value;
         boolean changed = false;
@@ -189,13 +189,13 @@ public class GameMoveModel
             }
         } while (isNagValue(value));
         changed();
-            
+
         if (DEBUG) write(System.out);
         return changed;
     }
-    
+
     //======================================================================
-    
+
     private int skipComment(int index)
     {
         if (m_moves[index] == COMMENT_START) {
@@ -211,58 +211,62 @@ public class GameMoveModel
         }
         return index;
     }
-    
+
     public String getComment(int index)
     {
         if (EXTRA_CHECKS)
             if (!isMoveValue(m_moves[index]) && index != 0)  // comment at index 0 allowed
                 throw new RuntimeException("No move at index " + index + " move=" + valueToString(m_moves[index]));
-        
+
         // skip all nags
         while(isNagValue(m_moves[index + 1])) index++;
         // skip pre move comments
         if (m_moves[index + 1] == PRE_COMMENT_START) {
         	while (m_moves[index] != PRE_COMMENT_END) index++;
         }
-        
+
         if (m_moves[index + 1] == COMMENT_START) {
-            index += 2;
             StringBuffer sb = new StringBuffer();
-            while (m_moves[index] != COMMENT_END) {
-                sb.append((char)m_moves[index]);
-                index++;
-            }
+            addCommentToStringBuffer(index, sb, COMMENT_START, COMMENT_END);
             return sb.toString();
         } else {
             return null;
         }
-    }    
+    }
+
+    private void addCommentToStringBuffer(int index, StringBuffer sb, short commentStartToken, short commentEndToken) {
+        index += 2;
+        while (m_moves[index] != commentEndToken) {
+            sb.append((char)m_moves[index]);
+            index++;
+        }
+        if (m_moves[index + 1] == commentStartToken) {
+            sb.append(" ");
+            addCommentToStringBuffer(index, sb, commentStartToken, commentEndToken);
+        }
+    }
 
     public String getPreMoveComment(int index)
     {
         if (EXTRA_CHECKS)
             if (!isMoveValue(m_moves[index]) && index != 0)  // comment at index 0 allowed
                 throw new RuntimeException("No move at index " + index + " move=" + valueToString(m_moves[index]));
-        
+
         // skip all nags
         while(isNagValue(m_moves[index + 1])) index++;
         // skip other comments
         if (m_moves[index + 1] == COMMENT_START) {
         	while (m_moves[index] != COMMENT_END) index++;
         }
-        
+
         if (m_moves[index + 1] == PRE_COMMENT_START) {
-            index += 2;
             StringBuffer sb = new StringBuffer();
-            while (m_moves[index] != PRE_COMMENT_END) {
-                sb.append((char)m_moves[index]);
-                index++;
-            }
+            addCommentToStringBuffer(index, sb, PRE_COMMENT_START, PRE_COMMENT_END);
             return sb.toString();
         } else {
             return null;
         }
-    }    
+    }
 
     public boolean addComment(int index, String comment)
     {
@@ -270,16 +274,20 @@ public class GameMoveModel
             System.out.println("addComment " + index+ " comment " + comment);
             write(System.out);
         }
-        
+
         if (EXTRA_CHECKS)
             if (index != 0 && !isMoveValue(m_moves[index]))
                 throw new RuntimeException("No move at index " + index + " val=" + valueToString(m_moves[index]));
-        
+
         if (comment == null || comment.length() == 0) return false;  // =====>
-        
+
         // allow comments before first move (index == 0)
         if (index != 0) {
             while(isNagValue(m_moves[index + 1])) index++;
+            if (m_moves[index + 1] == COMMENT_START) {
+                index++;
+                index = skipComment(index);
+            }
         }
         makeSpace(index + 1, comment.length() + 2, false);
         m_moves[index + 1] = COMMENT_START;
@@ -288,7 +296,7 @@ public class GameMoveModel
         }
         m_moves[index + comment.length() + 2] = COMMENT_END;
         changed();
-        
+
         if (DEBUG) write(System.out);
         return true;
     }
@@ -296,16 +304,16 @@ public class GameMoveModel
     public boolean addPreMoveComment(int index, String comment)
     {
         if (DEBUG) {
-            System.out.println("addComment " + index+ " comment " + comment);
+            System.out.println("addPreMoveComment " + index+ " comment " + comment);
             write(System.out);
         }
-        
+
         if (EXTRA_CHECKS)
             if (index != 0 && !isMoveValue(m_moves[index]))
                 throw new RuntimeException("No move at index " + index + " val=" + valueToString(m_moves[index]));
-        
+
         if (comment == null || comment.length() == 0) return false;  // =====>
-        
+
         // allow comments before first move (index == 0)
         if (index != 0) {
             while(isNagValue(m_moves[index + 1])) index++;
@@ -317,7 +325,7 @@ public class GameMoveModel
         }
         m_moves[index + comment.length() + 2] = PRE_COMMENT_END;
         changed();
-        
+
         if (DEBUG) write(System.out);
         return true;
     }
@@ -328,11 +336,11 @@ public class GameMoveModel
             System.out.println("removeComment " + index);
             write(System.out);
         }
-        
+
         if (EXTRA_CHECKS)
             if (index != 0 && !isMoveValue(m_moves[index]))
                 throw new RuntimeException("No move at index " + index + " val=" + valueToString(m_moves[index]));
-        
+
         // allow comments before first move (index == 0)
         if (index != 0) {
             while(isNagValue(m_moves[index + 1])) index++;
@@ -349,19 +357,19 @@ public class GameMoveModel
             isChanged = true;
         }
         if (isChanged) changed();
-        
+
         if (DEBUG) write(System.out);
         return isChanged;
     }
-    
+
     public boolean setComment(int index, String comment)
     {
         boolean changed = removeComment(index);
         return addComment(index, comment) || changed;
     }
-    
+
     //======================================================================
-    
+
     public boolean hasLines()
     {
         for (int i=1; i<m_size; i++) {
@@ -369,7 +377,7 @@ public class GameMoveModel
         }
         return false;
     }
-    
+
     public int getTotalNumOfPlies()
     {
         int num = 0;
@@ -378,7 +386,7 @@ public class GameMoveModel
         }
         return num;
     }
-    
+
     public int getTotalCommentSize()
     {
         boolean inComment = false;
@@ -391,7 +399,7 @@ public class GameMoveModel
         }
         return num;
     }
-    
+
     public short getMove(int index)
     {
         if (index >= 0 && index < m_size) {
@@ -401,7 +409,7 @@ public class GameMoveModel
             return NO_MOVE;
         }
     }
-    
+
     /**
      *@return -1 if at the beginning of a line
      */
@@ -411,12 +419,12 @@ public class GameMoveModel
             System.out.println("goBack " + index + " " + gotoMainLine);
             write(System.out);
         }
-        
+
         if (EXTRA_CHECKS)
             checkLegalCursor(index);
-        
+
         if (index <= 0) return -1;  // =====>
-        
+
         index--;
         int level = 0;
         while (index > 0) {
@@ -444,7 +452,7 @@ public class GameMoveModel
         if (DEBUG) System.out.println("  --> " + index);
         return index;
     }
-    
+
     /**
      * Advances one move in the current line.
      *
@@ -459,10 +467,10 @@ public class GameMoveModel
             System.out.println("goForward " + index);
             write(System.out);
         }
-        
+
         if (EXTRA_CHECKS)
             checkLegalCursor(index);
-        
+
         index++;
         int level = 0;
         while (index < m_size - 1) {
@@ -479,17 +487,17 @@ public class GameMoveModel
         if (DEBUG) System.out.println("  --> " + index);
         return index;
     }
-    
+
     public int goForward(int index, int whichLine)
     {
         if (DEBUG) {
             System.out.println("goForward " + index + " " + whichLine);
             write(System.out);
         }
-        
+
         if (EXTRA_CHECKS)
             checkLegalCursor(index);
-        
+
         index = goForward(index);
         if (m_moves[index] != LINE_END && whichLine > 0) {
             index++;
@@ -510,17 +518,17 @@ public class GameMoveModel
         if (DEBUG) System.out.println("  --> " + index);
         return index;
     }
-    
+
     public int getNumOfNextMoves(int index)
     {
         if (DEBUG) {
             System.out.println("getNumOfNextMoves " + index);
             write(System.out);
         }
-        
+
         if (EXTRA_CHECKS)
             checkLegalCursor(index);
-        
+
         index = goForward(index);
         if (m_moves[index] == LINE_END) return 0;   // =====>
 
@@ -542,24 +550,24 @@ public class GameMoveModel
         if (DEBUG) System.out.println("  --> " + numOfMoves);
         return numOfMoves;
     }
-    
+
     public boolean hasNextMove(int index)
     {
         if (DEBUG) {
             System.out.println("hasNextMove " + index);
             write(System.out);
         }
-        
+
         if (EXTRA_CHECKS)
             checkLegalCursor(index);
-        
+
         boolean nextMove = isMoveValue(m_moves[goForward(index)]);
         if (DEBUG) System.out.println("  --> " + nextMove);
         return (nextMove);
     }
-    
+
     //======================================================================
-    
+
     private int findEarliestNoMove(int index)
     {
         while (index > 1 && m_moves[index - 1] == NO_MOVE) index--;
@@ -573,7 +581,7 @@ public class GameMoveModel
                 throw new RuntimeException("Index out of bounds " + index);
             else if (m_moves[index] != NO_MOVE)
                 throw new RuntimeException("Expected no move  " + index);
-        
+
         while (index > 0 && m_moves[index - 1] == NO_MOVE) index--;
         return index;
     }
@@ -584,7 +592,7 @@ public class GameMoveModel
             System.out.println("enlarge " + index + " " + size);
             write(System.out);
         }
-        
+
         short[] newMoves = new short[m_moves.length + size];
         System.arraycopy(m_moves, 0, newMoves, 0, index);
         System.arraycopy(m_moves, index, newMoves, index + size, m_size - index);
@@ -593,18 +601,18 @@ public class GameMoveModel
         m_size += size;
         if (DEBUG) write(System.out);
     }
-    
+
     private void makeSpace(int index, int spaceNeeded, boolean possiblyMakeMore)
     {
         if (DEBUG) {
             System.out.println("makeSpace " + index + " " + spaceNeeded);
             write(System.out);
         }
-        
+
         if (EXTRA_CHECKS)
             if (index < 1 || index >= m_size)
                 throw new RuntimeException("Index out of bounds " + index + " size=" + m_size);
-        
+
         for (int i = 0; i < spaceNeeded; i++) {
             if (m_moves[index + i] != NO_MOVE) {
                 // not enough space, make it
@@ -621,17 +629,17 @@ public class GameMoveModel
         }
         if (DEBUG) write(System.out);
     }
-    
+
     public int appendAsRightMostLine(int index, short move)
     {
         if (DEBUG) {
             System.out.println("appendAsRightMostLine " + index + " " + Move.getString(move));
             write(System.out);
         }
-        
+
         if (EXTRA_CHECKS)
             checkLegalCursor(index);
-        
+
         if (hasNextMove(index)) {
             index = goForward(index);  // go to the move for which an alternative is entered
             index = goForward(index);  // go to the end of all existing lines
@@ -655,27 +663,27 @@ public class GameMoveModel
             return index;
         }
     }
-    
+
     public void deleteCurrentLine(int index)
     {
         if (DEBUG) {
             System.out.println("deleteCurrentLine " + index);
             write(System.out);
         }
-        
+
         if (EXTRA_CHECKS)
             checkLegalCursor(index);
-        
+
         int level = 0;
         boolean deleteLineEnd = false;
-        
+
         // check if we stand at a line start
         for (int i=1; i<index; i++) {
             short move = m_moves[index - i];
             if      (move == LINE_START) {index -= i; deleteLineEnd = true; level = -1; break;}
             else if (move != NO_MOVE)     break;
         }
-        
+
         boolean inComment = false;
         while (index < m_size) {
             short move = m_moves[index];
@@ -692,22 +700,22 @@ public class GameMoveModel
         }
         changed();
         if (DEBUG) write(System.out);
-    }   
+    }
 
     //======================================================================
-    
+
     public int pack(int index)
     {
         if (DEBUG) {
             System.out.println("pack");
             write(System.out);
         }
-        
+
         int newSize = 0;
         for (int i=0; i<m_size; i++) {
             if (m_moves[i] != NO_MOVE) newSize++;
         }
-        
+
         short[] newMoves = new short[newSize + 1];
         int j = 0;
         for (int i=0; i<m_size; i++) {
@@ -717,19 +725,19 @@ public class GameMoveModel
             }
             if (i == index) index = j - 1;
         }
-        
+
         m_moves = newMoves;
         m_moves[newSize] = LINE_END;
         m_size = newSize;
-        
+
         if (DEBUG) write(System.out);
         if (DEBUG) System.out.println("  --> " + index);
-        
+
         return index;
     }
-        
+
     //======================================================================
-    
+
     public void load(DataInput in, int mode) throws IOException
     {
         m_size = in.readInt() + 2;
@@ -745,7 +753,7 @@ public class GameMoveModel
         changed();
         if (DEBUG) write(System.out);
     }
-    
+
     public void save(DataOutput out, int mode) throws IOException
     {
         // do not save the guards at index 0 and m_size-1
@@ -761,7 +769,7 @@ public class GameMoveModel
     }
 
     //======================================================================
-    
+
     static String valueToString(short value)
     {
         if      (value == LINE_START)     return "(";
@@ -772,7 +780,7 @@ public class GameMoveModel
         else if (isNagValue(value))       return "$" + getNagForValue(value);
         else                              return Move.getString(value);
     }
-    
+
     public void write(PrintStream out)
     {
         boolean inComment = false;
@@ -790,7 +798,7 @@ public class GameMoveModel
         }
         out.println();
     }
-    
+
     public long getHashCode()
     {
         if (m_hashCode == 0) {
@@ -804,20 +812,22 @@ public class GameMoveModel
         }
         return m_hashCode;
     }
-    
-    public int hashCode()
+
+    @Override
+	public int hashCode()
     {
         return (int)getHashCode();
     }
-    
-    public boolean equals(Object obj)
+
+    @Override
+	public boolean equals(Object obj)
     {
         if (obj == this) return true;  // =====>
         if (!(obj instanceof GameMoveModel)) return false;  // =====>
         GameMoveModel gameMoveModel = (GameMoveModel)obj;
-        
+
         if (gameMoveModel.getHashCode() != getHashCode()) return false;  // =====>
-        
+
         int index1 = 0, index2 = 0;
         for (;;) {
             short move1 = m_moves[index1];
@@ -911,7 +921,7 @@ public class GameMoveModel
 
 	/**
 	 * Move other variations of the same move to the end of the game
-	 * 
+	 *
 	 * @param parentMove
 	 */
 	private Vector<short[]> extractOtherVariations(int parentMove) {
@@ -931,7 +941,7 @@ public class GameMoveModel
 
 	/**
 	 * move the variation at index to the end of the parent line
-	 * 
+	 *
 	 * @param index
 	 */
 	private short[] moveVariationToEnd(int index) {
