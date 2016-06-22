@@ -1,0 +1,18 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}Chessplorer-Lib - an open source chess library written in Java
+${licensePrefix}Copyright (C) ${date?date?string("yyyy")} Chessplorer.org
+${licensePrefix}Copyright (C) 2012-2016 Gerhard Kalab
+${licensePrefix}Copyright (C) 2002-2003 Bernhard Seybold
+${licensePrefix?replace(" +$", "", "r")}
+${licensePrefix}This software is published under the terms of the LGPL Software License,
+${licensePrefix}a copy of which has been included with this distribution in the LICENSE.txt
+${licensePrefix}file.
+${licensePrefix?replace(" +$", "", "r")}
+${licensePrefix}THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+${licensePrefix}WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+${licensePrefix}OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+<#if licenseLast??>
+${licenseLast}
+</#if>
