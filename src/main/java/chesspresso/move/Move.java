@@ -1,5 +1,8 @@
 /*
- * Copyright (C) Bernhard Seybold. All rights reserved.
+ * Chessplorer-Lib - an open source chess library written in Java
+ * Copyright (C) 2016 Chessplorer.org
+ * Copyright (C) 2012-2016 Gerhard Kalab
+ * Copyright (C) 2002-2003 Bernhard Seybold
  *
  * This software is published under the terms of the LGPL Software License,
  * a copy of which has been included with this distribution in the LICENSE.txt
@@ -8,10 +11,7 @@
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- *
- * $Id: Move.java,v 1.3 2003/01/04 16:09:21 BerniMan Exp $
  */
-
 package chesspresso.move;
 
 import chesspresso.*;
@@ -43,7 +43,7 @@ public class Move
 {
 
     //======================================================================
-    
+
     /**
      * Returns the moves in a normalized order such that the same set of moves
      * always yields the same order. Implementation is: short values ascending.
@@ -52,7 +52,7 @@ public class Move
     {
         java.util.Arrays.sort(moves);
     }
-    
+
     //======================================================================
     // move encoding (users of the class should abstract from implementation and
     // use accessors)
@@ -66,7 +66,7 @@ public class Move
     //       cccmmm  1pppttttttffffff    capturing move
     //       cccmmm  1110ttttttffffff    ep move
     //               1111xxxxxxxxxxxx    castles
-    
+
     //       mmm     moving piece
     //       ccc     captured piece
     //       ppp     promotion piece   000 = specials, 111 = castles, 110 = ep, 101 - 001 promo pieces + 1 (5)
@@ -74,12 +74,12 @@ public class Move
     //       ffffff  from sqi
     //
     //  value 0 means NO_MOVE, allowing arrays of moves to be initialized with 0 (default)
-    
-    
+
+
     private final static int TYPE_MASK                = 0x00008000;
     private final static int REGULAR_MOVE             = 0x00000000;
     private final static int CAPTURING_MOVE           = 0x00008000;
-    
+
     private final static int PROMO_MASK               = 0x00007000;
     private final static int CASTLE_MOVE              = 0x00007000;
     private final static int EP_MOVE                  = 0x00006000;
@@ -90,7 +90,7 @@ public class Move
     private final static int NO_PROMO                 = 0x00001000;
     public  final static int SPECIAL_MOVE             = 0x00000000;  // allow defining of own specials
     public  final static int NUM_OF_SPECIAL_MOVES     = 0x00001000;
-    
+
     private final static int FROM_SHIFT               =  0;
     private final static int TO_SHIFT                 =  6;
     private final static int PROMOTION_SHIFT          = 12;
@@ -101,7 +101,7 @@ public class Move
         WHITE_LONG_CASTLE     = CASTLE_MOVE | Chess.E1 << FROM_SHIFT | Chess.C1 << TO_SHIFT,
         BLACK_SHORT_CASTLE    = CASTLE_MOVE | Chess.E8 << FROM_SHIFT | Chess.G8 << TO_SHIFT,
         BLACK_LONG_CASTLE     = CASTLE_MOVE | Chess.E8 << FROM_SHIFT | Chess.C8 << TO_SHIFT;
-    
+
     /**
      * Represents "no move". Set to 0 to allow rapid initialization of arrays
      * to no moves (arrays are initialized to 0 by Java).
@@ -112,7 +112,7 @@ public class Move
      * Representing an illegal move.
      */
     public static final short ILLEGAL_MOVE          = SPECIAL_MOVE + 1;  // 1
-    
+
     /**
      * The range <code>[OTHER_SPECIALS,OTHER_SPECIALS+NUM_OF_OTHER_SPECIALS[</code> is reserved
      * for clients of Move to define their own special moves. This can be used
@@ -127,15 +127,15 @@ public class Move
      * Number of special moves which can be defined.
      */
     public static final short NUM_OF_OTHER_SPECIALS = NUM_OF_SPECIAL_MOVES - 16;
-    
+
     private static final String
     	NULL_MOVE_STRING = "--",
         SHORT_CASTLE_STRING = "O-O",                       // big letter o, not zero
         LONG_CASTLE_STRING  = "O-O-O";
-    
-    
+
+
     private static int[] s_promo = new int[Chess.MAX_PIECE + 1];
-    
+
     static {
         for (int i=0; i<=Chess.MAX_PIECE; i++)
             s_promo[i] = NO_PROMO;
@@ -144,7 +144,7 @@ public class Move
         s_promo[Chess.ROOK]     = PROMO_ROOK;
         s_promo[Chess.QUEEN]    = PROMO_QUEEN;
     }
-    
+
     //======================================================================
 
     /**
@@ -215,22 +215,22 @@ public class Move
 
     public final static int getFromSqi       (short move) {return (move >> FROM_SHIFT) & 0x3F;}
     public final static int getToSqi         (short move) {return (move >> TO_SHIFT)   & 0x3F;}
-    
+
     public final static boolean isCapturing  (short move) {return (move & TYPE_MASK) == CAPTURING_MOVE;}
-    
+
     public final static boolean isPromotion  (short move) {int promo = move & PROMO_MASK; return promo == PROMO_QUEEN || promo == PROMO_ROOK || promo == PROMO_BISHOP || promo == PROMO_KNIGHT;}  // slow but safe
     public final static int getPromotionPiece(short move) {int promo = move & PROMO_MASK; for (int piece=0; piece<=Chess.MAX_PIECE; piece++) {if (s_promo[piece] == promo) return piece;} return Chess.NO_PIECE;}
-    
+
     public final static boolean isEPMove     (short move) {return (move & PROMO_MASK) == EP_MOVE;}
-    
+
     public static boolean isCastle           (short move) {return (move & PROMO_MASK) == CASTLE_MOVE;}
     public static boolean isShortCastle      (short move) {return  move == WHITE_SHORT_CASTLE | move == BLACK_SHORT_CASTLE;}
     public static boolean isLongCastle       (short move) {return  move == WHITE_LONG_CASTLE  | move == BLACK_LONG_CASTLE;}
-    
+
     public static boolean isSpecial          (short move) {return move!=NULL_MOVE && (move & PROMO_MASK) == SPECIAL_MOVE;}
     public static boolean isValid            (short move) {return move==NULL_MOVE || (move & PROMO_MASK) != SPECIAL_MOVE;}
     public static boolean isNullMove         (short move) {return move==NULL_MOVE;}
-    
+
     /*================================================================================*/
 
     public static String getBinaryString(short move)
@@ -241,7 +241,7 @@ public class Move
         }
         return sb.toString();
     }
-    
+
     /**
      * Returns a string representation of the move.
      *
@@ -266,10 +266,10 @@ public class Move
     }
 
     /*================================================================================*/
-    
+
     private static final Move
         MOVE_ILLEGAL_MOVE = new Move (ILLEGAL_MOVE, Chess.NO_PIECE, Chess.NO_ROW, Chess.NO_COL, false, false, false);
-    
+
     /**
      * Premanufactured illegal move, always returns the same instance.
      *
@@ -279,7 +279,7 @@ public class Move
     {
         return MOVE_ILLEGAL_MOVE;
     }
-    
+
     /**
      * Convenience method to create a castle move.
      *
@@ -293,7 +293,7 @@ public class Move
     {
         return new Move(move, Chess.KING, Chess.NO_COL, Chess.NO_ROW, isCheck, isMate, whiteMove);
     }
-    
+
     /**
      * Convenience factory method to create a short castle move.
      *
@@ -307,7 +307,7 @@ public class Move
     {
         return new Move(getShortCastle(toPlay), Chess.KING, Chess.NO_COL, Chess.NO_ROW, isCheck, isMate, whiteMove);
     }
-    
+
     /**
      * Convenience factory method to create a long castle move.
      *
@@ -321,9 +321,9 @@ public class Move
     {
         return new Move(getLongCastle(toPlay), Chess.KING, Chess.NO_COL, Chess.NO_ROW, isCheck, isMate, whiteMove);
     }
-    
+
     /*================================================================================*/
-    
+
     // encoding for additional information
     private static final int COL_FROM_MUL    = 0x00000010;
     private static final int COL_FROM_MASK   = 0x000000F0;
@@ -337,12 +337,12 @@ public class Move
     private static final int TOPLAY_MASK     = 0x00008000;
     private static final int MOVING_MUL      = 0x00010000;
     private static final int MOVING_MASK     = 0x00070000;
-    
-    private short m_move;   
+
+    private short m_move;
     private int m_info;
 
     /*================================================================================*/
-    
+
     /**
      * Creates a full move.
      *
@@ -365,9 +365,9 @@ public class Move
                + (isWhiteMove  ? TOPLAY_MUL  : 0)
                + MOVING_MUL * movingPiece;
     }
-    
+
     /*================================================================================*/
-    
+
     public short getShortMoveDesc()     {return (short)m_move;}
     public int getPromo()               {return Move.getPromotionPiece(m_move);}
     public int getFromSqi()             {return Move.getFromSqi(m_move);}
@@ -384,9 +384,9 @@ public class Move
     public boolean isLongCastle()       {return Move.isLongCastle(m_move);}
     public boolean isValid()            {return Move.isValid(m_move);}
     public boolean isWhiteMove()        {return (m_info & TOPLAY_MASK) != 0;}
-    
+
     /*================================================================================*/
-    
+
     /**
      * Equality test. Two move are equal if and only if all arguments match.
      *
@@ -402,7 +402,7 @@ public class Move
             return false;
         }
     }
-    
+
     /**
      * Returns the LAN (long annotation, see PGN spec) of the move, e.g. Ne2xf4+.
      *
@@ -425,7 +425,7 @@ public class Move
                     sb.append(Chess.pieceToChar(piece));
                 }
                 sb.append(Chess.sqiToStr(getFromSqi()));
-                sb.append(isCapturing() ? "x" : "-"); 
+                sb.append(isCapturing() ? "x" : "-");
                 sb.append(Chess.sqiToStr(getToSqi()));
                 if (isPromotion()) {
                     sb.append('=').append(Chess.pieceToChar(getPromo()));
@@ -436,7 +436,7 @@ public class Move
             return sb.toString();
         }
     }
-    
+
     /**
      * Returns the SAN (short annotation, see PGN spec) of the move, e.g. Nxf4+.
      *
@@ -473,7 +473,7 @@ public class Move
             return sb.toString();
         }
     }
-    
+
     public String toString() {return getSAN();}
-    
+
 }

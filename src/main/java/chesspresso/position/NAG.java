@@ -1,5 +1,8 @@
 /*
- * Copyright (C) Bernhard Seybold. All rights reserved.
+ * Chessplorer-Lib - an open source chess library written in Java
+ * Copyright (C) 2016 Chessplorer.org
+ * Copyright (C) 2012-2016 Gerhard Kalab
+ * Copyright (C) 2002-2003 Bernhard Seybold
  *
  * This software is published under the terms of the LGPL Software License,
  * a copy of which has been included with this distribution in the LICENSE.txt
@@ -8,10 +11,7 @@
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- *
- * $Id: NAG.java,v 1.1 2003/01/04 16:11:46 BerniMan Exp $
  */
-
 package chesspresso.position;
 
 
@@ -23,10 +23,10 @@ package chesspresso.position;
  */
 public abstract class NAG
 {
-    
+
     // TODO add short NAG chars for chess fonts
 
-    
+
     // allow higher nags
     public static short NUM_OF_NAGS = 256;
 
@@ -168,11 +168,11 @@ public abstract class NAG
        "White has decisive counterplay",  // 134
        "Black has decisive counterplay",  // 135
        "White has moderate time control pressure",  // 136
-       "Black has moderate time control pressure",  // 137  
+       "Black has moderate time control pressure",  // 137
        "White has severe time control pressure",  // 138
        "Black has severe time control pressure"
     };  // 139
-        
+
     private static String[] SHORT_DESCRIPTION = {
        null,  // 0
        "!",  // 1
@@ -311,13 +311,13 @@ public abstract class NAG
        null, // "White has decisive counterplay",  // 134
        null, // "Black has decisive counterplay",  // 135
        null, // "White has moderate time control pressure",  // 136
-       null, // "Black has moderate time control pressure",  // 137  
+       null, // "Black has moderate time control pressure",  // 137
        null, // "White has severe time control pressure",  // 138
        null  // "Black has severe time control pressure";  // 139
     };
-    
+
     /*================================================================================*/
-    
+
     public static String[] getDefinedShortNags()
     {
         int num=0;
@@ -327,9 +327,9 @@ public abstract class NAG
         for (int i=0; i<SHORT_DESCRIPTION.length; i++) if (SHORT_DESCRIPTION[i] != null) res[num++] = SHORT_DESCRIPTION[i];
         return res;
     }
-    
+
     /*================================================================================*/
-    
+
     public static String getLongString(short nag)
     {
         if (nag >= 0 && nag < LONG_DESCRIPTION.length) {
@@ -338,7 +338,7 @@ public abstract class NAG
             return "<unknown nag " + nag + ">";
         }
     }
-    
+
     public static String getShortString(short nag)
     {
         return getShortString(nag, true);
@@ -360,7 +360,7 @@ public abstract class NAG
             return "$" + nag;
         }
     }
-    
+
     public static short ofString(String description) throws IllegalArgumentException
     {
         if (description != null) {

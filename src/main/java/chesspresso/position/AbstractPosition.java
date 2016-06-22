@@ -1,5 +1,8 @@
 /*
- * Copyright (C) Bernhard Seybold. All rights reserved.
+ * Chessplorer-Lib - an open source chess library written in Java
+ * Copyright (C) 2016 Chessplorer.org
+ * Copyright (C) 2012-2016 Gerhard Kalab
+ * Copyright (C) 2002-2003 Bernhard Seybold
  *
  * This software is published under the terms of the LGPL Software License,
  * a copy of which has been included with this distribution in the LICENSE.txt
@@ -8,10 +11,7 @@
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- *
- * $Id: AbstractPosition.java,v 1.1 2002/12/08 13:27:35 BerniMan Exp $
  */
-
 package chesspresso.position;
 
 import chesspresso.*;
@@ -23,7 +23,7 @@ import chesspresso.*;
  */
 public abstract class AbstractPosition implements ImmutablePosition
 {
-    
+
     /*================================================================================*/
     // hash codes
     //
@@ -59,11 +59,11 @@ public abstract class AbstractPosition implements ImmutablePosition
 //        HASH_CASTLE_MULT    =          0x1000000L,
 //        HASH_ENPASSANT_MASK = 0x7FFFFFFF0FFFFFFFL,
 //        HASH_ENPASSANT_MULT =         0x10000000L;
-    
+
     protected static long[][] s_hashMod;
     protected static long[] s_hashCastleMod;
     protected static long[] s_hashEPMod;
-    
+
     static {
 //        Random random = new Random(100);
 //        s_hashMod = new long[Chess.NUM_OF_SQUARES][];
@@ -74,7 +74,7 @@ public abstract class AbstractPosition implements ImmutablePosition
 //            }
 //        }
         long randomNumber = 100L;
-        
+
         s_hashMod = new long[Chess.NUM_OF_SQUARES][];
         for (int i = 0; i < Chess.NUM_OF_SQUARES; i++) {
             s_hashMod[i] = new long[Chess.MAX_STONE - Chess.MIN_STONE + 1];
@@ -103,7 +103,7 @@ public abstract class AbstractPosition implements ImmutablePosition
             s_hashEPMod[i] = randomNumber & HASH_ALL_MASK;
         }
     }
-    
+
     private static long s_startPositionHashCode = 0L;
     protected static long getStartPositionHashCode()
     {
@@ -118,7 +118,7 @@ public abstract class AbstractPosition implements ImmutablePosition
     }
 
     public static boolean isWhiteToPlay(long hashCode) {return (hashCode & HASH_TOPLAY_MULT) == 0L;}
-    
+
     /*================================================================================*/
 
     public long getHashCode()
@@ -135,7 +135,7 @@ public abstract class AbstractPosition implements ImmutablePosition
         /*---------- castles ----------*/
 //        System.out.println(getCastles());
         hashCode ^= s_hashCastleMod[getCastles()];
-        
+
         /*---------- en passant square ----------*/
         int sqiEP = getSqiEP();
         if (sqiEP != Chess.NO_SQUARE) {
@@ -153,10 +153,10 @@ public abstract class AbstractPosition implements ImmutablePosition
             }
         }
         if (sqiEP != Chess.NO_COL) hashCode ^= s_hashEPMod[Chess.sqiToCol(sqiEP)];
-        
+
         /*---------- to play ----------*/
         if (getToPlay() == Chess.BLACK) hashCode |= HASH_TOPLAY_MULT;
-        
+
         return hashCode;
     }
 
@@ -169,19 +169,19 @@ public abstract class AbstractPosition implements ImmutablePosition
     {
         return getHashCode() == getStartPositionHashCode();
     }
-    
+
     public boolean equals(Object obj)
     {
         return (obj instanceof ImmutablePosition) && (((ImmutablePosition)obj).getHashCode() == getHashCode());
     }
-    
+
     /*================================================================================*/
 
     public String getFEN()
     {
         return FEN.getFEN(this);
     }
-    
+
     /*================================================================================*/
 
     public boolean isCastlePossible(int castle)
@@ -198,26 +198,26 @@ public abstract class AbstractPosition implements ImmutablePosition
             return false;
         }
     }
-    
+
     public boolean isSquarePossibleEPSquare(int sqi)
     {
         if (getToPlay() == Chess.WHITE) {
             // white to play -> sqi ep caused by black pawn
             return Chess.sqiToRow(sqi) == 5 &&
                    getStone(sqi + Chess.NUM_OF_COLS) == Chess.NO_STONE && getStone(sqi) == Chess.NO_STONE &&
-                   getStone(sqi - Chess.NUM_OF_COLS) == Chess.BLACK_PAWN; 
+                   getStone(sqi - Chess.NUM_OF_COLS) == Chess.BLACK_PAWN;
         } else {
             return Chess.sqiToRow(sqi) == 2 &&
                    getStone(sqi - Chess.NUM_OF_COLS) == Chess.NO_STONE && getStone(sqi) == Chess.NO_STONE &&
-                   getStone(sqi + Chess.NUM_OF_COLS) == Chess.WHITE_PAWN; 
+                   getStone(sqi + Chess.NUM_OF_COLS) == Chess.WHITE_PAWN;
         }
     }
-    
+
     public boolean isLegal()
     {
         /*---------- check to play ----------*/
         if (getToPlay() != Chess.WHITE && getToPlay() != Chess.BLACK) return false;
-        
+
         /*---------- check ply number ----------*/
         if (getPlyNumber() < 0) return false;
         if (getHalfMoveClock() > getPlyNumber()) return false;
@@ -230,7 +230,7 @@ public abstract class AbstractPosition implements ImmutablePosition
                 if (getStone(getSqiEP() + Chess.NUM_OF_COLS) != Chess.pieceToStone(Chess.PAWN, Chess.WHITE)) return false;
             }
         }
-        
+
         /*---------- check number of kings ----------*/
         int numOfWhiteKings = 0, numOfBlackKings = 0;
         for (int sqi=0; sqi < Chess.NUM_OF_SQUARES; sqi++) {
@@ -238,17 +238,17 @@ public abstract class AbstractPosition implements ImmutablePosition
             if (getStone(sqi) == Chess.BLACK_KING) numOfBlackKings++;
         }
         if (numOfWhiteKings != 1 || numOfBlackKings != 1) return false;
-        
+
         return true;
     }
-    
+
     public void validate() throws IllegalPositionException
     {
         long hashCode = getHashCode();
         if (hashCode <= 0) {
             throw new IllegalPositionException("Hashcode is " + hashCode + ". Should be > 0.");
         }
-        
+
         int numOfWhiteKings = 0;
         int numOfBlackKings = 0;
         for (int sqi=0; sqi < Chess.NUM_OF_SQUARES; sqi++) {
@@ -257,14 +257,14 @@ public abstract class AbstractPosition implements ImmutablePosition
         }
         if (numOfWhiteKings != 1) throw new RuntimeException("Wrong number of white kings: " + numOfWhiteKings);
         if (numOfBlackKings != 1) throw new RuntimeException("Wrong number of black kings: " + numOfBlackKings);
-        
+
         if (getToPlay() != Chess.WHITE && getToPlay() != Chess.BLACK) {
             throw new RuntimeException("Illegal to play: " + getToPlay());
         }
     }
-    
+
     /*================================================================================*/
-    
+
     public String toString() {return FEN.getFEN(this);}
-    
+
 }

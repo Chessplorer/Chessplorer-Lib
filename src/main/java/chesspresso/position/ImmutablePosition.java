@@ -1,5 +1,8 @@
 /*
- * Copyright (C) Bernhard Seybold. All rights reserved.
+ * Chessplorer-Lib - an open source chess library written in Java
+ * Copyright (C) 2016 Chessplorer.org
+ * Copyright (C) 2012-2016 Gerhard Kalab
+ * Copyright (C) 2002-2003 Bernhard Seybold
  *
  * This software is published under the terms of the LGPL Software License,
  * a copy of which has been included with this distribution in the LICENSE.txt
@@ -8,10 +11,7 @@
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- *
- * $Id: ImmutablePosition.java,v 1.1 2002/12/08 13:27:35 BerniMan Exp $
  */
-
 package chesspresso.position;
 
 /**
@@ -22,10 +22,10 @@ package chesspresso.position;
 public interface ImmutablePosition
 {
     // TODO have method to get initial ply number?
-    
+
     //======================================================================
     // constants for castle mask
-    
+
     public final int
         NO_CASTLES         = 0,
         WHITE_LONG_CASTLE  = 1,
@@ -35,10 +35,10 @@ public interface ImmutablePosition
         WHITE_CASTLE       = WHITE_LONG_CASTLE + WHITE_SHORT_CASTLE,
         BLACK_CASTLE       = BLACK_LONG_CASTLE + BLACK_SHORT_CASTLE,
         ALL_CASTLES        = WHITE_CASTLE + BLACK_CASTLE;
-    
+
     //======================================================================
     // read access
-    
+
     /**
      * Return the stone currently on the given square.
      *
@@ -46,35 +46,35 @@ public interface ImmutablePosition
      *@return the stone of the given square
      */
     public int getStone(int sqi);
-    
+
     /**
      * Return the current en passant square.
      *
      *@return the current en passant square, NO_SQUARE if none
      */
     public int getSqiEP();
-    
+
     /**
      * Return the still allowed castles as mask.
      *
      *@return the still allowed castles as mask.
      */
     public int getCastles();
-    
+
     /**
      * Return the player whose turn it is.
      *
      *@return the player whose turn it is
      */
     public int getToPlay();
-    
+
     /**
      * Return the current ply number.
      *
      *@return the current ply number, starting at play no. 0
      */
     public int getPlyNumber();
-    
+
     /**
      * Return the number of moves since the last capture and the last pawn move.
      * This number is used for the 50-move rule.
@@ -82,17 +82,17 @@ public interface ImmutablePosition
      *@return the number of moves since the last capture and the last pawn move
      */
     public int getHalfMoveClock();
-    
+
     /**
      * Return whether the current position is legal.
      *
      *@return whether the current position is legal
      */
     public boolean isLegal();
-    
+
     //======================================================================
     // FEN
-    
+
     /**
      * Return the FEN representation of the current position
      *{@link FEN}
@@ -100,19 +100,19 @@ public interface ImmutablePosition
      *@return the FEN representation of the current position
      */
     public String getFEN();
-    
+
     //======================================================================
-    
+
     /**
      * Returns whether the represented position is the startposition
      *
      @return whether the represented position is the startposition
      */
     public boolean isStartPosition();
-    
+
     //======================================================================
     // hash codes
-    
+
     /**
      * Returns a 64bit hash code of the current position.
      * 64bit should be enough to disnstinguish positions with almost no collisions.
@@ -121,7 +121,7 @@ public interface ImmutablePosition
      *@return a 64bit hash code
      */
     public long getHashCode();
-    
+
     /**
      * Returns a 32bit hash code of the current position.
      * 32 bit is not enough to distinguish positions reliably, use only if
@@ -130,7 +130,7 @@ public interface ImmutablePosition
      *@return a 32bit hash code
      */
     public int hashCode();
-    
+
     //======================================================================
 
     /**
@@ -139,5 +139,5 @@ public interface ImmutablePosition
      *@throws IllegalPositionException if the internal state is illegal
      */
     void validate() throws IllegalPositionException;
-    
+
 }

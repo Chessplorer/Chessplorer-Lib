@@ -1,5 +1,8 @@
 /*
- * Copyright (C) Bernhard Seybold. All rights reserved.
+ * Chessplorer-Lib - an open source chess library written in Java
+ * Copyright (C) 2016 Chessplorer.org
+ * Copyright (C) 2012-2016 Gerhard Kalab
+ * Copyright (C) 2002-2003 Bernhard Seybold
  *
  * This software is published under the terms of the LGPL Software License,
  * a copy of which has been included with this distribution in the LICENSE.txt
@@ -8,10 +11,7 @@
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- *
- * $Id: HTMLGameBrowser.java,v 1.3 2003/01/04 16:23:32 BerniMan Exp $
  */
-
 package chesspresso.game.view;
 
 import chesspresso.*;
@@ -31,7 +31,7 @@ import java.util.Stack;
  */
 public class HTMLGameBrowser implements GameListener
 {
-    
+
     private StringBuffer m_moves;
     private StringBuffer m_posData;
     private StringBuffer m_lastData;
@@ -40,17 +40,17 @@ public class HTMLGameBrowser implements GameListener
     private boolean m_showMoveNumber;
     private int[] m_lasts;
 
-    
+
     //======================================================================
     // GameListener Methods
-    
+
     public void notifyLineStart(int level)
     {
         m_moves.append(" (");
         m_showMoveNumber = true;
         m_lasts[level + 1] = m_lasts[level];
     }
-    
+
     public void notifyLineEnd(int level)
     {
         m_moves.append(") ");
@@ -70,20 +70,20 @@ public class HTMLGameBrowser implements GameListener
         m_posData.append(");\n");
     }
 
-    public void notifyMove(Move move, short[] nags, String preMoveComment, String postMoveComment, 
+    public void notifyMove(Move move, short[] nags, String preMoveComment, String postMoveComment,
     		int plyNumber, int level)
     {
         ImmutablePosition pos = m_game.getPosition();
-        
+
         boolean isMainLine = (level == 0);
         String type = isMainLine ? "main" : "line";
-        
+
         m_moves.append("<a name=\"" + m_moveNumber + "\" class=\"" + type + "\" href=\"javascript:go(" + m_moveNumber + ")\">");
         if (m_showMoveNumber) {
             m_moves.append((plyNumber / 2 + 1) + ".");
         }
         m_showMoveNumber = Chess.isWhitePly(plyNumber+1);
-        
+
         m_moves.append(move.toString());
         if (nags != null) {
             for (int i=0; i<nags.length; i++) {
@@ -95,23 +95,23 @@ public class HTMLGameBrowser implements GameListener
         if (postMoveComment != null) {
             m_moves.append("<span class=\"comment\">").append(postMoveComment).append("</span> ");
         }
-        
+
         addPosData(pos);
         m_lastData.append(",").append(m_lasts[level]);
         m_lasts[level] = m_moveNumber;
-        
+
         m_moveNumber++;
     }
 
     //======================================================================
-    
+
     private String[] m_wimgs;
     private String[] m_bimgs;
     private String m_imagePrefix;
     private String m_styleFilename;
-    
+
     //======================================================================
-    
+
     /**
      * Create a new HTMLGameBrowser with default settings.
      */
@@ -128,9 +128,9 @@ public class HTMLGameBrowser implements GameListener
         m_imagePrefix = "";
         m_styleFilename = null;
     }
-    
+
     //======================================================================
-    
+
     /**
      * Set the name of the style file. If name is set to null, inline style
      * definition will be used. Default is inline style.<br>
@@ -148,7 +148,7 @@ public class HTMLGameBrowser implements GameListener
     {
         m_styleFilename = styleFilename;
     }
-    
+
     /**
      * Set thes prefix for images. The default is empty.
      *
@@ -158,7 +158,7 @@ public class HTMLGameBrowser implements GameListener
     {
         m_imagePrefix = imagePrefix;
     }
-    
+
     /**
      * Sets the name of an square image. The default names are set according to
      * the following scheme: First letter is the color of the stone (b, w), second
@@ -179,7 +179,7 @@ public class HTMLGameBrowser implements GameListener
             m_bimgs[stone - Chess.MIN_STONE] = name;
         }
     }
-    
+
     /**
      * Returns the name of the image.
      *
@@ -190,9 +190,9 @@ public class HTMLGameBrowser implements GameListener
     {
         return m_imagePrefix + (isWhite ? m_wimgs[stone - Chess.MIN_STONE] : m_bimgs[stone - Chess.MIN_STONE]);
     }
-    
+
     //======================================================================
-    
+
     /**
      * Produces HTML to display a game.
      *
@@ -203,7 +203,7 @@ public class HTMLGameBrowser implements GameListener
     {
         produceHTML(outStream, game, false);
     }
-    
+
     /**
      * Produces HTML to display a game.
      *
@@ -215,7 +215,7 @@ public class HTMLGameBrowser implements GameListener
     public synchronized void produceHTML(OutputStream outStream, Game game, boolean contentOnly)
     {
         PrintStream out = new PrintStream(outStream);
-        
+
         m_moves = new StringBuffer();
         m_posData = new StringBuffer();
         m_lastData = new StringBuffer();
@@ -223,21 +223,21 @@ public class HTMLGameBrowser implements GameListener
         m_moveNumber = 0;
         m_showMoveNumber = true;
         m_lasts = new int[100]; m_lasts[0] = 0;
-        
+
         m_posData.append("  sq = new Array(" + game.getNumOfPlies() + "); ");
         m_lastData.append("  last=new Array(0");
-        
+
         m_game.gotoStart();
         addPosData(m_game.getPosition());
         m_moveNumber++;
-        
+
         m_moves.append("<h4>" + m_game + "</h4>");
-        
+
         game.traverse(this, true);
-        
+
         m_moves.append(" " + game.getResultStr());
         m_lastData.append(");");
-        
+
         if (!contentOnly) {
             out.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
             out.println("<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"de\">");
@@ -257,7 +257,7 @@ public class HTMLGameBrowser implements GameListener
             } else {
                 out.println("<link rel=\"stylesheet\" href=\"" + m_styleFilename + "\" type=\"text/css\" />");
             }
-        
+
             out.println("<script language=\"JavaScript\">");
             out.println("  moveNumber = 0;");
             out.print("  imgs = new Array(");
@@ -269,7 +269,7 @@ public class HTMLGameBrowser implements GameListener
                 if (stone < Chess.MAX_STONE) out.print(",");
             }
             out.println(");");
-        
+
 //        out.println("function go(num) {window.document.anchors[moveNumber-1].style.background=\"white\"; if (num<0) moveNumber=0; else if (num>" + (m_moveNumber - 1) + ") moveNumber=" + (m_moveNumber - 1) + "; else moveNumber=num; for(i=0;i<64;i++){if ((Math.floor(i/8)%2)==(i%2)) window.document.images[i].src=wimgs[sq[num][i]]; else window.document.images[i].src=bimgs[sq[num][i]];}; window.document.anchors[moveNumber-1].style.background=\"black\";}");
             out.println("  function go(num) {");
             // TODO style for selected move
@@ -297,15 +297,15 @@ public class HTMLGameBrowser implements GameListener
 
             out.println("<body>");
         }
-        
+
         out.println("<table class=\"content\"><tr><td valign=\"top\">");
-        
+
         out.println("<table cellspacing=\"0\" cellpadding=\"0\">");
         Position startPos = Position.createInitialPosition();
         for (int row = Chess.NUM_OF_ROWS-1; row >= 0; row--) {
             out.print("  <tr>");
             for (int col = 0; col < Chess.NUM_OF_COLS; col++) {
-                int sqi = Chess.coorToSqi(col, row);           
+                int sqi = Chess.coorToSqi(col, row);
                 out.print("<td><img src=\"" + getImageForStone(startPos.getStone(sqi), Chess.isWhiteSquare(sqi)) + "\"></td>");
             }
             out.println("</tr>");
@@ -318,16 +318,16 @@ public class HTMLGameBrowser implements GameListener
         out.println("<input type=button value=\" End \" onClick=\"gotoEnd();\" onDblClick=\"gotoEnd();\">");
         out.println("</form></center>");
         out.println();
-        
+
         out.println("</td><td valign=\"top\">");
         out.println(m_moves.toString());
         out.println("</td</tr></table>");
-        
+
         if (!contentOnly) {
             out.println("</body></html>");
         }
     }
-    
+
 //    public static void main(String[] args)
 //    {
 //        try {

@@ -1,5 +1,8 @@
 /*
- * Copyright (C) Bernhard Seybold. All rights reserved.
+ * Chessplorer-Lib - an open source chess library written in Java
+ * Copyright (C) 2016 Chessplorer.org
+ * Copyright (C) 2012-2016 Gerhard Kalab
+ * Copyright (C) 2002-2003 Bernhard Seybold
  *
  * This software is published under the terms of the LGPL Software License,
  * a copy of which has been included with this distribution in the LICENSE.txt
@@ -8,10 +11,7 @@
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- *
- * $Id: PGNSyntaxError.java,v 1.1 2002/12/08 13:27:34 BerniMan Exp $
  */
-
 package chesspresso.pgn;
 
 /**
@@ -26,16 +26,16 @@ public class PGNSyntaxError extends java.lang.Exception
         ERROR   = 0,
         WARNING = 1,
         MESSAGE = 2;
-    
+
     //======================================================================
-    
+
     private int m_severity;
     private String m_filename;
     private int m_lineNumber;
     private String m_lastToken;
 
     //======================================================================
-    
+
     public PGNSyntaxError(int severity, String msg, String filename, int lineNumber, String lastToken)
     {
         super(msg);
@@ -44,16 +44,16 @@ public class PGNSyntaxError extends java.lang.Exception
         m_lineNumber = lineNumber;
         m_lastToken = lastToken;
     }
-    
+
     //======================================================================
-    
+
     public int getSeverity()     {return m_severity;}
     public String getFilename()  {return m_filename;}
     public int getLineNumber()   {return m_lineNumber;}
     public String getLastToken() {return m_lastToken;}
 
     //======================================================================
-    
+
     public String toString()
     {
         if (m_severity == ERROR) {

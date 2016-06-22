@@ -1,9 +1,17 @@
 /*
- * MoveTests.java
+ * Chessplorer-Lib - an open source chess library written in Java
+ * Copyright (C) 2016 Chessplorer.org
+ * Copyright (C) 2012-2016 Gerhard Kalab
+ * Copyright (C) 2002-2003 Bernhard Seybold
  *
- * Created on 7. September 2001, 10:32
+ * This software is published under the terms of the LGPL Software License,
+ * a copy of which has been included with this distribution in the LICENSE.txt
+ * file.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
  */
-
 package chesspresso.move;
 
 import chesspresso.Chess;
@@ -12,7 +20,7 @@ import junit.framework.*;
 /**
  *
  * @author  BerniMan
- * @version 
+ * @version
  */
 public class MoveTests extends TestCase
 {
@@ -21,14 +29,14 @@ public class MoveTests extends TestCase
     {
         return new TestSuite(MoveTests.class);
     }
-    
+
     public static void main (String[] args)
     {
         junit.textui.TestRunner.run(suite());
     }
 
     //======================================================================
-    
+
     private void checkMove(short move,
                            int from, int to,
                            boolean isCapturing, boolean isPromo, int promoPiece, boolean isEPMove,
@@ -51,7 +59,7 @@ public class MoveTests extends TestCase
         assertEquals("isSpecial is wrong " + Move.getString(move), isSpecial, Move.isSpecial(move));
         assertEquals("isValid is wrong " + Move.getString(move),   isValid  , Move.isValid(move));
     }
-    
+
     public void testMove() throws Exception
     {
         for (int from = 0; from < Chess.NUM_OF_SQUARES; from++) {
@@ -90,7 +98,7 @@ public class MoveTests extends TestCase
                           false, true);
             }
         }
-        
+
         checkMove(Move.WHITE_SHORT_CASTLE,
                   Chess.E1, Chess.G1,
                   false, false, Chess.NO_PIECE, false,

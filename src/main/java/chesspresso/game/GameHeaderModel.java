@@ -1,5 +1,8 @@
 /*
- * Copyright (C) Bernhard Seybold. All rights reserved.
+ * Chessplorer-Lib - an open source chess library written in Java
+ * Copyright (C) 2016 Chessplorer.org
+ * Copyright (C) 2012-2016 Gerhard Kalab
+ * Copyright (C) 2002-2003 Bernhard Seybold
  *
  * This software is published under the terms of the LGPL Software License,
  * a copy of which has been included with this distribution in the LICENSE.txt
@@ -8,10 +11,7 @@
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- *
- * $Id: GameHeaderModel.java,v 1.1 2002/12/08 13:27:34 BerniMan Exp $
  */
-
 package chesspresso.game;
 
 import chesspresso.*;
@@ -27,12 +27,12 @@ import java.io.*;
  */
 public class GameHeaderModel
 {
-    
+
     //TODO store standard tags in variables, not array of string (eg elo as short)
     //     check tagValue for consistency, throw IllegalTagValue if wrong
     //     in pgnreader, issue warning if value is incorrect
     //TODO fen as standard tag, most probably not
-    
+
     private static final int
         INDEX_EVENT = 0,
         INDEX_SITE = 1,
@@ -46,33 +46,33 @@ public class GameHeaderModel
         INDEX_EVENT_DATE = 9,
         INDEX_ECO = 10,
         NUM_OF_STANDARD_TAGS = 11;
-    
+
     private static final String[] TAG_NAMES =
         {PGN.TAG_EVENT, PGN.TAG_SITE, PGN.TAG_DATE, PGN.TAG_ROUND,
          PGN.TAG_WHITE, PGN.TAG_BLACK, PGN.TAG_RESULT,
          PGN.TAG_WHITE_ELO, PGN.TAG_BLACK_ELO, PGN.TAG_EVENT_DATE, PGN.TAG_ECO};
-    
+
     public static final int
         MODE_SEVEN_TAG_ROASTER = 0,  // need to be consecutive!
         MODE_STANDARD_TAGS     = 1,
         MODE_ALL_TAGS          = 2;
-    
+
     /*================================================================================*/
-    
+
     private String[] m_standardTags;
     private LinkedList m_otherTags;
     private LinkedList m_otherTagValues;
     private long m_long;
-    
+
     /*================================================================================*/
-    
+
     public GameHeaderModel()
     {
         m_standardTags = new String[NUM_OF_STANDARD_TAGS];
         m_otherTags = null;
         m_long = -1;
     }
-    
+
     public GameHeaderModel(DataInput in, int mode) throws IOException
     {
         m_standardTags = new String[NUM_OF_STANDARD_TAGS];
@@ -80,22 +80,22 @@ public class GameHeaderModel
         m_long = -1;
         load(in, mode);
     }
-    
+
     /*================================================================================*/
     // use to store game position in file
-    
+
     public long getLong() {return m_long;}
     public void setLong(long l) {m_long = l;}
-    
+
     /*================================================================================*/
-    
+
     private int getStandardTagIndex(String tagName)
     {
         for (int i = 0; i < NUM_OF_STANDARD_TAGS; i++) {
             if (TAG_NAMES[i].equals(tagName)) return i;
         }
         return -1;
-        
+
 //        if      (PGN.TAG_EVENT.equals(tagName))      return INDEX_EVENT;
 //        else if (PGN.TAG_SITE.equals(tagName))       return INDEX_SITE;
 //        else if (PGN.TAG_DATE.equals(tagName))       return INDEX_DATE;
@@ -109,7 +109,7 @@ public class GameHeaderModel
 //        else if (PGN.TAG_ECO.equals(tagName))        return INDEX_ECO;
 //        else                                           return -1;
     }
-    
+
     public String getTag(String tagName)
     {
         int index = getStandardTagIndex(tagName);
@@ -123,7 +123,7 @@ public class GameHeaderModel
             return null;
         }
     }
-    
+
     public void setTag(String tagName, String tagValue)
     {
         int index = getStandardTagIndex(tagName);
@@ -142,12 +142,12 @@ public class GameHeaderModel
             }
         }
     }
-    
+
     public String[] getTags()
     {
         int numOfTags = (m_otherTags == null ? 0 : m_otherTags.size());
         for (int i = 0; i < NUM_OF_STANDARD_TAGS; i++) if (m_standardTags[i] != null) numOfTags++;
-        
+
         String[] tags = new String[numOfTags];
         int index = 0;
         for (int i = 0; i < NUM_OF_STANDARD_TAGS; i++) {
@@ -161,10 +161,10 @@ public class GameHeaderModel
         }
         return tags;
     }
-    
+
     /*================================================================================*/
     // convenience methods for tags
-    
+
     public String getEvent()        {return m_standardTags[INDEX_EVENT] == null ? "?" : m_standardTags[INDEX_EVENT];}
     public String getSite()         {return m_standardTags[INDEX_SITE] == null ? "?" : m_standardTags[INDEX_SITE];}
     public String getDate()         {return m_standardTags[INDEX_DATE] == null ? "????.??.??" : m_standardTags[INDEX_DATE];}
@@ -176,7 +176,7 @@ public class GameHeaderModel
     public String getBlackEloStr()  {return m_standardTags[INDEX_BLACK_ELO];}
     public String getEventDate()    {return m_standardTags[INDEX_EVENT_DATE];}
     public String getECO()          {return m_standardTags[INDEX_ECO];}
-    
+
     public int getResult()
     {
         // TODO combine with PGNReader.isResultString
@@ -187,7 +187,7 @@ public class GameHeaderModel
         else if ("*".equals(result))       return Chess.RES_NOT_FINISHED;
         else                               return Chess.NO_RES;
     }
-    
+
     public int getWhiteElo()
     {
         try {
@@ -198,7 +198,7 @@ public class GameHeaderModel
             return 0;  // =====>
         }
     }
-    
+
     public int getBlackElo()
     {
         try {
@@ -209,15 +209,15 @@ public class GameHeaderModel
             return 0;  // =====>
         }
     }
-        
+
     /*================================================================================*/
-    
+
     private String readUTFNonNull(DataInput in) throws IOException
     {
         String s = in.readUTF();
         return s.equals("") ? null : s;
     }
-    
+
     public void load(DataInput in, int mode) throws IOException
     {
         setTag(PGN.TAG_EVENT, readUTFNonNull(in));
@@ -227,24 +227,24 @@ public class GameHeaderModel
         setTag(PGN.TAG_WHITE, readUTFNonNull(in));
         setTag(PGN.TAG_BLACK, readUTFNonNull(in));
         setTag(PGN.TAG_RESULT, readUTFNonNull(in));
-        
+
         if (mode <= MODE_SEVEN_TAG_ROASTER) return;  // =====>
-        
+
         setTag(PGN.TAG_WHITE_ELO, readUTFNonNull(in));
         setTag(PGN.TAG_BLACK_ELO, readUTFNonNull(in));
         setTag(PGN.TAG_EVENT_DATE, readUTFNonNull(in));
         setTag(PGN.TAG_ECO, readUTFNonNull(in));
-        
+
         if (mode <= MODE_STANDARD_TAGS) return;  // =====>
-        
+
         // NOT YET SUPPORTED
     }
-    
+
     private void writeUTFNonNull(DataOutput out, String s) throws IOException
     {
         out.writeUTF(s == null ? "" : s);
     }
-    
+
     public void save(DataOutput out, int mode) throws IOException
     {
         writeUTFNonNull(out, getEvent());
@@ -254,21 +254,21 @@ public class GameHeaderModel
         writeUTFNonNull(out, getWhite());
         writeUTFNonNull(out, getBlack());
         writeUTFNonNull(out, getResultStr());
-        
+
         if (mode <= MODE_SEVEN_TAG_ROASTER) return;  // =====>
-        
+
         writeUTFNonNull(out, getWhiteEloStr());
         writeUTFNonNull(out, getBlackEloStr());
         writeUTFNonNull(out, getEventDate());
         writeUTFNonNull(out, getECO());
-        
+
         if (mode <= MODE_STANDARD_TAGS) return;  // =====>
-        
+
         // NOT YET SUPPORTED
     }
-    
+
     /*================================================================================*/
-    
+
     private static String getLastName(String name)
     {
         int index = name.indexOf(',');
@@ -283,7 +283,7 @@ public class GameHeaderModel
             }
         }
     }
-    
+
     private static boolean isStringSimilar(String s1, String s2)
     {
         if (s1 == null) {
@@ -307,7 +307,7 @@ public class GameHeaderModel
             return (2 * hits >= total);
         }
     }
-    
+
     public boolean isSimilar(GameHeaderModel headerModel)
     {
         return isStringSimilar(getWhite(), headerModel.getWhite()) &&
@@ -315,8 +315,8 @@ public class GameHeaderModel
 //        return isStringSimilar(getLastName(getWhite()), getLastName(headerModel.getWhite())) &&
 //               isStringSimilar(getLastName(getBlack()), getLastName(headerModel.getBlack()));
     }
-    
+
     /*================================================================================*/
-    
+
     public String toString() {return getWhite() + " - " + getBlack() + " " + getResultStr() + " (" + getDate() + ")";}
 }

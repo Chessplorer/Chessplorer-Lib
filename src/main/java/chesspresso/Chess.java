@@ -1,5 +1,8 @@
 /*
- * Copyright (C) Bernhard Seybold. All rights reserved.
+ * Chessplorer-Lib - an open source chess library written in Java
+ * Copyright (C) 2016 Chessplorer.org
+ * Copyright (C) 2012-2016 Gerhard Kalab
+ * Copyright (C) 2002-2003 Bernhard Seybold
  *
  * This software is published under the terms of the LGPL Software License,
  * a copy of which has been included with this distribution in the LICENSE.txt
@@ -8,10 +11,7 @@
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- *
- * $Id: Chess.java,v 1.2 2002/12/18 19:47:58 BerniMan Exp $
  */
-
 package chesspresso;
 
 
@@ -39,19 +39,19 @@ public abstract class Chess
 {
     // TODO make piece str configurable (even use Locale?)
     // TODO rename col, row to file, rank?
-    
-    
+
+
     /*========== squares, coordinates ==========*/
-    
+
     public static final int
         NUM_OF_COLS = 8,
         NUM_OF_ROWS = 8,
         NUM_OF_SQUARES = NUM_OF_COLS * NUM_OF_ROWS;
-    
+
     public static final int
         RES_WHITE_WINS = 0, RES_DRAW = 1, RES_BLACK_WINS = 2, RES_NOT_FINISHED = 3,
         NO_RES = -1;
-    
+
     public static final int
         A8 = 56, B8 = 57, C8 = 58, D8 = 59, E8 = 60, F8 = 61, G8 = 62, H8 = 63,
         A7 = 48, B7 = 49, C7 = 50, D7 = 51, E7 = 52, F7 = 53, G7 = 54, H7 = 55,
@@ -61,10 +61,10 @@ public abstract class Chess
         A3 = 16, B3 = 17, C3 = 18, D3 = 19, E3 = 20, F3 = 21, G3 = 22, H3 = 23,
         A2 =  8, B2 =  9, C2 = 10, D2 = 11, E2 = 12, F2 = 13, G2 = 14, H2 = 15,
         A1 =  0, B1 =  1, C1 =  2, D1 =  3, E1 =  4, F1 =  5, G1 =  6, H1 =  7;
-    
+
     public static final int
         NO_COL = -1, NO_ROW = -1, NO_SQUARE = -1;
-    
+
     /**
      * Converts coordinates to square index.
      *
@@ -76,7 +76,7 @@ public abstract class Chess
     {
         return row * NUM_OF_COLS + col;
     }
-    
+
     /**
      * Extract the row of a square index.
      *
@@ -87,7 +87,7 @@ public abstract class Chess
     {
         return sqi / NUM_OF_COLS;
     }
-    
+
     /**
      * Extract the column of a square index.
      *
@@ -98,7 +98,7 @@ public abstract class Chess
     {
         return sqi % NUM_OF_COLS;
     }
-    
+
     /**
      * Returns the row difference from one square index to the other.
      *
@@ -110,7 +110,7 @@ public abstract class Chess
     {
         return (sqi2 / NUM_OF_COLS) - (sqi1 / NUM_OF_COLS);
     }
-    
+
     /**
      * Returns the column difference from one square index to the other.
      *
@@ -122,7 +122,7 @@ public abstract class Chess
     {
         return (sqi2 % NUM_OF_COLS) - (sqi1 % NUM_OF_COLS);
     }
-    
+
     /**
      * Returns the character of a column (file): 'a'..'h'.
      *
@@ -135,7 +135,7 @@ public abstract class Chess
         return c[col+1];
         //return String.valueOf('a' + (char)col);
     }
-    
+
     /**
      * Returns the character of a row (rank): '1'..'8'.
      *
@@ -148,7 +148,7 @@ public abstract class Chess
         return r[row+1];
         //return String.valueOf('1' + (char)row);
     }
-    
+
     /**
      * Returns the algebraic representation of a square "a1".."h8".
      *
@@ -159,7 +159,7 @@ public abstract class Chess
     {
         return new StringBuffer().append(colToChar(sqiToCol(sqi))).append(rowToChar(sqiToRow(sqi))).toString();
     }
-    
+
     /**
      * Returns whether the square is white.
      *
@@ -170,7 +170,7 @@ public abstract class Chess
     {
         return ((sqiToCol(sqi) + sqiToRow(sqi)) % 2) != 0;
     }
-    
+
     /**
      * Returns the column represented by the character.
      *
@@ -185,7 +185,7 @@ public abstract class Chess
             return NO_COL;
         }
     }
-    
+
     /**
      * Returns the row represented by the character.
      *
@@ -200,7 +200,7 @@ public abstract class Chess
             return NO_ROW;
         }
     }
-    
+
     /**
      * Converts a square representation to a square index.
      *
@@ -214,7 +214,7 @@ public abstract class Chess
         int row = charToRow(s.charAt(1)); if (row == NO_ROW) return NO_SQUARE;
         return coorToSqi(col, row);
     }
-    
+
     /**
      * Converts a col and row character pair to a square index.
      *
@@ -228,26 +228,26 @@ public abstract class Chess
         int row = charToRow(rowCh); if (row == NO_ROW) return NO_SQUARE;
         return coorToSqi(col, row);
     }
-    
+
    /*========== pieces and stones ==========*/
-    
+
     public static final short
         MIN_PIECE = 0, MAX_PIECE = 6,
         // promotion pieces are from 0 to 4 to allow compact coding of moves
         KING = 6, PAWN = 5, QUEEN = 4, ROOK = 3, BISHOP = 2, KNIGHT = 1,
         NO_PIECE = 0;
-    
+
     public static final short
         MIN_STONE = -6, MAX_STONE = 6,
         WHITE_KING   = -6, WHITE_PAWN   = -5, WHITE_QUEEN  = -4, WHITE_ROOK   = -3,
-        WHITE_BISHOP = -2, WHITE_KNIGHT = -1, 
+        WHITE_BISHOP = -2, WHITE_KNIGHT = -1,
         BLACK_KING   =  6, BLACK_PAWN   =  5, BLACK_QUEEN  =  4, BLACK_ROOK   =  3,
-        BLACK_BISHOP =  2, BLACK_KNIGHT =  1, 
+        BLACK_BISHOP =  2, BLACK_KNIGHT =  1,
         NO_STONE  = NO_PIECE;
-    
+
     public static final char pieceChars[] =
         {' ', 'N', 'B', 'R', 'Q', 'P', 'K'};
-    
+
     /**
      * Extracts the color of a stone.
      *
@@ -260,7 +260,7 @@ public abstract class Chess
         else if (stone > 0) {return BLACK;}
         else                {return NOBODY;}
     }
-    
+
     /**
      * Check whether the stone is of a certain color.
      *
@@ -272,7 +272,7 @@ public abstract class Chess
     {
         return (color == WHITE && stone < 0) || (color == BLACK && stone > 0);
     }
-    
+
     /**
      * Converts a stone to a piece (remove color info).
      *
@@ -283,7 +283,7 @@ public abstract class Chess
     {
         if (stone < 0) return -stone; else return stone;
     }
-    
+
     /**
      * Change the color of the stone.
      *
@@ -294,7 +294,7 @@ public abstract class Chess
     {
         return -stone;
     }
-    
+
     /**
      * Converts a character to a piece.
      *
@@ -308,7 +308,7 @@ public abstract class Chess
         }
         return NO_PIECE;
     }
-    
+
     /**
      * Returns a character representing the piece.
      *
@@ -320,7 +320,7 @@ public abstract class Chess
         if (piece < 0 || piece > MAX_PIECE) return '?';
         return pieceChars[piece];
     }
-    
+
     /**
      * Returns a character representing the stone.
      *
@@ -331,7 +331,7 @@ public abstract class Chess
     {
         if (stone < 0) return pieceChars[-stone]; else return pieceChars[stone];
     }
-    
+
     /**
      * Converts a piece, color pair to a stone.
      *
@@ -345,13 +345,13 @@ public abstract class Chess
         else if (color == BLACK) {return  piece;}
         else                     {return  NO_PIECE;}
     }
- 
-    
+
+
     /*========== players ==========*/
-    
+
     public static final int
         WHITE = 0, BLACK = 1, NOBODY = -1;
-    
+
     /**
      * Returns the opposite player.
      *
@@ -362,9 +362,9 @@ public abstract class Chess
     {
         return 1-player;
     }
-    
+
     /*========== plies, moves ==========*/
-    
+
     /**
      * Returns whether it is white move at the given ply.
      *
@@ -374,7 +374,7 @@ public abstract class Chess
     {
         return plyNumber % 2 == 0;
     }
-    
+
     /**
      * Converts a ply to a move number
      *
@@ -384,5 +384,5 @@ public abstract class Chess
     {
         return plyNumber / 2 + 1;
     }
-    
+
 }

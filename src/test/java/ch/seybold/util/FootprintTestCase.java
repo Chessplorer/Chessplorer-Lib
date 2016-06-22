@@ -1,5 +1,8 @@
 /*
- * Copyright (C) Bernhard Seybold. All rights reserved.
+ * Chessplorer-Lib - an open source chess library written in Java
+ * Copyright (C) 2016 Chessplorer.org
+ * Copyright (C) 2012-2016 Gerhard Kalab
+ * Copyright (C) 2002-2003 Bernhard Seybold
  *
  * This software is published under the terms of the LGPL Software License,
  * a copy of which has been included with this distribution in the LICENSE.txt
@@ -8,10 +11,7 @@
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- *
- * $Id: FootprintTestCase.java,v 1.2 2003/01/04 16:17:14 BerniMan Exp $
  */
-
 package ch.seybold.util;
 
 
@@ -28,33 +28,33 @@ import java.util.zip.*;
  */
 public abstract class FootprintTestCase extends TestCase
 {
-    
+
     private static LineNumberReader m_in;
     private static PrintStream m_out;
 
     //======================================================================
-    
+
     private class FootprintWriter extends Writer
     {
         public void close() throws IOException
         {
             m_out.close();
         }
-        
+
         public void flush() throws IOException
         {
             m_out.flush();
         }
-        
+
         public void write(char[] cbuf, int off, int len) throws IOException
         {
             FootprintTestCase.this.write(new String(cbuf, off, len));
         }
-        
+
     }
-    
+
     //======================================================================
-    
+
     public void startFootprint(String name, boolean zipped) throws Exception
     {
         String packageName = getClass().getPackage().getName().replace('.', '/');
@@ -75,7 +75,7 @@ public abstract class FootprintTestCase extends TestCase
             }
         }
     }
-    
+
     public void stopFootprint() throws Exception
     {
         if (m_in != null) {
@@ -100,19 +100,19 @@ public abstract class FootprintTestCase extends TestCase
             fail("No input footprint found, output produced");
         }
     }
-    
+
     //======================================================================
-    
+
     protected Writer getFootprint()
     {
         return new FootprintWriter();
     }
-    
+
     private static boolean ignoreChar(char ch)
     {
         return ch < 32;
     }
-    
+
     private char readChar() throws IOException
     {
         for (;;) {
@@ -120,7 +120,7 @@ public abstract class FootprintTestCase extends TestCase
             if (!ignoreChar(ch)) return ch;
         }
     }
-    
+
     private void write(String s, boolean newline)
     {
         try {
@@ -142,20 +142,20 @@ public abstract class FootprintTestCase extends TestCase
             fail(ex.getMessage());
         }
     }
-    
+
     protected void write(String s)
     {
         write(s, false);
     }
-    
+
     protected void writeln()
     {
         write("", true);
     }
-    
+
     protected void writeln(String s)
     {
         write(s, true);
     }
-    
+
 }

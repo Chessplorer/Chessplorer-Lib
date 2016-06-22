@@ -1,5 +1,8 @@
 /*
- * Copyright (C) Bernhard Seybold. All rights reserved.
+ * Chessplorer-Lib - an open source chess library written in Java
+ * Copyright (C) 2016 Chessplorer.org
+ * Copyright (C) 2012-2016 Gerhard Kalab
+ * Copyright (C) 2002-2003 Bernhard Seybold
  *
  * This software is published under the terms of the LGPL Software License,
  * a copy of which has been included with this distribution in the LICENSE.txt
@@ -8,10 +11,7 @@
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- *
- * $Id: LightWeightPosition.java,v 1.1 2002/12/08 13:27:36 BerniMan Exp $
  */
-
 package chesspresso.position;
 
 import chesspresso.*;
@@ -35,9 +35,9 @@ public class LightWeightPosition extends AbstractMutablePosition
     private int m_toPlay;
     private int m_plyNumber;
     private int m_halfMoveClock;
-    
+
     /*================================================================================*/
-    
+
     public LightWeightPosition()
     {
         m_stone = new int[Chess.NUM_OF_SQUARES];
@@ -49,18 +49,18 @@ public class LightWeightPosition extends AbstractMutablePosition
         this();
         set(position);
     }
-    
+
     /*================================================================================*/
-    
-    public int getStone(int sqi)  {return m_stone[sqi];}    
+
+    public int getStone(int sqi)  {return m_stone[sqi];}
     public int getToPlay()        {return m_toPlay;}
     public int getSqiEP()         {return m_sqiEP;}
-    public int getCastles()       {return m_castles;}    
-    public int getPlyNumber()     {return m_plyNumber;}    
+    public int getCastles()       {return m_castles;}
+    public int getPlyNumber()     {return m_plyNumber;}
     public int getHalfMoveClock() {return m_halfMoveClock;}
 
     /*================================================================================*/
-    
+
     public void setStone(int sqi, int stone)
     {
         if (m_stone[sqi] != stone) {
@@ -76,7 +76,7 @@ public class LightWeightPosition extends AbstractMutablePosition
             fireCastlesChanged();
         }
     }
-    
+
     public void setSqiEP(int sqiEP)
     {
         if (m_sqiEP != sqiEP) {
@@ -84,7 +84,7 @@ public class LightWeightPosition extends AbstractMutablePosition
             fireSqiEPChanged();
         }
     }
-    
+
     public void setToPlay(int toPlay)
     {
         if (m_toPlay != toPlay) {
@@ -92,7 +92,7 @@ public class LightWeightPosition extends AbstractMutablePosition
             fireToPlayChanged();
         }
     }
-    
+
     public void setPlyNumber(int plyNumber)
     {
         if (m_plyNumber != plyNumber) {
@@ -100,7 +100,7 @@ public class LightWeightPosition extends AbstractMutablePosition
             firePlyNumberChanged();
         }
     }
-    
+
     public void setHalfMoveClock(int halfMoveClock)
     {
         if (m_halfMoveClock != halfMoveClock) {
@@ -108,29 +108,29 @@ public class LightWeightPosition extends AbstractMutablePosition
             fireHalfMoveClockChanged();
         }
     }
-    
+
     /*================================================================================*/
-    
+
     public void doMove(short move) throws IllegalMoveException
     {
         throw new IllegalMoveException ("Moves not supported");
     }
-    
+
     public boolean canUndoMove() {return false;}
-    
+
     public boolean undoMove() {return false;}
-    
+
     public short getLastShortMove() throws IllegalMoveException
     {
         throw new IllegalMoveException ("Moves not supported");
     }
-    
+
     public Move getLastMove() throws IllegalMoveException
     {
         throw new IllegalMoveException ("Moves not supported");
     }
-    
+
     public boolean canRedoMove() {return false;}
     public boolean redoMove() {return false;}
-    
+
 }

@@ -1,5 +1,8 @@
 /*
- * Copyright (C) Bernhard Seybold. All rights reserved.
+ * Chessplorer-Lib - an open source chess library written in Java
+ * Copyright (C) 2016 Chessplorer.org
+ * Copyright (C) 2012-2016 Gerhard Kalab
+ * Copyright (C) 2002-2003 Bernhard Seybold
  *
  * This software is published under the terms of the LGPL Software License,
  * a copy of which has been included with this distribution in the LICENSE.txt
@@ -9,7 +12,6 @@
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
  */
-
 package chesspresso.game;
 
 import java.io.DataOutput;
@@ -31,7 +33,7 @@ import chesspresso.position.PositionChangeListener;
  *
  * A chess game consists of the following parts:
  *  <ul>
-      <li> {@link GameHeaderModel} containing information about the game header, 
+      <li> {@link GameHeaderModel} containing information about the game header,
  *         for instance white name, event, site
  *    <li> {@link GameMoveModel} containing the moves, lines, comments of the game.
  *    <li> a cursor and the current position in the game.
@@ -54,9 +56,9 @@ import chesspresso.position.PositionChangeListener;
  */
 public class Game implements PositionChangeListener
 {
-    
+
     private static boolean DEBUG = false;
-    
+
     private GameModel m_model;
     private GameHeaderModel m_header;
     private GameMoveModel m_moves;
@@ -67,7 +69,7 @@ public class Game implements PositionChangeListener
     private List<GameModelChangeListener> m_changeListeners;
 
 	private boolean error=false;
-    
+
     public Game()
     {
         this(new GameModel());
@@ -79,23 +81,23 @@ public class Game implements PositionChangeListener
         m_ignoreNotifications = false;
         m_alwaysAddLine = false;
     }
-    
+
     public GameModel getModel() {return m_model;}
     public Position getPosition() {return m_position;}
     public int getCurNode() {return m_cur;}
     public int getRootNode() {return 0;}
-    
+
     public void pack()
     {
         m_cur = m_moves.pack(m_cur); // TODO pack headers?
     }
-    
+
     private void setModel(GameModel gameModel)
     {
         m_model = gameModel;
         m_header = gameModel.getHeaderModel();
         m_moves = gameModel.getMoveModel();
-        
+
         String fen = m_header.getTag(PGN.TAG_FEN);
         if (fen != null) {
             setPosition(new Position (fen, false));
@@ -103,28 +105,28 @@ public class Game implements PositionChangeListener
             setPosition(Position.createInitialPosition());
         }
     }
-    
+
     private void setPosition(Position position)
     {
         m_position = position;
         m_position.addPositionChangeListener(this);
         m_cur = 0;
     }
-    
+
     public void setAlwaysAddLine(boolean alwaysAddLine) {m_alwaysAddLine = alwaysAddLine;}
-    
+
     public void addChangeListener(GameModelChangeListener listener)
     {
         if (m_changeListeners == null) m_changeListeners = new ArrayList<GameModelChangeListener>();
         m_changeListeners.add(listener);
     }
-    
+
     public void removeChangeListener(GameModelChangeListener listener)
     {
         m_changeListeners.remove(listener);
         if (m_changeListeners.size() == 0) m_changeListeners = null;
     }
-    
+
     protected void fireMoveModelChanged()
     {
         if (m_changeListeners != null) {
@@ -133,15 +135,15 @@ public class Game implements PositionChangeListener
             }
         }
     }
-    
+
    public void notifyPositionChanged(ImmutablePosition position)
     {
     }
-    
+
     public void notifyMoveDone(ImmutablePosition position, short move)
     {
         if (DEBUG) System.out.println("ChGame: move made in position " + move);
-        
+
         if (!m_ignoreNotifications) {
             if (!m_alwaysAddLine) {
                 short[] moves = getNextShortMoves();
@@ -156,21 +158,21 @@ public class Game implements PositionChangeListener
             fireMoveModelChanged();
         }
     }
-    
+
     public void notifyMoveUndone(ImmutablePosition position)
     {
         if (DEBUG) System.out.println("ChGame: move taken back in position");
-        
+
         if (!m_ignoreNotifications) {
             m_cur = m_moves.goBack(m_cur, true);
         }
     }
-    
-   
+
+
     public String getTag(String tagName) {return m_header.getTag(tagName);}
-    
+
     public String[] getTags() {return m_header.getTags();}
-    
+
 	public void setTag(String tagName, String tagValue) {
 		String fen = tagValue;
 		if (PGN.TAG_FEN.equals(tagName)) {
@@ -186,7 +188,7 @@ public class Game implements PositionChangeListener
 		}
 		m_header.setTag(tagName, fen);
 	}
-    
+
     public String getEvent()       {return m_header.getEvent();}
     public String getSite()        {return m_header.getSite();}
     public String getDate()        {return m_header.getDate();}
@@ -198,11 +200,11 @@ public class Game implements PositionChangeListener
     public String getBlackEloStr() {return m_header.getBlackEloStr();}
     public String getEventDate()   {return m_header.getEventDate();}
     public String getECO()         {return m_header.getECO();}
-    
+
     public int getResult()         {return m_header.getResult();}
     public int getWhiteElo()       {return m_header.getWhiteElo();}
     public int getBlackElo()       {return m_header.getBlackElo();}
-        
+
     /**
      * Returns whether the given position occurs in the main line of this game.
      *
@@ -222,7 +224,7 @@ public class Game implements PositionChangeListener
         gotoNode(index, true);
         return res;
     }
-    
+
     /**
      * Returns info about the game consisting of white player,
      * black player and result.
@@ -233,7 +235,7 @@ public class Game implements PositionChangeListener
     {
         return getWhite() + " - " + getBlack() + " " + getResultStr();
     }
-    
+
     /**
      * Returns info about the game consisting of white player,
      * black player, event, site, date, result, and ECO.
@@ -253,7 +255,7 @@ public class Game implements PositionChangeListener
         }
         return sb.toString();
     }
-    
+
     /**
      * Returns information to display at the header of a game. The information
      * is split in three parts: (1) white and black player plus their elos, (2)
@@ -283,22 +285,22 @@ public class Game implements PositionChangeListener
             throw new RuntimeException("Only 3 header lines supported");
         }
     }
-    
+
     public boolean hasNag(short nag)       {return m_moves.hasNag(m_cur, nag);}
     public short[] getNags()               {return m_cur == 0 ? null : m_moves.getNags(m_cur);}
     public void addNag(short nag)          {m_moves.addNag(m_cur, nag); fireMoveModelChanged();}
     public void removeNag(short nag)       {if (m_moves.removeNag(m_cur, nag)) fireMoveModelChanged();}
-    
+
     public String getComment()             {return m_moves.getComment(m_cur);}
     public String getPreMoveComment()      {return m_moves.getPreMoveComment(m_cur);}
     public String getPostMoveComment()     {return m_moves.getComment(m_cur);}
     public void setComment(String comment) {if (m_moves.setComment(m_cur, comment)) fireMoveModelChanged();}
     public void removeComment()            {if (m_moves.removeComment(m_cur)) fireMoveModelChanged();}
-    
+
     public int getCurrentPly() {return m_position.getPlyNumber();}
     public int getCurrentMoveNumber() {return (m_position.getPlyNumber() + 1) / 2;}
     public int getNextMoveNumber() {return (m_position.getPlyNumber() + 2) / 2;}
-    
+
     public int getNumOfPlies()
     {
         int num = 0;
@@ -309,26 +311,26 @@ public class Game implements PositionChangeListener
         }
         return num;
     }
-    
+
     public int getNumOfMoves() {return Chess.plyToMoveNumber(getNumOfPlies());}
-    
+
     public int getTotalNumOfPlies() {return m_moves.getTotalNumOfPlies();}
 
     public Move getLastMove()
     {
         return m_position.getLastMove();
     }
-    
+
     public Move getNextMove()
     {
         return getNextMove(0);
     }
-    
+
     public short getNextShortMove()
     {
         return getNextShortMove(0);
     }
-    
+
     public Move getNextMove(int whichLine)
     {
         short shortMove = m_moves.getMove(m_moves.goForward(m_cur, whichLine));
@@ -345,16 +347,16 @@ public class Game implements PositionChangeListener
             return null;
         }
     }
-    
+
     public short getNextShortMove(int whichLine)
     {
         return m_moves.getMove(m_moves.goForward(m_cur, whichLine));
     }
-    
+
     public boolean hasNextMove() {return m_moves.hasNextMove(m_cur);}
-    
+
     public int getNumOfNextMoves() {return m_moves.getNumOfNextMoves(m_cur);}
-    
+
     public short[] getNextShortMoves()
     {
         short[] moves = new short[m_moves.getNumOfNextMoves(m_cur)];
@@ -363,7 +365,7 @@ public class Game implements PositionChangeListener
         }
         return moves;
     }
-    
+
     public Move[] getNextMoves()
     {
         m_position.setNotifyListeners(false);
@@ -383,7 +385,7 @@ public class Game implements PositionChangeListener
         m_position.setNotifyListeners(true);
         return moves;
     }
-    
+
     public Move[] getMainLine()
     {
         int num = 0;
@@ -392,20 +394,20 @@ public class Game implements PositionChangeListener
             index = m_moves.goForward(index);
             num++;
         }
-        
+
         Move[] moves = new Move[num];
         for (int i=0; i<num; i++) {
             moves[i] = goForwardAndGetMove(true);
         }
-        
+
         m_position.setNotifyListeners(false);
         for (int i=0; i<moves.length; i++) m_position.undoMove();
         m_position.setNotifyListeners(true);
-        
+
         return moves;
     }
-    
-    public boolean goBack()                    {return goBack(false);}    
+
+    public boolean goBack()                    {return goBack(false);}
     public boolean goForward()                 {return goForward(false);}
     public boolean goForward(int whichLine)    {return goForward(whichLine, false);}
     public void gotoStart()                    {gotoStart(false);}
@@ -415,11 +417,11 @@ public class Game implements PositionChangeListener
     public void gotoNode(int node)             {gotoNode(node, false);}
     public void gotoPosition(ImmutablePosition pos)  {gotoPosition(pos, false);}
     public void deleteCurrentLine()            {deleteCurrentLine(false);}
-    
+
     private boolean goBack(boolean silent)
     {
         if (DEBUG) System.out.println("goBack");
-        
+
         int index = m_moves.goBack(m_cur, true);
         if (index != -1) {
             m_cur = index;
@@ -433,11 +435,11 @@ public class Game implements PositionChangeListener
             return false;
         }
     }
-    
+
     private boolean goBackInLine(boolean silent)
     {
         if (DEBUG) System.out.println("goBackInLine");
-        
+
         int index = m_moves.goBack(m_cur, false);
         if (index != -1) {
             m_cur = index; // needs to be set before undoing the move to allow listeners to check for curNode
@@ -451,25 +453,25 @@ public class Game implements PositionChangeListener
             return false;
         }
     }
-    
+
     private boolean goForward(boolean silent)
     {
         if (DEBUG) System.out.println("goForward");
-        
+
         return goForward(0, silent);
     }
-    
+
     private Move goForwardAndGetMove(boolean silent)
     {
         if (DEBUG) System.out.println("goForwardAndGetMove");
-        
+
         return goForwardAndGetMove(0, silent);
     }
-    
+
     private boolean goForward(int whichLine, boolean silent)
     {
         if (DEBUG) System.out.println("goForward " + whichLine);
-        
+
         int index = m_moves.goForward(m_cur, whichLine);
         short shortMove = m_moves.getMove(index);
         if (DEBUG) System.out.println("  move = " + Move.getString(shortMove));
@@ -490,11 +492,11 @@ public class Game implements PositionChangeListener
         }
         return false;
     }
-    
+
     private Move goForwardAndGetMove(int whichLine, boolean silent)
     {
         if (DEBUG) System.out.println("goForwardAndGetMove " + whichLine);
-        
+
         int index = m_moves.goForward(m_cur, whichLine);
         short shortMove = m_moves.getMove(index);
         if (DEBUG) System.out.println("  move = " + Move.getString(shortMove));
@@ -516,33 +518,33 @@ public class Game implements PositionChangeListener
         }
         return null;
     }
-    
+
     private void gotoStart(boolean silent)
     {
         while (goBack(silent)) ;
     }
-    
+
     private void gotoEndOfLine(boolean silent)
     {
         while (goForward(silent)) ;
     }
-    
+
     private void goBackToLineBegin(boolean silent)
     {
         if (DEBUG) System.out.println("goBackToLineBegin");
-        
+
         while (goBackInLine(silent)) ;
     }
-    
+
     private void goBackToMainLine(boolean silent)
     {
         if (DEBUG) System.out.println("goBackToMainLine");
-        
+
         goBackToLineBegin(silent);
         goBack(silent);
         goForward(silent);
     }
-     
+
     private int getNumOfPliesToRoot(int node)
     {
         int plies = 0;
@@ -552,7 +554,7 @@ public class Game implements PositionChangeListener
         }
         return plies;
     }
-    
+
     private int[] getNodesToRoot(int node)
     {
         int[] nodes;
@@ -571,11 +573,11 @@ public class Game implements PositionChangeListener
         }
         return nodes;
     }
-    
+
     public void gotoNode(int node, boolean silent)
     {
         int[] nodeNodes = getNodesToRoot(node);
-        
+
         gotoStart(silent);
         for (int i = nodeNodes.length - 2; i >= 0; i--) {
             int nextMoveIndex = 0;
@@ -588,12 +590,12 @@ public class Game implements PositionChangeListener
         }
         m_cur = node;  // now that we have made all the moves, set cur to node
     }
-    
-    
+
+
     public void gotoPosition(ImmutablePosition pos, boolean silent)
     {
-        if (m_position.equals(pos)) return; 
-        
+        if (m_position.equals(pos)) return;
+
         int curNode = getCurNode();
         gotoStart(true);
         do {
@@ -601,12 +603,12 @@ public class Game implements PositionChangeListener
                 int posNode = getCurNode();
                 gotoNode(curNode, true);
                 gotoNode(posNode, silent);
-                return;  
+                return;
             }
         } while (goForward(true));
     }
-    
-   
+
+
     public void deleteCurrentLine(boolean silent)
     {
         int index = m_cur;
@@ -615,7 +617,7 @@ public class Game implements PositionChangeListener
             fireMoveModelChanged();
         }
     }
-    
+
     /**
      * Method to traverse the game in postfix order
      * (first the lines, then the main line). This method is used by {@link chesspresso.pgn.PGN}.
@@ -630,39 +632,39 @@ public class Game implements PositionChangeListener
         traverse(listener, withLines, m_position.getPlyNumber(), 0);
         gotoNode(index, true);
     }
-    
+
     private void traverse(GameListener listener, boolean withLines, int plyNumber, int level)
     {
         while(hasNextMove()) {
             int numOfNextMoves = getNumOfNextMoves();
-            
+
             Move move = goForwardAndGetMove(true);
             listener.notifyMove(move, getNags(), getPreMoveComment(), getPostMoveComment(), plyNumber, level);
-            
+
             if (withLines && numOfNextMoves > 1) {
                 for (int i=1; i<numOfNextMoves; i++) {
                     goBack(true);
                     listener.notifyLineStart(level);
-                    
+
                     move = goForwardAndGetMove(i, true);
                     listener.notifyMove(move, getNags(), getPreMoveComment(), getPostMoveComment(), plyNumber, level + 1);
-                
+
                     traverse(listener, withLines, plyNumber + 1, level + 1);
-                    
+
                     goBackToMainLine(true);
                     if (i > 0) listener.notifyLineEnd(level);
                 }
             }
-            
+
             plyNumber++;
         }
     }
-    
+
     public void save(DataOutput out, int headerMode, int movesMode) throws IOException
     {
         m_model.save(out, headerMode, movesMode);
     }
-    
+
     /**
      * Returns the hash code of the game, which is defined as the hash code of the
      * move model. That means two game are considered equal if they contain exactly the
@@ -674,7 +676,7 @@ public class Game implements PositionChangeListener
     {
         return getModel().hashCode();
     }
-    
+
     /**
      * Returns whether two games are equal. This is the case if they contain exactly the
      * same lines. The header does not matter.
@@ -683,12 +685,12 @@ public class Game implements PositionChangeListener
      */
     public boolean equals(Object obj)
     {
-        if (obj == this) return true;  
+        if (obj == this) return true;
         if (!(obj instanceof Game)) return false;
         Game game = (Game)obj;
         return game.getModel().equals(getModel());
-    }    
-    
+    }
+
     /**
      * Returns a string represention of the game. Implemented as the string
      * represention of the header plus the move model.
@@ -704,7 +706,7 @@ public class Game implements PositionChangeListener
 	public void addPostMoveComment(String comment) {
 		if (m_moves.addComment(m_cur, comment)) fireMoveModelChanged();
 	}
-	
+
 	public void addNullMove() throws IllegalMoveException {
 			getPosition().doMove(Move.NULL_MOVE);
 			getPosition().undoMove();
@@ -719,7 +721,7 @@ public class Game implements PositionChangeListener
 			fireMoveModelChanged();
 		}
 	}
-	
+
 	public void deleteCurrentVariation()
     {
         int index = m_cur;
@@ -733,7 +735,7 @@ public class Game implements PositionChangeListener
 	public void setError(boolean b) {
 		this.error = true;
 	}
-	
+
 	public boolean hasError() {
 		return this.error;
 	}

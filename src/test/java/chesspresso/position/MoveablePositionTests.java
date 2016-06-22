@@ -1,5 +1,8 @@
 /*
- * Copyright (C) Bernhard Seybold. All rights reserved.
+ * Chessplorer-Lib - an open source chess library written in Java
+ * Copyright (C) 2016 Chessplorer.org
+ * Copyright (C) 2012-2016 Gerhard Kalab
+ * Copyright (C) 2002-2003 Bernhard Seybold
  *
  * This software is published under the terms of the LGPL Software License,
  * a copy of which has been included with this distribution in the LICENSE.txt
@@ -8,10 +11,7 @@
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- *
- * $Id: MoveablePositionTests.java,v 1.1 2002/12/08 13:27:28 BerniMan Exp $
  */
-
 package chesspresso.position;
 
 import chesspresso.Chess;
@@ -26,18 +26,18 @@ import java.io.*;
  */
 public abstract class MoveablePositionTests extends MutablePositionTests
 {
-    
+
     protected abstract MoveablePosition createMoveablePosition();
-    
+
     //======================================================================
-    
+
     private String getAllMoves(MoveablePosition position)
     {
         short[] moves = position.getAllMoves();
         Move.normalizeOrder(moves);
         return position.getMovesAsString(moves, true);
     }
-    
+
     private String readLine(LineNumberReader in) throws IOException
     {
         for (;;) {
@@ -49,33 +49,33 @@ public abstract class MoveablePositionTests extends MutablePositionTests
             }
         }
     }
-    
+
     //======================================================================
-    
+
     public void testMove() throws IllegalMoveException
     {
         MoveablePosition position = createMoveablePosition();
-        
+
         position.setStart();
         position.doMove(Move.getPawnMove(Chess.E2, Chess.E4, false, Chess.NO_PIECE));
     }
-    
+
     public void testGenerateMoves_basic()
     {
         MoveablePosition position = createMoveablePosition();
-        
+
         position.setStart();
         assertEquals("Moves in startpos",
                      "{Na3,a3,b3,Nc3,c3,d3,e3,Nf3,f3,g3,Nh3,h3,a4,b4,c4,d4,e4,f4,g4,h4}",
                      getAllMoves(position));
     }
-    
+
     public void testGenerateMoves_extended() throws IOException
-    {        
+    {
         LineNumberReader in = new LineNumberReader(
             new InputStreamReader(
                 ClassLoader.getSystemResourceAsStream("chesspresso/position/testGenerateMoves.txt")));
-        
+
         for (;;) {
             String fen = readLine(in);
             if (fen == null) break; // =====>
@@ -86,5 +86,5 @@ public abstract class MoveablePositionTests extends MutablePositionTests
             assertEquals("Moves wrong in position \"" + fen + "\"", fileMoves, moves);
         }
     }
-    
+
 }
