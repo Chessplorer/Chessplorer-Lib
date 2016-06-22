@@ -1633,6 +1633,33 @@ public final class Position extends AbstractMoveablePosition
         return onlyTheMoves;
     }
 
+    public short[] getAllReCapturingMoves(short lastMove)
+    {
+        if (Move.isValid(lastMove)) {
+            long bbTargets = ofSquare(Move.getToSqi(lastMove));
+            long bbPawnTargets = (getSqiEP() == Chess.NO_SQUARE ? bbTargets : bbTargets | ofSquare(getSqiEP()));
+            return getAllMoves(bbTargets, bbPawnTargets);
+        } else {
+            return new short[0];
+        }
+    }
+
+    public short[] getAllCapturingMoves()
+    {
+        long bbTargets = getToPlay() == Chess.WHITE ? m_bbBlacks : m_bbWhites;
+        // can include sqiEP safely since no pawn can move on sqi if it is set
+        long bbPawnTargets = (getSqiEP() == Chess.NO_SQUARE ? bbTargets : bbTargets | ofSquare(getSqiEP()));
+        return getAllMoves(bbTargets, bbPawnTargets);
+    }
+
+    public short[] getAllNonCapturingMoves()
+    {
+        long bbTargets = getToPlay() == Chess.WHITE ? ~m_bbBlacks : ~m_bbWhites;
+        // can exclude sqiEP safely since no pawn can move on sqi if it is set
+        long bbPawnTargets = (getSqiEP() == Chess.NO_SQUARE ? bbTargets : bbTargets & (~ofSquare(getSqiEP())));
+        return getAllMoves(bbTargets, bbPawnTargets);
+    }
+
     public boolean canMove()
     {
         int cacheInfo = (int)(m_flags >> CAN_MOVE_SHIFT) & CAN_MOVE_MASK;
