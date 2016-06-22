@@ -23,6 +23,8 @@ Modifications
     integration into other applications without the need of separate
     repositories.
 -   The logging mechanism was replaced by [slf4j](http://www.slf4j.org/).
+-   Internationalized with [GNU gettext](https://www.gnu.org/software/gettext/)
+    and translated into English and German.
 
 
 Dependencies
@@ -30,6 +32,7 @@ Dependencies
 
 -   Java 6 or newer
 -   [slf4j 1.7.21](http://www.slf4j.org/)
+-   [gettext-commons 0.9.8](https://code.google.com/archive/p/gettext-commons/)
 
 
 Changelog

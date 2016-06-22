@@ -86,6 +86,30 @@
                 <skipTests>true</skipTests>
             </properties>
         </action>
-        
-        
+        <action>
+            <actionName>CUSTOM-I18N extract</actionName>
+            <displayName>I18N extract</displayName>
+            <goals>
+                <goal>com.googlecode.gettext-commons:gettext-maven-plugin:gettext</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+            <activatedProfiles>
+                <activatedProfile>development</activatedProfile>
+            </activatedProfiles>
+        </action>
+        <action>
+            <actionName>CUSTOM-I18N merge</actionName>
+            <displayName>I18N merge</displayName>
+            <goals>
+                <goal>com.googlecode.gettext-commons:gettext-maven-plugin:merge</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+            <activatedProfiles>
+                <activatedProfile>development</activatedProfile>
+            </activatedProfiles>
+        </action>
     </actions>
