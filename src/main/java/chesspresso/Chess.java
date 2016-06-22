@@ -14,6 +14,9 @@
  */
 package chesspresso;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * General chess-specific definition.
@@ -31,12 +34,14 @@ package chesspresso;
  * are: a white queen, a black pawn. Possible colors (or players) are: white, black
  * and nobody.
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.2 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  *
  */
 public abstract class Chess
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( Chess.class );
+
     // TODO make piece str configurable (even use Locale?)
     // TODO rename col, row to file, rank?
 

@@ -18,15 +18,18 @@ import chesspresso.*;
 import chesspresso.pgn.*;
 import java.util.*;
 import java.io.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public class GameHeaderModel
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( GameHeaderModel.class );
 
     //TODO store standard tags in variables, not array of string (eg elo as short)
     //     check tagValue for consistency, throw IllegalTagValue if wrong
@@ -130,7 +133,7 @@ public class GameHeaderModel
         if (index != -1) {
             m_standardTags[index] = tagValue;
         } else if (!"PlyCount".equals(tagName)) {
-//            System.out.println(tagName + "=" + tagValue);
+            //LOGGER.debug(tagName + "=" + tagValue);
             if (m_otherTags == null) {
                 m_otherTags = new LinkedList(); m_otherTagValues = new LinkedList();
             }

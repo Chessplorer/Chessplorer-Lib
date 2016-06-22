@@ -18,8 +18,8 @@ import chesspresso.move.*;
 
 /**
  *
- * @author $Author: BerniMan $
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public interface MoveablePosition extends MutablePosition
 {

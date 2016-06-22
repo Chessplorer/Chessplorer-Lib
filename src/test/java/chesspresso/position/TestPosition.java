@@ -15,15 +15,18 @@
 package chesspresso.position;
 
 import junit.framework.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Concrete test for the Position class.
  *
  * @author Bernhard Seybold
- * @version $Revision: 1.2 $
+ * @author Andreas Rudolph
  */
 public class TestPosition extends MoveablePositionTests
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( TestPosition.class );
 
     public static Test suite()
     {

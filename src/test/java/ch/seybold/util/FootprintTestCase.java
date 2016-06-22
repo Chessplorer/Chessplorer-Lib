@@ -1,8 +1,5 @@
 /*
- * Chessplorer-Lib - an open source chess library written in Java
- * Copyright (C) 2016 Chessplorer.org
- * Copyright (C) 2012-2016 Gerhard Kalab
- * Copyright (C) 2002-2003 Bernhard Seybold
+ * Copyright (C) Bernhard Seybold. All rights reserved.
  *
  * This software is published under the terms of the LGPL Software License,
  * a copy of which has been included with this distribution in the LICENSE.txt

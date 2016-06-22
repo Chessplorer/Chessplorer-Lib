@@ -16,15 +16,18 @@ package chesspresso.position;
 
 import chesspresso.Chess;
 import junit.framework.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Tests for the FEN class.
  *
  * @author Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Andreas Rudolph
  */
 public class FENTests extends TestCase
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( FENTests.class );
 
     public static Test suite()
     {

@@ -24,16 +24,19 @@ import chesspresso.position.*;
 import java.io.*;
 import java.util.*;
 import java.util.zip.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  * Tests for the PGNReader.
  *
  * @author Bernhard Seybold
- * @version $Revision: 1.2 $
+ * @author Andreas Rudolph
  */
 public class PGNReaderTest extends FootprintTestCase
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( PGNReaderTest.class );
 
     public static Test suite()
     {

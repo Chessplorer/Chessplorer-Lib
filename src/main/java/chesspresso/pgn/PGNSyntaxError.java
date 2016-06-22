@@ -14,14 +14,19 @@
  */
 package chesspresso.pgn;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Represents PGN syntax errors (and warnings).
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public class PGNSyntaxError extends java.lang.Exception
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( PGNSyntaxError.class );
+
     public final static int
         ERROR   = 0,
         WARNING = 1,

@@ -17,7 +17,7 @@ package chesspresso.position;
 /**
  *
  * @author Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Andreas Rudolph
  */
 public interface ImmutablePosition
 {

@@ -15,13 +15,15 @@
 package chesspresso.move;
 
 import chesspresso.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  * Abstraction of a chess move.<br>
  *
  * This class provides support for two ways to encode moves:
- * <uol>
+ * <ol>
  *   <li>Based on <code>short</code>: optimized for speed and memory but cannot be
  *       used to print a SAN (short annotation, see PGN spec).
  *       Contains the following information: from square, to square, capturing,
@@ -36,11 +38,12 @@ import chesspresso.*;
  *
  * In order to create a full move out of a short move a position is needed.
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.3 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public class Move
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( Move.class );
 
     //======================================================================
 
@@ -420,7 +423,7 @@ public class Move
                 sb.append(LONG_CASTLE_STRING);
             } else {
                 int piece = getMovingPiece();
-                if (piece == Chess.NO_PIECE) System.out.println(m_move + " " + m_info + " " + Integer.toBinaryString(m_info));
+                if (piece == Chess.NO_PIECE) LOGGER.debug(m_move + " " + m_info + " " + Integer.toBinaryString(m_info));
                 if (piece != Chess.PAWN) {
                     sb.append(Chess.pieceToChar(piece));
                 }
@@ -456,7 +459,7 @@ public class Move
                 sb.append(LONG_CASTLE_STRING);
             } else {
                 int piece = getMovingPiece();
-                if (piece == Chess.NO_PIECE) System.out.println(m_move + " " + m_info + " " + Integer.toBinaryString(m_info));
+                if (piece == Chess.NO_PIECE) LOGGER.debug(m_move + " " + m_info + " " + Integer.toBinaryString(m_info));
                 if (piece != Chess.PAWN) {
                     sb.append(Chess.pieceToChar(piece));
                 }

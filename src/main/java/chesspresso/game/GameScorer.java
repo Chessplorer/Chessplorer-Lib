@@ -18,8 +18,8 @@ package chesspresso.game;
  * Delivers a score for a game model. This is used to decide which of two
  * doubles to keep (namely the one with the higher score).
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public interface GameScorer
 {

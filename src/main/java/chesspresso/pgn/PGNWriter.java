@@ -25,17 +25,19 @@ import chesspresso.game.GameModel;
 import chesspresso.game.GameModelIterator;
 import chesspresso.move.Move;
 import chesspresso.position.FEN;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  * A PGN writer is able to write a game (collection) in PGN syntax.
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.2 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public class PGNWriter extends PGN
 {
-
+    private final static Logger LOGGER = LoggerFactory.getLogger( PGNWriter.class );
     private PrintWriter m_out;
     private int m_charactersPerLine;
     private int m_curCol;

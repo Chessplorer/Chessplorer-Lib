@@ -14,14 +14,19 @@
  */
 package chesspresso.position;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Exception to indicate an illegal position.
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public class IllegalPositionException extends java.lang.Exception
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( IllegalPositionException.class );
+
     public IllegalPositionException(String msg)
     {
         super (msg);

@@ -20,15 +20,19 @@ import chesspresso.position.*;
 import java.util.*;
 import java.io.*;
 import chesspresso.move.Move;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public class ChXBoardEngine
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( ChXBoardEngine.class );
+
     public interface Listener
     {
         public void notifyInputMessage(String msg);
@@ -56,7 +60,8 @@ public class ChXBoardEngine
 //                    }
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                LOGGER.error( "Can't listen for engine answer!" );
+                LOGGER.error( "> " + ex.getLocalizedMessage(), ex );
             }
         }
     }
@@ -104,7 +109,7 @@ public class ChXBoardEngine
 
     private void fireInputMessage(String msg)
     {
-//        System.out.println("> " + msg);
+        //LOGGER.debug("> " + msg);
         if (m_listeners != null) {
             for (Enumeration e=m_listeners.elements(); e.hasMoreElements(); ) {
                 ((Listener)e.nextElement()).notifyInputMessage(msg);
@@ -114,7 +119,7 @@ public class ChXBoardEngine
 
     private void fireEngineMessage(String msg)
     {
-//        System.out.println("< " + msg);
+        //LOGGER.debug("< " + msg);
         if (m_listeners != null) {
             for (Enumeration e=m_listeners.elements(); e.hasMoreElements(); ) {
                 ((Listener)e.nextElement()).notifyEngineMessage(msg);
@@ -126,7 +131,7 @@ public class ChXBoardEngine
 
     private void addFeature(String name, String value)
     {
-//        System.out.println("feature " + name + " = " + value);
+        //LOGGER.debug("feature " + name + " = " + value);
         m_features.put(name, value);
     }
 
@@ -244,7 +249,7 @@ public class ChXBoardEngine
 
     public synchronized void setPosition(ImmutablePosition pos)
     {
-//        System.out.println(getFeature("setboard"));
+        //LOGGER.debug(getFeature("setboard"));
         if ("1".equals(getFeature("setboard"))) {
             sendMessage("setboard " + FEN.getFEN(pos));
         }
@@ -288,7 +293,8 @@ public class ChXBoardEngine
             m_out.flush();
             fireInputMessage(msg);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.error( "Can't send message to engine!" );
+            LOGGER.error( "> " + ex.getLocalizedMessage(), ex );
         }
     }
 

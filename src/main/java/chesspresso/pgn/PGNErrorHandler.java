@@ -17,8 +17,8 @@ package chesspresso.pgn;
 /**
  * Interface for handlers of PGN errors as produced by {@link PGNReader}.
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public interface PGNErrorHandler
 {

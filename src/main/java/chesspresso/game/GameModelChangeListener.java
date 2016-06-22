@@ -18,7 +18,7 @@ package chesspresso.game;
  * Listener for game change events.
  *
  * @author Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Andreas Rudolph
  */
 public interface GameModelChangeListener
 {

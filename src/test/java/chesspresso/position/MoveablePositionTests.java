@@ -18,15 +18,17 @@ import chesspresso.Chess;
 import chesspresso.move.*;
 import junit.framework.*;
 import java.io.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Andreas Rudolph
  */
 public abstract class MoveablePositionTests extends MutablePositionTests
 {
-
+    private final static Logger LOGGER = LoggerFactory.getLogger( MoveablePositionTests.class );
     protected abstract MoveablePosition createMoveablePosition();
 
     //======================================================================

@@ -14,7 +14,11 @@
  */
 package chesspresso.position;
 
-
+/**
+ *
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
+ */
 public interface PositionListener
 {
     public void squareChanged(int sqi, int stone);

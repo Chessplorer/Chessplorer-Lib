@@ -15,14 +15,17 @@
 package chesspresso.position;
 
 import junit.framework.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Andreas Rudolph
  */
 public class TestLightWeightPosition extends MutablePositionTests
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( TestLightWeightPosition.class );
 
     public static Test suite()
     {

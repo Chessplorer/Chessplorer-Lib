@@ -19,15 +19,18 @@ import chesspresso.*;
 import java.util.*;
 import chesspresso.move.Move;
 import chesspresso.move.IllegalMoveException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public abstract class AbstractMutablePosition extends AbstractPosition implements MutablePosition
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( AbstractMutablePosition.class );
     protected PositionListener[] m_listeners;     // protected to allow fast read access
     protected PositionChangeListener[] m_changeListeners;
     protected boolean m_notifyListeners;      // ... to check whether or not to fire
@@ -307,7 +310,7 @@ public abstract class AbstractMutablePosition extends AbstractPosition implement
 
     public final void addPositionChangeListener(PositionChangeListener listener)
     {
-//        System.out.println("addPositionChangeListener " + listener);
+        //LOGGER.debug("addPositionChangeListener " + listener);
         if (m_changeListeners == null) {
             m_changeListeners = new PositionChangeListener[1];
             m_changeListeners[0] = listener;
@@ -319,14 +322,14 @@ public abstract class AbstractMutablePosition extends AbstractPosition implement
         }
 
         listener.notifyPositionChanged(this);  // for initialization
-//        for (int i=0; i<m_changeListeners.length; i++) {
-//            System.out.println(m_changeListeners[i]);
-//        }
+        //for (int i=0; i<m_changeListeners.length; i++) {
+        //    LOGGER.debug(m_changeListeners[i]);
+        //}
     }
 
     public final void removePositionChangeListener(PositionChangeListener listener)
     {
-//        System.out.println("removePositionChangeListener " + listener);
+        //LOGGER.debug("removePositionChangeListener " + listener);
         for (int i=0; i<m_changeListeners.length; i++) {
             if (m_changeListeners[i] == listener) {
                 if (m_changeListeners.length == 1) {
@@ -340,9 +343,9 @@ public abstract class AbstractMutablePosition extends AbstractPosition implement
                 break;  // =====>
             }
         }
-//        for (int i=0; i<m_changeListeners.length; i++) {
-//            System.out.println(m_changeListeners[i]);
-//        }
+        //for (int i=0; i<m_changeListeners.length; i++) {
+        //    LOGGER.debug(m_changeListeners[i]);
+        //}
     }
 
 }

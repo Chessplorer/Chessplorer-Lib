@@ -15,14 +15,17 @@
 package chesspresso.game;
 
 import java.io.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public class GameModel
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( GameModel.class );
     private GameHeaderModel m_headerModel;
     private GameMoveModel m_moveModel;
 

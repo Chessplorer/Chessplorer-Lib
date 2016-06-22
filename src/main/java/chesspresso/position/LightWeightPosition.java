@@ -16,6 +16,8 @@ package chesspresso.position;
 
 import chesspresso.*;
 import chesspresso.move.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A light-weight implementation of the position interface.
@@ -24,11 +26,12 @@ import chesspresso.move.*;
  * for speed of accessors nor for memory footprint. Use this class if you do not
  * care about performance.
  *
- * @author  BerniMan
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public class LightWeightPosition extends AbstractMutablePosition
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( LightWeightPosition.class );
     private int[] m_stone;
     private int m_sqiEP;
     private int m_castles;

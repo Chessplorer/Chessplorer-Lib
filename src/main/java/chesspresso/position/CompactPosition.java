@@ -15,6 +15,8 @@
 package chesspresso.position;
 
 import chesspresso.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * An implementation of the position interface.
@@ -22,11 +24,12 @@ import chesspresso.*;
  * The class is optimized for memory footprint. Each instance uses only 36 bytes
  * for internal representation (plus some overhead for java internals).
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public class CompactPosition extends AbstractPosition
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( CompactPosition.class );
 
     private final static int
         SQI_EP_SHIFT          =  0,   SQI_EP_MASK           = 0x07F,  // [0, 128[

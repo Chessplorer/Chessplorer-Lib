@@ -14,15 +14,20 @@
  */
 package chesspresso.move;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Exception indicating an illegal move.
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public class IllegalMoveException extends Exception
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( IllegalMoveException.class );
+
     public IllegalMoveException(short move)
     {
         super ("Illegal move: " + Move.getString(move));

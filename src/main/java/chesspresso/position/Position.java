@@ -20,10 +20,17 @@ import java.text.DecimalFormat;
 import chesspresso.Chess;
 import chesspresso.move.IllegalMoveException;
 import chesspresso.move.Move;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-
+/**
+ *
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
+ */
 public final class Position extends AbstractMoveablePosition
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( Position.class );
     private final static boolean DEBUG = false;
     private final static boolean PROFILE = false;
 
@@ -54,22 +61,22 @@ public final class Position extends AbstractMoveablePosition
     {
         if (!PROFILE) return;  // =====>
 
-        System.out.println("Instances created:");
-        System.out.println("  ChPosition:         " + format(m_numPositions));
-        System.out.println("Methods called:");
-        System.out.println("  isAttacked:         " + format(m_numIsAttacked));
-        System.out.println("  directAttackers:    " + format(m_numDirectAttackers));
-        System.out.println("  getAllAttackers:    " + format(m_numGetAllAttackers));
-        System.out.println("  isCheck:            " + format(m_numIsCheck));
-        System.out.println("  isMate:             " + format(m_numIsMate));
-        System.out.println("  isStaleMate:        " + format(m_numIsStaleMate));
-        System.out.println("  getAllMoves:        " + format(m_numGetAllMoves));
-        System.out.println("  getPinnedDirection: " + format(m_numGetPinnedDirection));
-        System.out.println("  doMove:             " + format(m_numDoMove));
-        System.out.println("    longs backuped    " + format(m_numLongsBackuped) + "  " + ((double)m_numLongsBackuped / m_numDoMove) + " per move");
-        System.out.println("  undoMove:           " + format(m_numUndoMove));
-        System.out.println("  set:                " + format(m_numSet));
-        System.out.println("  getSquare:          " + format(m_numGetSquare));
+        LOGGER.info("Instances created:");
+        LOGGER.info("  ChPosition:         " + format(m_numPositions));
+        LOGGER.info("Methods called:");
+        LOGGER.info("  isAttacked:         " + format(m_numIsAttacked));
+        LOGGER.info("  directAttackers:    " + format(m_numDirectAttackers));
+        LOGGER.info("  getAllAttackers:    " + format(m_numGetAllAttackers));
+        LOGGER.info("  isCheck:            " + format(m_numIsCheck));
+        LOGGER.info("  isMate:             " + format(m_numIsMate));
+        LOGGER.info("  isStaleMate:        " + format(m_numIsStaleMate));
+        LOGGER.info("  getAllMoves:        " + format(m_numGetAllMoves));
+        LOGGER.info("  getPinnedDirection: " + format(m_numGetPinnedDirection));
+        LOGGER.info("  doMove:             " + format(m_numDoMove));
+        LOGGER.info("    longs backuped    " + format(m_numLongsBackuped) + "  " + ((double)m_numLongsBackuped / m_numDoMove) + " per move");
+        LOGGER.info("  undoMove:           " + format(m_numUndoMove));
+        LOGGER.info("  set:                " + format(m_numSet));
+        LOGGER.info("  getSquare:          " + format(m_numGetSquare));
     }
 
     /*================================================================================*/
@@ -436,7 +443,7 @@ public final class Position extends AbstractMoveablePosition
     {
         if (PROFILE) m_numSet++;
 
-        if (DEBUG) System.out.println("Set " + Chess.stoneToChar(stone) + " to " + Chess.sqiToStr(sqi));
+        if (DEBUG) LOGGER.debug("Set " + Chess.stoneToChar(stone) + " to " + Chess.sqiToStr(sqi));
 
         int old = getStone(sqi);
         if (old != stone) {
@@ -486,19 +493,19 @@ public final class Position extends AbstractMoveablePosition
     @Override
 	public final void setPlyNumber(int plyNumber)
     {
-        if (DEBUG) System.out.println("setPlyNumber " + plyNumber);
+        if (DEBUG) LOGGER.debug("setPlyNumber " + plyNumber);
         long flags = m_flags;
         m_flags &= ~(PLY_NUMBER_MASK << PLY_NUMBER_SHIFT);
         m_flags |= (long)plyNumber << PLY_NUMBER_SHIFT;
         if (m_flags != flags) {
             if (m_notifyListeners && m_listeners != null) firePlyNumberChanged();
         }
-//        if (plyNumber != getPlyNumber()) new Exception("Ply number " + plyNumber).printStackTrace();
+        //if (plyNumber != getPlyNumber()) LOGGER.debug("Ply number " + plyNumber, new Exception());
     }
 
     private final void incPlyNumber()
     {
-        if (DEBUG) System.out.println("incPlyNumber");
+        if (DEBUG) LOGGER.debug("incPlyNumber");
         m_flags += 1L << PLY_NUMBER_SHIFT;
         if (m_notifyListeners && m_listeners != null) firePlyNumberChanged();
     }
@@ -506,7 +513,7 @@ public final class Position extends AbstractMoveablePosition
     @Override
 	public void setHalfMoveClock(int halfMoveClock)
     {
-        if (DEBUG) System.out.println("setHalfMoveClock " + halfMoveClock);
+        if (DEBUG) LOGGER.debug("setHalfMoveClock " + halfMoveClock);
         long flags = m_flags;
         m_flags &= ~(HALF_MOVE_CLOCK_MASK << HALF_MOVE_CLOCK_SHIFT);
         m_flags |= (long)halfMoveClock << HALF_MOVE_CLOCK_SHIFT;
@@ -518,7 +525,7 @@ public final class Position extends AbstractMoveablePosition
     @Override
 	public final void setCastles(int castles)
     {
-        if (DEBUG) System.out.println("setCastles " + castles);
+        if (DEBUG) LOGGER.debug("setCastles " + castles);
         int oldCastles = getCastles();
         if (oldCastles != castles) {
             m_flags &= ~(CASTLES_MASK << CASTLES_SHIFT);
@@ -533,7 +540,7 @@ public final class Position extends AbstractMoveablePosition
     @Override
 	public void setSqiEP(int sqiEP)
     {
-        if (DEBUG) System.out.println("setSqiEP " + sqiEP);
+        if (DEBUG) LOGGER.debug("setSqiEP " + sqiEP);
         if (getSqiEP() != sqiEP) {
             m_flags &= ~(SQI_EP_MASK << SQI_EP_SHIFT);
             m_flags |= (sqiEP - Chess.NO_SQUARE) << SQI_EP_SHIFT;
@@ -569,7 +576,7 @@ public final class Position extends AbstractMoveablePosition
     @Override
 	public final void setToPlay(int toPlay)
     {
-        if (DEBUG) System.out.println("setToPlay " + toPlay);
+        if (DEBUG) LOGGER.debug("setToPlay " + toPlay);
         if (toPlay != getToPlay()) {
             toggleToPlay();
         }
@@ -578,7 +585,7 @@ public final class Position extends AbstractMoveablePosition
     @Override
 	public final void toggleToPlay()
     {
-        if (DEBUG) System.out.println("toggleToPlay");
+        if (DEBUG) LOGGER.debug("toggleToPlay");
         m_flags ^= (TO_PLAY_MASK << TO_PLAY_SHIFT);
         m_hashCode ^= HASH_TOPLAY_MULT;
         if (m_notifyListeners && m_listeners != null) fireToPlayChanged();
@@ -687,7 +694,7 @@ public final class Position extends AbstractMoveablePosition
             } else {
                 int stone = getStone(Move.getFromSqi(move));
                 switch(stone) {
-                    case Chess.NO_STONE:     break; //{System.out.println(this); throw new RuntimeException("Moving stone is non-existent " + Move.getString(move));}
+                    case Chess.NO_STONE:     break; //{LOGGER.debug(this); throw new RuntimeException("Moving stone is non-existent " + Move.getString(move));}
                     case Chess.WHITE_KING:   m_bbWhites ^= bbFromTo; m_whiteKing = sqiTo; break;
                     case Chess.WHITE_PAWN:   m_bbWhites ^= bbFromTo; m_bbPawns   ^= bbFromTo; increaseHalfMoveClock = false;
                                              if (sqiTo - sqiFrom == 2 * Chess.NUM_OF_COLS) sqiEP = sqiTo - Chess.NUM_OF_COLS;
@@ -862,7 +869,7 @@ public final class Position extends AbstractMoveablePosition
 
         if (PROFILE) m_numLongsBackuped += numOfBitsSet(changeMask) + 2;
 
-        if (DEBUG) System.out.println("I did a move " + Move.getString(move));
+        if (DEBUG) LOGGER.debug("I did a move " + Move.getString(move));
     }
 
     @Override
@@ -911,7 +918,7 @@ public final class Position extends AbstractMoveablePosition
 
             m_moveStackIndex--;
 
-            if (DEBUG) System.out.println("I undid the last move");
+            if (DEBUG) LOGGER.debug("I undid the last move");
 
             //---------- notify listeners ----------
             if (m_notifyListeners) {
@@ -982,7 +989,7 @@ public final class Position extends AbstractMoveablePosition
 
             m_moveStackIndex++;
 
-            if (DEBUG) System.out.println("I redid the last move");
+            if (DEBUG) LOGGER.debug("I redid the last move");
 
             /*---------- notify listeners ----------*/
             if (m_notifyListeners) {
@@ -1036,28 +1043,28 @@ public final class Position extends AbstractMoveablePosition
             throw new IllegalPositionException("King of notToPlay is checked: " + Chess.sqiToStr(kingSquare));
 
         if (super.getHashCode() != getHashCode()) {
-            System.out.println("Wrong hash code " + getHashCode() + " should be " + super.getHashCode());
+            LOGGER.error("Wrong hash code " + getHashCode() + " should be " + super.getHashCode());
             long diff = getHashCode() - super.getHashCode();
-            System.out.println("Difference " + diff);
+            LOGGER.error("Difference " + diff);
             for (int i=0; i<Chess.NUM_OF_SQUARES; i++) {
                 for (int j=0; j<s_hashMod[i].length; j++) {
                     if (s_hashMod[i][j] == diff) {
-                        System.out.println("Diff is sqi=" + i + " stone=" + (j - Chess.MIN_STONE));
+                        LOGGER.error("Diff is sqi=" + i + " stone=" + (j - Chess.MIN_STONE));
                     }
                 }
             }
             for (int i=0; i<16; i++) {
                 if (s_hashCastleMod[i] == diff) {
-                    System.out.println("Diff is castle " + i);
+                    LOGGER.error("Diff is castle " + i);
                 }
             }
             for (int i=0; i<8; i++) {
                 if (s_hashEPMod[i] == diff) {
-                    System.out.println("Diff is sqiEP " + i);
+                    LOGGER.error("Diff is sqiEP " + i);
                 }
             }
-            System.out.println(FEN.getFEN(this));
-            System.out.println(FEN.getFEN(new LightWeightPosition(this)));
+            LOGGER.error(FEN.getFEN(this));
+            LOGGER.error(FEN.getFEN(new LightWeightPosition(this)));
             throw new IllegalPositionException("Wrong hash code " + getHashCode() + " should be " + super.getHashCode() + " difference " + (getHashCode() - super.getHashCode()));
         }
     }
@@ -1146,10 +1153,10 @@ public final class Position extends AbstractMoveablePosition
 
         while (bb != 0L) {
             int from = getFirstSqi(bb);
-            if (DEBUG) System.out.print("  trying from: " + from);
+            if (DEBUG) LOGGER.debug("  trying from: " + from);
             int pinnedDir = getPinnedDirection(from, getToPlay());
             if (attacks(from, to) && (pinnedDir == NO_DIR || areDirectionsParallel(pinnedDir, DIR[from][to]))) {
-                if (DEBUG) System.out.println(" ok");
+                if (DEBUG) LOGGER.debug(" ok");
                 return from;
             }
             bb &= bb -1;

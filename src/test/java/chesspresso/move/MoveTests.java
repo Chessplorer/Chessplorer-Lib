@@ -16,14 +16,17 @@ package chesspresso.move;
 
 import chesspresso.Chess;
 import junit.framework.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author  BerniMan
- * @version
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public class MoveTests extends TestCase
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( MoveTests.class );
 
     public static Test suite()
     {

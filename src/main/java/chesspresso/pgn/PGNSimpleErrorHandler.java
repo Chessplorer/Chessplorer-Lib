@@ -15,17 +15,19 @@
 package chesspresso.pgn;
 
 import java.io.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Simple implementation of a PGN error handler. Write the errors and warnings
  * directly to a configured print stream.
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public class PGNSimpleErrorHandler implements PGNErrorHandler
 {
-
+    private final static Logger LOGGER = LoggerFactory.getLogger( PGNSimpleErrorHandler.class );
     private PrintStream m_out;
 
     /*================================================================================*/

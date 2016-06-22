@@ -14,7 +14,11 @@
  */
 package chesspresso.position;
 
-
+/**
+ *
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
+ */
 public interface PositionChangeListener
 {
     // always called when position changes

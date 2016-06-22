@@ -18,7 +18,7 @@ package chesspresso.game;
  * Iterator over a collection of game models.
  *
  * @author Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Andreas Rudolph
  */
 public interface GameModelIterator extends java.util.Iterator
 {

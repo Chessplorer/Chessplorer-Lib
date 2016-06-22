@@ -14,16 +14,19 @@
  */
 package chesspresso.position;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Support for NAG (Numeric Annotation Glyphs).
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public abstract class NAG
 {
-
+    private final static Logger LOGGER = LoggerFactory.getLogger( NAG.class );
     // TODO add short NAG chars for chess fonts
 
 

@@ -34,14 +34,18 @@ import chesspresso.game.Game;
 import chesspresso.move.IllegalMoveException;
 import chesspresso.move.Move;
 import chesspresso.position.NAG;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Reader for PGN files.
  *
  * @author Bernhard Seybold
- * @version $Revision: 1.2 $
+ * @author Andreas Rudolph
  */
 public final class PGNReader extends PGN {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger( PGNReader.class );
 
     public static boolean isPGNFile(String filename) {
         return filename != null && filename.toLowerCase().endsWith(".pgn");
@@ -447,7 +451,7 @@ public final class PGNReader extends PGN {
     }
 
     private int getLastTokenAsResult() throws PGNSyntaxError {
-        // System.out.println("CheckResult: " + getLastTokenAsString());
+        //LOGGER.debug("CheckResult: " + getLastTokenAsString());
         if (getLastToken() == TOK_ASTERISK)
             return Chess.RES_NOT_FINISHED;
         if (getLastToken() == TOK_EOF || m_lastToken == TOK_COMMENT_BEGIN)
@@ -478,7 +482,7 @@ public final class PGNReader extends PGN {
 
     private short getLastTokenAsMove() throws PGNSyntaxError {
         if (DEBUG)
-            System.out.println("getLastTokenAsMove " + getLastTokenAsString());
+            LOGGER.debug("getLastTokenAsMove " + getLastTokenAsString());
 
         if (!isLastTokenIdent())
             syntaxError("Move expected");
@@ -491,8 +495,8 @@ public final class PGNReader extends PGN {
             last--;
         }
 
-        // String s = getLastTokenAsString();
-        // if (DEBUG) System.out.println("moveStr= " + s);
+        //String s = getLastTokenAsString();
+        //if (DEBUG) LOGGER.debug("moveStr= " + s);
         short move = Move.ILLEGAL_MOVE;
         if (m_buf[0] == 'O' && m_buf[1] == '-' && m_buf[2] == 'O') {
             if (m_lastTokenLength >= 5 && m_buf[3] == '-' && m_buf[4] == 'O') {
@@ -608,7 +612,7 @@ public final class PGNReader extends PGN {
             }
         }
         if (DEBUG)
-            System.out.println("  -> " + Move.getString(move));
+            LOGGER.debug("  -> " + Move.getString(move));
         return move;
     }
 
@@ -747,7 +751,7 @@ public final class PGNReader extends PGN {
      */
     public Game parseGame() throws PGNSyntaxError, IOException {
         if (DEBUG)
-            System.out.println("===> new game");
+            LOGGER.debug("===> new game");
         if (m_in == null)
             return null;
         try {
@@ -763,7 +767,9 @@ public final class PGNReader extends PGN {
             parseMovetextSection();
             m_curGame.pack();
         } catch (PGNSyntaxError ex) {
-            System.out.println(ex); // sent to a listener in syntaxError
+            LOGGER.error( "PGN syntax error" );
+            LOGGER.error( "> " + ex.getLocalizedMessage(), ex );
+
             // TODO: do something with this error
             if (ex.getSeverity()==PGNSyntaxError.ERROR && !ex.getLastToken().equals("EOF")) {
             	m_curGame.setError(true);

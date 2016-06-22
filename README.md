@@ -22,12 +22,14 @@ Modifications
     [Maven Central Repository](http://search.maven.org/) in order to allow an
     integration into other applications without the need of separate
     repositories.
+-   The logging mechanism was replaced by [slf4j](http://www.slf4j.org/).
 
 
 Dependencies
 ------------
 
 -   Java 6 or newer
+-   [slf4j 1.7.21](http://www.slf4j.org/)
 
 
 Changelog

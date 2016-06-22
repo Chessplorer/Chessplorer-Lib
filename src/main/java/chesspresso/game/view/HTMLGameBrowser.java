@@ -21,17 +21,19 @@ import chesspresso.position.*;
 
 import java.io.*;
 import java.util.Stack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  * Producer for HTML pages displaying a game.
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.3 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public class HTMLGameBrowser implements GameListener
 {
-
+    private final static Logger LOGGER = LoggerFactory.getLogger( HTMLGameBrowser.class );
     private StringBuffer m_moves;
     private StringBuffer m_posData;
     private StringBuffer m_lastData;

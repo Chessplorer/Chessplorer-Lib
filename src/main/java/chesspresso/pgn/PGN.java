@@ -17,6 +17,8 @@ package chesspresso.pgn;
 
 import java.util.Date;
 import java.util.Calendar;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -24,11 +26,12 @@ import java.util.Calendar;
  *
  * The pgn standard is available at <a href="ftp://chess.onenet.net">ftp://chess.onenet.net</a>.
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public abstract class PGN
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( PGN.class );
 
     //======================================================================
     // pgn date

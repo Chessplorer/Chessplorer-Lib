@@ -14,6 +14,9 @@
  */
 package chesspresso.game;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Implementation of a games scorer.
  * The score is higher the more information is filled into the game header.
@@ -25,11 +28,12 @@ package chesspresso.game;
  *  <li>eco: 1 point if exists
  * </ul>
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public class DefaultGameScorer implements GameScorer
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( DefaultGameScorer.class );
 
     public int getScore(GameModel gameModel)
     {

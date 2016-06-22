@@ -16,8 +16,8 @@ package chesspresso.position;
 
 /**
  *
- * @author $Author: BerniMan $
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public interface MutablePosition extends ImmutablePosition
 {

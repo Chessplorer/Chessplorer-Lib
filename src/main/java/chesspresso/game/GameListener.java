@@ -19,8 +19,8 @@ import chesspresso.move.Move;
 /**
  * Listener for moves made on games.
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public interface GameListener
 {

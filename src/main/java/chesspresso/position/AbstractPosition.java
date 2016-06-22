@@ -15,14 +15,17 @@
 package chesspresso.position;
 
 import chesspresso.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public abstract class AbstractPosition implements ImmutablePosition
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( AbstractPosition.class );
 
     /*================================================================================*/
     // hash codes
@@ -85,8 +88,8 @@ public abstract class AbstractPosition implements ImmutablePosition
                 // not change since hash keys might be externalized
                 randomNumber = (randomNumber * 0x5DEECE66DL + 0xBL);
                 s_hashMod[i][j] = randomNumber & HASH_ALL_MASK;
-//                System.out.println(s_hashMod[i][j]);
-//                if ((s_hashMod[i][j] & HASH_ALL_MASK) != s_hashMod[i][j]) System.out.println("Was ist los " + i + " " + j + " " + (s_hashMod[i][j] & HASH_ALL_MASK));
+                //LOGGER.debug(String.valueOf( s_hashMod[i][j] ));
+                //if ((s_hashMod[i][j] & HASH_ALL_MASK) != s_hashMod[i][j]) LOGGER.debug("Was ist los " + i + " " + j + " " + (s_hashMod[i][j] & HASH_ALL_MASK));
             }
         }
 
@@ -133,7 +136,7 @@ public abstract class AbstractPosition implements ImmutablePosition
         }
 
         /*---------- castles ----------*/
-//        System.out.println(getCastles());
+        //LOGGER.debug(String.valueOf(getCastles()));
         hashCode ^= s_hashCastleMod[getCastles()];
 
         /*---------- en passant square ----------*/

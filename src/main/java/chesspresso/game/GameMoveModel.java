@@ -22,15 +22,19 @@ import java.util.Vector;
 
 import chesspresso.move.Move;
 import chesspresso.position.NAG;
+import java.io.ByteArrayOutputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Representation of moves of a chess game.
  *
  * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public class GameMoveModel
 {
-
+    private final static Logger LOGGER = LoggerFactory.getLogger( GameMoveModel.class );
     private static final int MIN_ALLOC_SIZE = 262144;
 	private final static boolean DEBUG = false;
     private final static boolean EXTRA_CHECKS = true;
@@ -111,8 +115,8 @@ public class GameMoveModel
     public boolean hasNag(int index, short nag)
     {
         if (DEBUG) {
-            System.out.println("hasNag " + index + " nag " + nag);
-            write(System.out);
+            LOGGER.debug("hasNag " + index + " nag " + nag);
+            LOGGER.debug( writeToString() );
         }
 
         short nagValue = getValueForNag(nag);
@@ -147,8 +151,8 @@ public class GameMoveModel
     public void addNag(int index, short nag)
     {
         if (DEBUG) {
-            System.out.println("addNag " + index + " nag " + nag);
-            write(System.out);
+            LOGGER.debug("addNag " + index + " nag " + nag);
+            LOGGER.debug( writeToString() );
         }
 
         if (EXTRA_CHECKS)
@@ -160,14 +164,14 @@ public class GameMoveModel
         m_moves[index + 1] = getValueForNag(nag);
         changed();
 
-        if (DEBUG) write(System.out);
+        if (DEBUG) LOGGER.debug( writeToString() );
     }
 
     public boolean removeNag(int index, short nag)
     {
         if (DEBUG) {
-            System.out.println("removeNag " + index + " nag " + nag);
-            write(System.out);
+            LOGGER.debug("removeNag " + index + " nag " + nag);
+            LOGGER.debug( writeToString() );
         }
 
         if (EXTRA_CHECKS)
@@ -192,7 +196,7 @@ public class GameMoveModel
         } while (isNagValue(value));
         changed();
 
-        if (DEBUG) write(System.out);
+        if (DEBUG) LOGGER.debug( writeToString() );
         return changed;
     }
 
@@ -273,8 +277,8 @@ public class GameMoveModel
     public boolean addComment(int index, String comment)
     {
         if (DEBUG) {
-            System.out.println("addComment " + index+ " comment " + comment);
-            write(System.out);
+            LOGGER.debug("addComment " + index+ " comment " + comment);
+            LOGGER.debug( writeToString() );
         }
 
         if (EXTRA_CHECKS)
@@ -299,15 +303,15 @@ public class GameMoveModel
         m_moves[index + comment.length() + 2] = COMMENT_END;
         changed();
 
-        if (DEBUG) write(System.out);
+        if (DEBUG) LOGGER.debug( writeToString() );
         return true;
     }
 
     public boolean addPreMoveComment(int index, String comment)
     {
         if (DEBUG) {
-            System.out.println("addPreMoveComment " + index+ " comment " + comment);
-            write(System.out);
+            LOGGER.debug("addPreMoveComment " + index+ " comment " + comment);
+            LOGGER.debug( writeToString() );
         }
 
         if (EXTRA_CHECKS)
@@ -328,15 +332,15 @@ public class GameMoveModel
         m_moves[index + comment.length() + 2] = PRE_COMMENT_END;
         changed();
 
-        if (DEBUG) write(System.out);
+        if (DEBUG) LOGGER.debug( writeToString() );
         return true;
     }
 
     public boolean removeComment(int index)
     {
         if (DEBUG) {
-            System.out.println("removeComment " + index);
-            write(System.out);
+            LOGGER.debug("removeComment " + index);
+            LOGGER.debug( writeToString() );
         }
 
         if (EXTRA_CHECKS)
@@ -360,7 +364,7 @@ public class GameMoveModel
         }
         if (isChanged) changed();
 
-        if (DEBUG) write(System.out);
+        if (DEBUG) LOGGER.debug( writeToString() );
         return isChanged;
     }
 
@@ -418,8 +422,8 @@ public class GameMoveModel
     public int goBack(int index, boolean gotoMainLine)
     {
         if (DEBUG) {
-            System.out.println("goBack " + index + " " + gotoMainLine);
-            write(System.out);
+            LOGGER.debug("goBack " + index + " " + gotoMainLine);
+            LOGGER.debug( writeToString() );
         }
 
         if (EXTRA_CHECKS)
@@ -451,7 +455,7 @@ public class GameMoveModel
             else if (level == 0)            break; // =====>
             index--;
         }
-        if (DEBUG) System.out.println("  --> " + index);
+        if (DEBUG) LOGGER.debug("  --> " + index);
         return index;
     }
 
@@ -466,8 +470,8 @@ public class GameMoveModel
     public int goForward(int index)
     {
         if (DEBUG) {
-            System.out.println("goForward " + index);
-            write(System.out);
+            LOGGER.debug("goForward " + index);
+            LOGGER.debug( writeToString() );
         }
 
         if (EXTRA_CHECKS)
@@ -486,15 +490,15 @@ public class GameMoveModel
             else if (level == 0)             break;
             index++;
         }
-        if (DEBUG) System.out.println("  --> " + index);
+        if (DEBUG) LOGGER.debug("  --> " + index);
         return index;
     }
 
     public int goForward(int index, int whichLine)
     {
         if (DEBUG) {
-            System.out.println("goForward " + index + " " + whichLine);
-            write(System.out);
+            LOGGER.debug("goForward " + index + " " + whichLine);
+            LOGGER.debug( writeToString() );
         }
 
         if (EXTRA_CHECKS)
@@ -517,15 +521,15 @@ public class GameMoveModel
                 index++;
             }
         }
-        if (DEBUG) System.out.println("  --> " + index);
+        if (DEBUG) LOGGER.debug("  --> " + index);
         return index;
     }
 
     public int getNumOfNextMoves(int index)
     {
         if (DEBUG) {
-            System.out.println("getNumOfNextMoves " + index);
-            write(System.out);
+            LOGGER.debug("getNumOfNextMoves " + index);
+            LOGGER.debug( writeToString() );
         }
 
         if (EXTRA_CHECKS)
@@ -549,22 +553,22 @@ public class GameMoveModel
             else if (level == 0)            break;
             index++;
         }
-        if (DEBUG) System.out.println("  --> " + numOfMoves);
+        if (DEBUG) LOGGER.debug("  --> " + numOfMoves);
         return numOfMoves;
     }
 
     public boolean hasNextMove(int index)
     {
         if (DEBUG) {
-            System.out.println("hasNextMove " + index);
-            write(System.out);
+            LOGGER.debug("hasNextMove " + index);
+            LOGGER.debug( writeToString() );
         }
 
         if (EXTRA_CHECKS)
             checkLegalCursor(index);
 
         boolean nextMove = isMoveValue(m_moves[goForward(index)]);
-        if (DEBUG) System.out.println("  --> " + nextMove);
+        if (DEBUG) LOGGER.debug("  --> " + nextMove);
         return (nextMove);
     }
 
@@ -591,8 +595,8 @@ public class GameMoveModel
     private void enlarge(int index, int size)
     {
         if (DEBUG) {
-            System.out.println("enlarge " + index + " " + size);
-            write(System.out);
+            LOGGER.debug("enlarge " + index + " " + size);
+            LOGGER.debug( writeToString() );
         }
 
         short[] newMoves = new short[m_moves.length + size];
@@ -601,14 +605,14 @@ public class GameMoveModel
         java.util.Arrays.fill(newMoves, index, index + size, NO_MOVE);
         m_moves = newMoves;
         m_size += size;
-        if (DEBUG) write(System.out);
+        if (DEBUG) LOGGER.debug( writeToString() );
     }
 
     private void makeSpace(int index, int spaceNeeded, boolean possiblyMakeMore)
     {
         if (DEBUG) {
-            System.out.println("makeSpace " + index + " " + spaceNeeded);
-            write(System.out);
+            LOGGER.debug("makeSpace " + index + " " + spaceNeeded);
+            LOGGER.debug( writeToString() );
         }
 
         if (EXTRA_CHECKS)
@@ -629,14 +633,14 @@ public class GameMoveModel
                 break;
             }
         }
-        if (DEBUG) write(System.out);
+        if (DEBUG) LOGGER.debug( writeToString() );
     }
 
     public int appendAsRightMostLine(int index, short move)
     {
         if (DEBUG) {
-            System.out.println("appendAsRightMostLine " + index + " " + Move.getString(move));
-            write(System.out);
+            LOGGER.debug("appendAsRightMostLine " + index + " " + Move.getString(move));
+            LOGGER.debug( writeToString() );
         }
 
         if (EXTRA_CHECKS)
@@ -650,8 +654,8 @@ public class GameMoveModel
             m_moves[index]     = LINE_START;
             m_moves[index + 1] = move;
             m_moves[findLatestNoMove(index + 2)] = LINE_END;
-            if (DEBUG) write(System.out);
-            if (DEBUG) System.out.println("  --> " + index);
+            if (DEBUG) LOGGER.debug( writeToString() );
+            if (DEBUG) LOGGER.debug("  --> " + index);
             changed();
             return index + 1;
         } else {
@@ -659,8 +663,8 @@ public class GameMoveModel
             index = findEarliestNoMove(index);
             makeSpace(index, 1, true);
             m_moves[index] = move;
-            if (DEBUG) write(System.out);
-            if (DEBUG) System.out.println("  --> " + index);
+            if (DEBUG) LOGGER.debug( writeToString() );
+            if (DEBUG) LOGGER.debug("  --> " + index);
             changed();
             return index;
         }
@@ -669,8 +673,8 @@ public class GameMoveModel
     public void deleteCurrentLine(int index)
     {
         if (DEBUG) {
-            System.out.println("deleteCurrentLine " + index);
-            write(System.out);
+            LOGGER.debug("deleteCurrentLine " + index);
+            LOGGER.debug( writeToString() );
         }
 
         if (EXTRA_CHECKS)
@@ -701,7 +705,7 @@ public class GameMoveModel
             index++;
         }
         changed();
-        if (DEBUG) write(System.out);
+        if (DEBUG) LOGGER.debug( writeToString() );
     }
 
     //======================================================================
@@ -709,8 +713,8 @@ public class GameMoveModel
     public int pack(int index)
     {
         if (DEBUG) {
-            System.out.println("pack");
-            write(System.out);
+            LOGGER.debug("pack");
+            LOGGER.debug( writeToString() );
         }
 
         int newSize = 0;
@@ -732,8 +736,8 @@ public class GameMoveModel
         m_moves[newSize] = LINE_END;
         m_size = newSize;
 
-        if (DEBUG) write(System.out);
-        if (DEBUG) System.out.println("  --> " + index);
+        if (DEBUG) LOGGER.debug( writeToString() );
+        if (DEBUG) LOGGER.debug("  --> " + index);
 
         return index;
     }
@@ -753,7 +757,7 @@ public class GameMoveModel
         m_moves[0]          = LINE_START;
         m_moves[m_size - 1] = LINE_END;
         changed();
-        if (DEBUG) write(System.out);
+        if (DEBUG) LOGGER.debug( writeToString() );
     }
 
     public void save(DataOutput out, int mode) throws IOException
@@ -799,6 +803,13 @@ public class GameMoveModel
             if (move == COMMENT_START || move == PRE_COMMENT_START) inComment = true;
         }
         out.println();
+    }
+
+    public String writeToString()
+    {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        this.write( new PrintStream( output ) );
+        return output.toString();
     }
 
     public long getHashCode()

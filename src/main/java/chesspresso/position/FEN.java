@@ -15,14 +15,17 @@
 package chesspresso.position;
 
 import chesspresso.Chess;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author  Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Bernhard Seybold
+ * @author Andreas Rudolph
  */
 public class FEN
 {
+    private final static Logger LOGGER = LoggerFactory.getLogger( FEN.class );
 
     private static final char fenChars[] =
         {'K', 'P', 'Q', 'R', 'B', 'N', '-', 'n', 'b', 'r', 'q', 'p', 'k'};
@@ -173,8 +176,7 @@ public class FEN
         try {
             pos.validate();
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: " + e.getMessage());
+            throw new IllegalArgumentException("Malformatted fen string <" + fen + ">: " + e.getMessage(), e);
         }
 
     }

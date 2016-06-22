@@ -17,14 +17,17 @@ package chesspresso.position;
 import chesspresso.Chess;
 import chesspresso.move.IllegalMoveException;
 import chesspresso.move.Move;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Bernhard Seybold
- * @version $Revision: 1.1 $
+ * @author Andreas Rudolph
  */
-public abstract class AbstractMoveablePosition extends AbstractMutablePosition
-		implements MoveablePosition {
+public abstract class AbstractMoveablePosition extends AbstractMutablePosition implements MoveablePosition
+{
+  private final static Logger LOGGER = LoggerFactory.getLogger( AbstractMoveablePosition.class );
 
 	@Override
 	public void doMove(Move move) throws IllegalMoveException {
