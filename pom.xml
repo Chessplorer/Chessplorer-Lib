@@ -44,6 +44,10 @@
     </developer>
   </developers>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
@@ -85,6 +89,16 @@
     </testResources>
     <plugins>
 
+      <!-- resources -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.0.1</version>
+        <configuration>
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+      </plugin>
+
       <!-- compiler -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -95,6 +109,7 @@
           <target>1.6</target>
           <showDeprecation>true</showDeprecation>
           <debug>false</debug>
+          <encoding>${project.build.sourceEncoding}</encoding>
         </configuration>
       </plugin>
 
