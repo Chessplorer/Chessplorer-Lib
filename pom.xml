@@ -46,6 +46,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.releaseDir>${basedir}/release</project.releaseDir>
+    <maven.build.timestamp.format>yyyy-MM-dd HH:mm Z</maven.build.timestamp.format>
   </properties>
 
   <dependencies>
@@ -86,6 +88,34 @@
       <version>1.7.21</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- source dependencies for release packaging -->
+    <dependency>
+      <groupId>com.googlecode.gettext-commons</groupId>
+      <artifactId>gettext-commons</artifactId>
+      <version>0.9.8</version>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.21</version>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <!-- javadoc dependencies for release packaging -->
+    <dependency>
+      <groupId>com.googlecode.gettext-commons</groupId>
+      <artifactId>gettext-commons</artifactId>
+      <version>0.9.8</version>
+      <classifier>javadoc</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.21</version>
+      <classifier>javadoc</classifier>
+    </dependency>
   </dependencies>
 
   <build>
@@ -120,6 +150,22 @@
         <version>3.0.1</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+      </plugin>
+
+      <!-- clean -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+          <failOnError>false</failOnError>
+          <filesets>
+            <fileset>
+              <directory>${project.releaseDir}</directory>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+          </filesets>
         </configuration>
       </plugin>
 
@@ -159,7 +205,8 @@
         <version>2.10.4</version>
         <executions>
           <execution>
-            <id>attach-javadocs</id>
+            <id>generate-javadoc-jar</id>
+            <phase>generate-sources</phase>
             <goals>
               <goal>jar</goal>
             </goals>
@@ -207,6 +254,32 @@
             <goals>
               <goal>dist</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- assembly -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.6</version>
+        <executions>
+          <execution>
+            <id>build-release</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <finalName>Chessplorer-Lib-${project.version}</finalName>
+              <outputDirectory>${project.releaseDir}</outputDirectory>
+              <appendAssemblyId>false</appendAssemblyId>
+              <ignoreDirFormatExtensions>true</ignoreDirFormatExtensions>
+              <tarLongFileMode>gnu</tarLongFileMode>
+              <descriptors>
+                <descriptor>${project.basedir}/assembly.xml</descriptor>
+              </descriptors>
+            </configuration>
           </execution>
         </executions>
       </plugin>

@@ -112,4 +112,15 @@
                 <activatedProfile>development</activatedProfile>
             </activatedProfiles>
         </action>
+        <action>
+            <actionName>CUSTOM-Release</actionName>
+            <displayName>Release</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>package</goal>
+            </goals>
+            <activatedProfiles>
+                <activatedProfile>release</activatedProfile>
+            </activatedProfiles>
+        </action>
     </actions>
