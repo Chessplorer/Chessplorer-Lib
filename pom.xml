@@ -45,8 +45,10 @@
   </developers>
 
   <properties>
+    <createChecksum>true</createChecksum>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.releaseDir>${basedir}/release</project.releaseDir>
+    <project.releaseSkip>true</project.releaseSkip>
     <maven.build.timestamp.format>yyyy-MM-dd HH:mm Z</maven.build.timestamp.format>
   </properties>
 
@@ -164,7 +166,7 @@
           <execution>
             <id>attach-sources</id>
             <goals>
-              <goal>jar</goal>
+              <goal>jar-no-fork</goal>
             </goals>
           </execution>
         </executions>
@@ -183,6 +185,7 @@
               <goal>jar</goal>
             </goals>
             <configuration>
+              <skip>${project.releaseSkip}</skip>
               <quiet>true</quiet>
             </configuration>
           </execution>
@@ -243,6 +246,7 @@
               <goal>copy-dependencies</goal>
             </goals>
             <configuration>
+              <skip>${project.releaseSkip}</skip>
               <silent>true</silent>
               <classifier>sources</classifier>
               <outputDirectory>${project.build.directory}/3rdparty</outputDirectory>
@@ -257,6 +261,7 @@
               <goal>copy-dependencies</goal>
             </goals>
             <configuration>
+              <skip>${project.releaseSkip}</skip>
               <silent>true</silent>
               <classifier>javadoc</classifier>
               <outputDirectory>${project.build.directory}/3rdparty</outputDirectory>
@@ -280,6 +285,7 @@
               <goal>single</goal>
             </goals>
             <configuration>
+              <skipAssembly>${project.releaseSkip}</skipAssembly>
               <finalName>Chessplorer-Lib-${project.version}</finalName>
               <outputDirectory>${project.releaseDir}</outputDirectory>
               <appendAssemblyId>false</appendAssemblyId>
@@ -298,27 +304,11 @@
 
   <profiles>
 
-    <!-- development profile -->
-    <profile>
-      <id>development</id>
-      <properties>
-        <assembly.skipAssembly>true</assembly.skipAssembly>
-        <createChecksum>true</createChecksum>
-        <maven.javadoc.skip>true</maven.javadoc.skip>
-        <mdep.skip>true</mdep.skip>
-        <source.skip>true</source.skip>
-      </properties>
-    </profile>
-
     <!-- release profile -->
     <profile>
       <id>release</id>
       <properties>
-        <assembly.skipAssembly>false</assembly.skipAssembly>
-        <createChecksum>true</createChecksum>
-        <maven.javadoc.skip>false</maven.javadoc.skip>
-        <mdep.skip>false</mdep.skip>
-        <source.skip>false</source.skip>
+        <project.releaseSkip>false</project.releaseSkip>
       </properties>
     </profile>
 

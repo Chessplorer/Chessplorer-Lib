@@ -50,7 +50,7 @@
       </includes>
     </dependencySet>
     <dependencySet>
-      <outputDirectory>apidoc</outputDirectory>
+      <outputDirectory>apidocs</outputDirectory>
       <useProjectArtifact>true</useProjectArtifact>
       <useProjectAttachments>true</useProjectAttachments>
       <unpack>true</unpack>

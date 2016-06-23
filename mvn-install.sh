@@ -10,4 +10,4 @@ export LANG=en
 set -e
 
 cd $PROJECT_DIR
-$MVN -Pdevelopment clean install
+$MVN clean install

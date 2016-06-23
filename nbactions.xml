@@ -1,81 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
         <action>
-            <actionName>build</actionName>
-            <packagings>
-                <packaging>*</packaging>
-            </packagings>
-            <goals>
-                <goal>install</goal>
-            </goals>
-            <activatedProfiles>
-                <activatedProfile>development</activatedProfile>
-            </activatedProfiles>
-        </action>
-        <action>
-            <actionName>clean</actionName>
-            <packagings>
-                <packaging>*</packaging>
-            </packagings>
-            <goals>
-                <goal>clean</goal>
-            </goals>
-        </action>
-        <action>
-            <actionName>rebuild</actionName>
-            <packagings>
-                <packaging>*</packaging>
-            </packagings>
-            <goals>
-                <goal>clean</goal>
-                <goal>install</goal>
-            </goals>
-            <activatedProfiles>
-                <activatedProfile>development</activatedProfile>
-            </activatedProfiles>
-        </action>
-        <action>
-            <actionName>build-with-dependencies</actionName>
-            <reactor>also-make</reactor>
-            <packagings>
-                <packaging>*</packaging>
-            </packagings>
-            <goals>
-                <goal>install</goal>
-            </goals>
-            <activatedProfiles>
-                <activatedProfile>development</activatedProfile>
-            </activatedProfiles>
-        </action>
-        <action>
-            <actionName>test</actionName>
-            <packagings>
-                <packaging>*</packaging>
-            </packagings>
-            <goals>
-                <goal>test</goal>
-            </goals>
-            <activatedProfiles>
-                <activatedProfile>development</activatedProfile>
-            </activatedProfiles>
-        </action>
-        <action>
-            <actionName>test.single</actionName>
-            <packagings>
-                <packaging>*</packaging>
-            </packagings>
-            <goals>
-                <goal>test-compile</goal>
-                <goal>surefire:test</goal>
-            </goals>
-            <properties>
-                <test>${packageClassName}</test>
-            </properties>
-            <activatedProfiles>
-                <activatedProfile>development</activatedProfile>
-            </activatedProfiles>
-        </action>
-        <action>
             <actionName>CUSTOM-Find bugs</actionName>
             <displayName>Find bugs</displayName>
             <goals>
@@ -95,9 +20,6 @@
             <properties>
                 <skipTests>true</skipTests>
             </properties>
-            <activatedProfiles>
-                <activatedProfile>development</activatedProfile>
-            </activatedProfiles>
         </action>
         <action>
             <actionName>CUSTOM-I18N merge</actionName>
@@ -108,9 +30,6 @@
             <properties>
                 <skipTests>true</skipTests>
             </properties>
-            <activatedProfiles>
-                <activatedProfile>development</activatedProfile>
-            </activatedProfiles>
         </action>
         <action>
             <actionName>CUSTOM-Release</actionName>
@@ -123,4 +42,4 @@
                 <activatedProfile>release</activatedProfile>
             </activatedProfiles>
         </action>
-    </actions>
+</actions>
