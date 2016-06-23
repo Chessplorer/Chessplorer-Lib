@@ -88,34 +88,6 @@
       <version>1.7.21</version>
       <scope>test</scope>
     </dependency>
-
-    <!-- source dependencies for release packaging -->
-    <dependency>
-      <groupId>com.googlecode.gettext-commons</groupId>
-      <artifactId>gettext-commons</artifactId>
-      <version>0.9.8</version>
-      <classifier>sources</classifier>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.21</version>
-      <classifier>sources</classifier>
-    </dependency>
-
-    <!-- javadoc dependencies for release packaging -->
-    <dependency>
-      <groupId>com.googlecode.gettext-commons</groupId>
-      <artifactId>gettext-commons</artifactId>
-      <version>0.9.8</version>
-      <classifier>javadoc</classifier>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.21</version>
-      <classifier>javadoc</classifier>
-    </dependency>
   </dependencies>
 
   <build>
@@ -258,6 +230,43 @@
         </executions>
       </plugin>
 
+      <!-- dependencies -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.10</version>
+        <executions>
+          <execution>
+            <id>copy-dependency-sources</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <silent>true</silent>
+              <classifier>sources</classifier>
+              <outputDirectory>${project.build.directory}/3rdparty</outputDirectory>
+              <excludeGroupIds>com.google.code.findbugs,net.jcip</excludeGroupIds>
+              <includeScope>runtime</includeScope>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-dependency-javadoc</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <silent>true</silent>
+              <classifier>javadoc</classifier>
+              <outputDirectory>${project.build.directory}/3rdparty</outputDirectory>
+              <excludeGroupIds>com.google.code.findbugs,net.jcip</excludeGroupIds>
+              <includeScope>runtime</includeScope>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <!-- assembly -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -296,6 +305,7 @@
         <assembly.skipAssembly>true</assembly.skipAssembly>
         <createChecksum>true</createChecksum>
         <maven.javadoc.skip>true</maven.javadoc.skip>
+        <mdep.skip>true</mdep.skip>
         <source.skip>true</source.skip>
       </properties>
     </profile>
@@ -307,6 +317,7 @@
         <assembly.skipAssembly>false</assembly.skipAssembly>
         <createChecksum>true</createChecksum>
         <maven.javadoc.skip>false</maven.javadoc.skip>
+        <mdep.skip>false</mdep.skip>
         <source.skip>false</source.skip>
       </properties>
     </profile>

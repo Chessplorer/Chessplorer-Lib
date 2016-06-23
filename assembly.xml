@@ -29,6 +29,12 @@
     <fileSet>
       <directory>${project.basedir}/share/licenses</directory>
       <outputDirectory>3rdparty</outputDirectory>
+      <fileMode>0644</fileMode>
+    </fileSet>
+    <fileSet>
+      <directory>${project.build.directory}/3rdparty</directory>
+      <outputDirectory>3rdparty</outputDirectory>
+      <fileMode>0644</fileMode>
     </fileSet>
   </fileSets>
 
@@ -51,17 +57,6 @@
       <includes>
         <include>${project.groupId}:${project.artifactId}:*:javadoc</include>
       </includes>
-    </dependencySet>
-    <dependencySet>
-      <outputDirectory>3rdparty</outputDirectory>
-      <useProjectArtifact>false</useProjectArtifact>
-      <useProjectAttachments>false</useProjectAttachments>
-      <useTransitiveDependencies>true</useTransitiveDependencies>
-      <scope>runtime</scope>
-      <excludes>
-        <exclude>com.google.code.findbugs:*</exclude>
-        <exclude>net.jcip:*</exclude>
-      </excludes>
     </dependencySet>
   </dependencySets>
 
