@@ -296,7 +296,6 @@
         <assembly.skipAssembly>true</assembly.skipAssembly>
         <createChecksum>true</createChecksum>
         <maven.javadoc.skip>true</maven.javadoc.skip>
-        <mdep.skip>true</mdep.skip>
         <source.skip>true</source.skip>
       </properties>
     </profile>
@@ -308,7 +307,6 @@
         <assembly.skipAssembly>false</assembly.skipAssembly>
         <createChecksum>true</createChecksum>
         <maven.javadoc.skip>false</maven.javadoc.skip>
-        <mdep.skip>false</mdep.skip>
         <source.skip>false</source.skip>
       </properties>
     </profile>
