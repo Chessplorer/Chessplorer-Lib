@@ -62,7 +62,7 @@ public abstract class PGN
         Calendar cal =Calendar.getInstance();
         cal.setTime(date);
         return cal.get(Calendar.YEAR) + "."
-             + getRights("00" + cal.get(Calendar.MONTH), 2) + "."
+             + getRights("00" + (cal.get(Calendar.MONTH)+1), 2) + "."
              + getRights("00" + cal.get(Calendar.DAY_OF_MONTH), 2);
 
 //deprecated
