@@ -1,0 +1,401 @@
+# Chessplorer-Lib - an open source chess library written in Java
+# Copyright (C) 2016 Chessplorer.org
+# This file is distributed under the same license as the Chessplorer-Lib
+# package.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-06-22 13:22+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: chesspresso/position/NAG.java:758
+msgid "White"
+msgstr ""
+
+#: chesspresso/position/NAG.java:759
+msgid "Black"
+msgstr ""
+
+#: chesspresso/position/NAG.java:764
+msgid "no annotation"
+msgstr ""
+
+#: chesspresso/position/NAG.java:767
+msgid "good move"
+msgstr ""
+
+#: chesspresso/position/NAG.java:770
+msgid "poor move"
+msgstr ""
+
+#: chesspresso/position/NAG.java:773
+msgid "very good move"
+msgstr ""
+
+#: chesspresso/position/NAG.java:776
+msgid "very poor move"
+msgstr ""
+
+#: chesspresso/position/NAG.java:779
+msgid "speculative move"
+msgstr ""
+
+#: chesspresso/position/NAG.java:782
+msgid "questionable move"
+msgstr ""
+
+#: chesspresso/position/NAG.java:785
+msgid "forced move (all others lose quickly)"
+msgstr ""
+
+#: chesspresso/position/NAG.java:788
+msgid "only move (no reasonable alternatives)"
+msgstr ""
+
+#: chesspresso/position/NAG.java:791
+msgid "worst move"
+msgstr ""
+
+#: chesspresso/position/NAG.java:794
+msgid "drawish position"
+msgstr ""
+
+#: chesspresso/position/NAG.java:797 chesspresso/position/NAG.java:800
+msgid "equal chances"
+msgstr ""
+
+#: chesspresso/position/NAG.java:797
+msgid "quiet position"
+msgstr ""
+
+#: chesspresso/position/NAG.java:800
+msgid "active position"
+msgstr ""
+
+#: chesspresso/position/NAG.java:803
+msgid "unclear position"
+msgstr ""
+
+#: chesspresso/position/NAG.java:806 chesspresso/position/NAG.java:809
+#, java-format
+msgid "{0} has a slight advantage"
+msgstr ""
+
+#: chesspresso/position/NAG.java:812 chesspresso/position/NAG.java:815
+#, java-format
+msgid "{0} has a moderate advantage"
+msgstr ""
+
+#: chesspresso/position/NAG.java:818 chesspresso/position/NAG.java:821
+#, java-format
+msgid "{0} has a decisive advantage"
+msgstr ""
+
+#: chesspresso/position/NAG.java:824 chesspresso/position/NAG.java:827
+#, java-format
+msgid "{0} has a crushing advantage ({1} should resign)"
+msgstr ""
+
+#: chesspresso/position/NAG.java:830 chesspresso/position/NAG.java:833
+#, java-format
+msgid "{0} is in zugzwang"
+msgstr ""
+
+#: chesspresso/position/NAG.java:836 chesspresso/position/NAG.java:839
+#, java-format
+msgid "{0} has a slight space advantage"
+msgstr ""
+
+#: chesspresso/position/NAG.java:842 chesspresso/position/NAG.java:845
+#, java-format
+msgid "{0} has a moderate space advantage"
+msgstr ""
+
+#: chesspresso/position/NAG.java:848 chesspresso/position/NAG.java:851
+#, java-format
+msgid "{0} has a decisive space advantage"
+msgstr ""
+
+#: chesspresso/position/NAG.java:854 chesspresso/position/NAG.java:857
+#, java-format
+msgid "{0} has a slight time (development) advantage"
+msgstr ""
+
+#: chesspresso/position/NAG.java:860 chesspresso/position/NAG.java:863
+#, java-format
+msgid "{0} has a moderate time (development) advantage"
+msgstr ""
+
+#: chesspresso/position/NAG.java:866 chesspresso/position/NAG.java:869
+#, java-format
+msgid "{0} has a decisive time (development) advantage"
+msgstr ""
+
+#: chesspresso/position/NAG.java:872 chesspresso/position/NAG.java:875
+#, java-format
+msgid "{0} has the initiative"
+msgstr ""
+
+#: chesspresso/position/NAG.java:878 chesspresso/position/NAG.java:881
+#, java-format
+msgid "{0} has a lasting initiative"
+msgstr ""
+
+#: chesspresso/position/NAG.java:884 chesspresso/position/NAG.java:887
+#, java-format
+msgid "{0} has the attack"
+msgstr ""
+
+#: chesspresso/position/NAG.java:890 chesspresso/position/NAG.java:893
+#, java-format
+msgid "{0} has insufficient compensation for material deficit"
+msgstr ""
+
+#: chesspresso/position/NAG.java:896 chesspresso/position/NAG.java:899
+#, java-format
+msgid "{0} has sufficient compensation for material deficit"
+msgstr ""
+
+#: chesspresso/position/NAG.java:902 chesspresso/position/NAG.java:905
+#, java-format
+msgid "{0} has more than adequate compensation for material deficit"
+msgstr ""
+
+#: chesspresso/position/NAG.java:908 chesspresso/position/NAG.java:911
+#, java-format
+msgid "{0} has a slight center control advantage"
+msgstr ""
+
+#: chesspresso/position/NAG.java:914 chesspresso/position/NAG.java:917
+#, java-format
+msgid "{0} has a moderate center control advantage"
+msgstr ""
+
+#: chesspresso/position/NAG.java:920 chesspresso/position/NAG.java:923
+#, java-format
+msgid "{0} has a decisive center control advantage"
+msgstr ""
+
+#: chesspresso/position/NAG.java:926 chesspresso/position/NAG.java:929
+#, java-format
+msgid "{0} has a slight kingside control advantage"
+msgstr ""
+
+#: chesspresso/position/NAG.java:932 chesspresso/position/NAG.java:935
+#, java-format
+msgid "{0} has a moderate kingside control advantage"
+msgstr ""
+
+#: chesspresso/position/NAG.java:938 chesspresso/position/NAG.java:941
+#, java-format
+msgid "{0} has a decisive kingside control advantage"
+msgstr ""
+
+#: chesspresso/position/NAG.java:944 chesspresso/position/NAG.java:947
+#, java-format
+msgid "{0} has a slight queenside control advantage"
+msgstr ""
+
+#: chesspresso/position/NAG.java:950 chesspresso/position/NAG.java:953
+#, java-format
+msgid "{0} has a moderate queenside control advantage"
+msgstr ""
+
+#: chesspresso/position/NAG.java:956 chesspresso/position/NAG.java:959
+#, java-format
+msgid "{0} has a decisive queenside control advantage"
+msgstr ""
+
+#: chesspresso/position/NAG.java:962 chesspresso/position/NAG.java:965
+#, java-format
+msgid "{0} has a vulnerable first rank"
+msgstr ""
+
+#: chesspresso/position/NAG.java:968 chesspresso/position/NAG.java:971
+#, java-format
+msgid "{0} has a well protected first rank"
+msgstr ""
+
+#: chesspresso/position/NAG.java:974 chesspresso/position/NAG.java:977
+#, java-format
+msgid "{0} has a poorly protected king"
+msgstr ""
+
+#: chesspresso/position/NAG.java:980 chesspresso/position/NAG.java:983
+#, java-format
+msgid "{0} has a well protected king"
+msgstr ""
+
+#: chesspresso/position/NAG.java:986 chesspresso/position/NAG.java:989
+#, java-format
+msgid "{0} has a poorly placed king"
+msgstr ""
+
+#: chesspresso/position/NAG.java:992 chesspresso/position/NAG.java:995
+#, java-format
+msgid "{0} has a well placed king"
+msgstr ""
+
+#: chesspresso/position/NAG.java:998 chesspresso/position/NAG.java:1001
+#, java-format
+msgid "{0} has a very weak pawn structure"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1004 chesspresso/position/NAG.java:1007
+#, java-format
+msgid "{0} has a moderately weak pawn structure"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1010 chesspresso/position/NAG.java:1013
+#, java-format
+msgid "{0} has a moderately strong pawn structure"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1016 chesspresso/position/NAG.java:1019
+#, java-format
+msgid "{0} has a very strong pawn structure"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1022 chesspresso/position/NAG.java:1025
+#, java-format
+msgid "{0} has poor knight placement"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1028 chesspresso/position/NAG.java:1031
+#, java-format
+msgid "{0} has good knight placement"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1034 chesspresso/position/NAG.java:1037
+#, java-format
+msgid "{0} has poor bishop placement"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1040 chesspresso/position/NAG.java:1043
+#, java-format
+msgid "{0} has good bishop placement"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1046 chesspresso/position/NAG.java:1049
+#, java-format
+msgid "{0} has poor rook placement"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1052 chesspresso/position/NAG.java:1055
+#, java-format
+msgid "{0} has good rook placement"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1058 chesspresso/position/NAG.java:1061
+#, java-format
+msgid "{0} has poor queen placement"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1064 chesspresso/position/NAG.java:1067
+#, java-format
+msgid "{0} has good queen placement"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1070 chesspresso/position/NAG.java:1073
+#, java-format
+msgid "{0} has poor piece coordination"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1076 chesspresso/position/NAG.java:1079
+#, java-format
+msgid "{0} has good piece coordination"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1082 chesspresso/position/NAG.java:1085
+#, java-format
+msgid "{0} has played the opening very poorly"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1088 chesspresso/position/NAG.java:1091
+#, java-format
+msgid "{0} has played the opening poorly"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1094 chesspresso/position/NAG.java:1097
+#, java-format
+msgid "{0} has played the opening well"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1100 chesspresso/position/NAG.java:1103
+#, java-format
+msgid "{0} has played the opening very well"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1106 chesspresso/position/NAG.java:1109
+#, java-format
+msgid "{0} has played the middlegame very poorly"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1112 chesspresso/position/NAG.java:1115
+#, java-format
+msgid "{0} has played the middlegame poorly"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1118 chesspresso/position/NAG.java:1121
+#, java-format
+msgid "{0} has played the middlegame well"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1124 chesspresso/position/NAG.java:1127
+#, java-format
+msgid "{0} has played the middlegame very well"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1130 chesspresso/position/NAG.java:1133
+#, java-format
+msgid "{0} has played the ending very poorly"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1136 chesspresso/position/NAG.java:1139
+#, java-format
+msgid "{0} has played the ending poorly"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1142 chesspresso/position/NAG.java:1145
+#, java-format
+msgid "{0} has played the ending well"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1148 chesspresso/position/NAG.java:1151
+#, java-format
+msgid "{0} has played the ending very well"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1154 chesspresso/position/NAG.java:1157
+#, java-format
+msgid "{0} has slight counterplay"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1160 chesspresso/position/NAG.java:1163
+#, java-format
+msgid "{0} has moderate counterplay"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1166 chesspresso/position/NAG.java:1169
+#, java-format
+msgid "{0} has decisive counterplay"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1172 chesspresso/position/NAG.java:1175
+#, java-format
+msgid "{0} has moderate time control pressure"
+msgstr ""
+
+#: chesspresso/position/NAG.java:1178 chesspresso/position/NAG.java:1181
+#, java-format
+msgid "{0} has severe time control pressure"
+msgstr ""

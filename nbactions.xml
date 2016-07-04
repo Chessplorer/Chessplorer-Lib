@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-Find bugs</actionName>
+            <displayName>Find bugs</displayName>
+            <goals>
+                <goal>findbugs:check</goal>
+                <goal>findbugs:gui</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+        </action>
+        <action>
+            <actionName>CUSTOM-I18N extract</actionName>
+            <displayName>I18N extract</displayName>
+            <goals>
+                <goal>com.googlecode.gettext-commons:gettext-maven-plugin:gettext</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+        </action>
+        <action>
+            <actionName>CUSTOM-I18N merge</actionName>
+            <displayName>I18N merge</displayName>
+            <goals>
+                <goal>com.googlecode.gettext-commons:gettext-maven-plugin:merge</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+        </action>
+        <action>
+            <actionName>CUSTOM-Release</actionName>
+            <displayName>Release</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>package</goal>
+            </goals>
+            <activatedProfiles>
+                <activatedProfile>chessplorer-release</activatedProfile>
+            </activatedProfiles>
+        </action>
+        <action>
+            <actionName>CUSTOM-Release &amp; Deploy</actionName>
+            <displayName>Release &amp; Deploy</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>package</goal>
+                <goal>deploy</goal>
+            </goals>
+            <activatedProfiles>
+                <activatedProfile>chessplorer-release</activatedProfile>
+            </activatedProfiles>
+        </action>
+</actions>
