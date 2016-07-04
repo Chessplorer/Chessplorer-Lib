@@ -32,12 +32,8 @@ Dependencies
 ------------
 
 -   Java 6 or newer
-
--   [gettext-commons 0.9.8](https://code.google.com/archive/p/gettext-commons/)
-    ([LGPL 2.1](share/licenses/gettext-commons.license.txt))
-
--   [slf4j 1.7.21](http://www.slf4j.org/)
-    ([MIT License](share/licenses/slf4j-api.license.txt))
+-   [gettext-commons 0.9.8](https://code.google.com/archive/p/gettext-commons/) ([LGPL 2.1](share/licenses/gettext-commons.license.txt))
+-   [slf4j 1.7.21](http://www.slf4j.org/) ([MIT License](share/licenses/slf4j-api.license.txt))
 
 
 Changelog
