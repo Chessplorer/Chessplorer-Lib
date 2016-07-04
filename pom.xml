@@ -301,6 +301,7 @@
               <finalName>Chessplorer-Lib-${project.version}</finalName>
               <outputDirectory>${project.releaseDir}</outputDirectory>
               <appendAssemblyId>false</appendAssemblyId>
+              <attach>false</attach>
               <ignoreDirFormatExtensions>true</ignoreDirFormatExtensions>
               <tarLongFileMode>gnu</tarLongFileMode>
               <descriptors>
