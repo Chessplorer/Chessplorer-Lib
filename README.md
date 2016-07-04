@@ -19,13 +19,14 @@ Modifications
 -   The project was converted into a [Maven](https://maven.apache.org/)
     structure to make it easier usable for other
     [Maven](https://maven.apache.org/) based applications.
--   The library will be published at
+-   Stable releases of this library are published at
     [Maven Central Repository](http://search.maven.org/#search|ga|1|org.chessplorer)
     in order to allow an integration into other applications without the need of
     separate repositories.
 -   The logging mechanism was replaced by [slf4j](http://www.slf4j.org/).
--   Internationalized with [GNU gettext](https://www.gnu.org/software/gettext/)
-    and translated into English and German.
+-   The library was internationalized with
+    [GNU gettext](https://www.gnu.org/software/gettext/) and translated into
+    English and German language.
 
 
 How to use
@@ -52,17 +53,15 @@ In order to get latest **development snapshots** of *Chessplorer-Lib*, you need
 to register the following repository in your `settings.xml` / `pom.xml`:
 
 ```xml
-<repositories>
-  <repository>
-    <id>ossrh</id>
-    <name>Open Source Project Repository Hosting</name>
-    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-    <snapshots>
-      <enabled>true</enabled>
-      <checksumPolicy>fail</checksumPolicy>
-    </snapshots>
-  </repository>
-</repositories>
+<repository>
+  <id>ossrh</id>
+  <name>Open Source Project Repository Hosting</name>
+  <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+  <snapshots>
+    <enabled>true</enabled>
+    <checksumPolicy>fail</checksumPolicy>
+  </snapshots>
+</repository>
 ```
 
 
