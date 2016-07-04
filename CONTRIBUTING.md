@@ -15,6 +15,10 @@ will find these branches at the GitHub project page:
     development. Changes from this branch are merged into
     [master](https://github.com/Chessplorer/Chessplorer-Lib/tree/master) when a new version is released.
 
+-   The [gkalab branch](https://github.com/Chessplorer/Chessplorer-Lib/tree/gkalab) contains commits from
+    [*ChesspressoNG*](https://github.com/gkalab/chesspressong), that were merged into this project.
+    No development is directly taking place in that branch.
+
 -   For more complex features you may also find different feature branches. These are derived from
     [develop branch](https://github.com/Chessplorer/Chessplorer-Lib/tree/develop) and are merged back / removed as
     soon as the feature is ready for release.
