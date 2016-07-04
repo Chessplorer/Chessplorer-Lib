@@ -38,8 +38,8 @@ dependencies, source code and documentations).
 
 Alternatively you can integrate the library from
 [Maven Central Repository](http://search.maven.org/#search|ga|1|org.chessplorer)
-into your [Maven](http://maven.apache.org/) project. Just add dependency to your
-projects `pom.xml`:
+into your [Maven](http://maven.apache.org/) project. Just add the following
+dependency to your projects `pom.xml`:
 
 ```xml
 <dependency>
