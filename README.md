@@ -7,7 +7,8 @@ of the [*ChesspressoNG*](https://github.com/gkalab/chesspressong) library by
 [`d2468c3`](https://github.com/gkalab/chesspressong/tree/d2468c3ba25eb38f4a502dedc454d4aab4226ea3)),
 who initially forked the
 [*Chesspresso*](https://github.com/BernhardSeybold/Chesspresso) library by
-[Bernhard Seybold](https://github.com/BernhardSeybold) (based on version 0.9.2).
+[Bernhard Seybold](https://github.com/BernhardSeybold) (based on version
+[0.9.2](https://github.com/BernhardSeybold/Chesspresso/releases/tag/v0.9.2)).
 
 
 Modifications
