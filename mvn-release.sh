@@ -10,4 +10,4 @@ export LANG=en
 set -e
 
 cd $PROJECT_DIR
-$MVN -Prelease clean package
+$MVN -Pchessplorer-release clean package

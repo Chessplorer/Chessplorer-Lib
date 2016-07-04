@@ -44,6 +44,18 @@
     </developer>
   </developers>
 
+  <scm>
+    <connection>scm:git:https://github.com/Chessplorer/Chessplorer-Lib.git</connection>
+    <developerConnection>scm:git:[fetch=]https://github.com/Chessplorer/Chessplorer-Lib.git[push=]ssh://git@github.com:Chessplorer/Chessplorer-Lib.git</developerConnection>
+    <url>https://github.com/Chessplorer/Chessplorer-Lib</url>
+  </scm>
+  <distributionManagement>
+    <snapshotRepository>
+      <id>chessplorer-ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+
   <properties>
     <createChecksum>true</createChecksum>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -299,6 +311,42 @@
         </executions>
       </plugin>
 
+      <!-- signing before deployment -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>1.6</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+            <configuration>
+              <skip>${project.releaseSkip}</skip>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- deployment -->
+      <!--
+        see http://central.sonatype.org/pages/apache-maven.html
+        and http://books.sonatype.com/nexus-book/reference/staging-deployment.html
+      -->
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.7</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>chessplorer-ossrh</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 
@@ -306,7 +354,7 @@
 
     <!-- release profile -->
     <profile>
-      <id>release</id>
+      <id>chessplorer-release</id>
       <properties>
         <project.releaseSkip>false</project.releaseSkip>
       </properties>

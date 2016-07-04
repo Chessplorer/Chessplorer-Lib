@@ -39,7 +39,19 @@
                 <goal>package</goal>
             </goals>
             <activatedProfiles>
-                <activatedProfile>release</activatedProfile>
+                <activatedProfile>chessplorer-release</activatedProfile>
+            </activatedProfiles>
+        </action>
+        <action>
+            <actionName>CUSTOM-Release &amp; Deploy</actionName>
+            <displayName>Release &amp; Deploy</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>package</goal>
+                <goal>deploy</goal>
+            </goals>
+            <activatedProfiles>
+                <activatedProfile>chessplorer-release</activatedProfile>
             </activatedProfiles>
         </action>
 </actions>
