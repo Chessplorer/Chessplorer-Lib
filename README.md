@@ -1,5 +1,5 @@
-Chessplorer-Lib 1.0-SNAPSHOT
-============================
+Chessplorer-Lib 1.0-RC1
+=======================
 
 *Chessplorer-Lib* is an open source chess library written in Java. It is a fork
 of the [*ChesspressoNG*](https://github.com/gkalab/chesspressong) library by
@@ -44,7 +44,7 @@ projects `pom.xml`:
 <dependency>
   <groupId>org.chessplorer</groupId>
   <artifactId>Chessplorer-Lib</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0-RC1</version>
 </dependency>
 ```
 
@@ -92,5 +92,5 @@ Further informations
 
 -   [*Chessplorer-Lib* at GitHub](https://github.com/Chessplorer/Chessplorer-Lib)
 -   [Releases of *Chessplorer-Lib*](https://github.com/Chessplorer/Chessplorer-Lib/releases)
--   [Changelog of *Chessplorer-Lib*](https://github.com/Chessplorer/Chessplorer-Lib/blob/develop/CHANGELOG.md)
--   [License of *Chessplorer-Lib*](https://github.com/Chessplorer/Chessplorer-Lib/blob/develop/LICENSE.txt)
+-   [Changelog of *Chessplorer-Lib*](https://github.com/Chessplorer/Chessplorer-Lib/blob/master/CHANGELOG.md)
+-   [License of *Chessplorer-Lib*](https://github.com/Chessplorer/Chessplorer-Lib/blob/master/LICENSE.txt)
